@@ -1,3 +1,4 @@
+import { MarkEntity } from '@app/profile/mark.entity';
 import { SessionEntity } from '@app/session/session.entity';
 import {
   Column,
@@ -44,5 +45,8 @@ export class UserEntity {
   updatedAt: Date;
 
   @OneToMany(() => SessionEntity, (session) => session.user)
-  sessions: SessionEntity;
+  sessions: SessionEntity[];
+
+  @OneToMany(() => MarkEntity, (mark) => mark.user)
+  marks: MarkEntity[];
 }

@@ -7,9 +7,10 @@ import { ConfigModule } from '@nestjs/config';
 import { SessionModule } from './session/session.module';
 import { AuthMiddleware } from './user/middlewares/auth.middleware';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { AvatarModule } from './avatar/avatar.module';
+import { ImageModule } from './image/image.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { join } from 'path';
     }),
     UserModule,
     SessionModule,
-    AvatarModule,
+    ImageModule,
+    ProfileModule,
   ],
   controllers: [],
   providers: [],

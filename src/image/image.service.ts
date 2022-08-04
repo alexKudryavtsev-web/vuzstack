@@ -3,8 +3,13 @@ import { v2 as cloudinary } from 'cloudinary';
 import { getLogger } from 'nodemailer/lib/shared';
 import * as streamifier from 'streamifier';
 
+export enum ImageType {
+  AVATAR = 'avatar',
+  PASSPORT = 'passport',
+}
+
 @Injectable()
-export class AvatarService {
+export class ImageService {
   constructor() {
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_NAME,
@@ -16,11 +21,12 @@ export class AvatarService {
   async uploadFile(
     currentUserId: number,
     file: Express.Multer.File,
+    type: ImageType = ImageType.AVATAR,
   ): Promise<void> {
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: 'avatars',
-        public_id: String(currentUserId),
+        folder: type,
+        public_id: calculatePublicId(currentUserId, type),
       },
       function (error, result) {
         const logger = getLogger();
@@ -36,10 +42,17 @@ export class AvatarService {
     streamifier.createReadStream(file.buffer).pipe(stream);
   }
 
-  async getFile(userId: number): Promise<string | null> {
+  async getURL(
+    userId: number,
+    type: ImageType = ImageType.AVATAR,
+  ): Promise<string | null> {
     return cloudinary.search
-      .expression(String(userId))
+      .expression(`public_id:${type}/${calculatePublicId(userId, type)}`)
       .execute()
       .then((result: any) => result.resources[0]?.url ?? null);
   }
+}
+
+function calculatePublicId(userId: number, type: ImageType = ImageType.AVATAR) {
+  return `${type}-${userId}`;
 }
