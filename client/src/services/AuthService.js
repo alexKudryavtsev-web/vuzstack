@@ -7,7 +7,6 @@ class AuthService {
     firstName,
     lastName,
     password,
-    gender,
     agree,
   ) {
     return axios.post(`${API_URL}/user`, {
@@ -15,7 +14,6 @@ class AuthService {
       firstName,
       lastName,
       password,
-      gender,
       agree,
     });
   }

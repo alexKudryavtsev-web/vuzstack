@@ -17,11 +17,11 @@ const PUBLIC_ROUTES = [
   { path: 'create-account', element: <CreateAccountPage /> },
   { path: 'forgot-password', element: <ForgotPasswordPage /> },
   { path: 'update-password/:token', element: <SetNewPasswordPage /> },
-  { path: '/p', element: <ProfilePage /> },
   ...COMMON_ROUTES,
 ];
 
 const PRIVATE_ROUTES = [
+  { path: '/', element: <ProfilePage /> },
   { path: '/', element: <ProfilePage /> },
   ...COMMON_ROUTES,
 ];

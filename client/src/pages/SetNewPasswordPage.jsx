@@ -1,6 +1,29 @@
-import FooterSmall from '../components/FooterSmall';
+import { useFormik } from 'formik';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Footer from '../components/Footer';
+import AuthService from '../services/AuthService';
+import parseErrorMessageToText from '../utils/parseErrorObjectToText';
 
 export default function LoginPage() {
+  const [message, setMessage] = useState('');
+  const { token } = useParams();
+
+  const formik = useFormik({
+    initialValues: {
+      password: '',
+    },
+    async onSubmit(data) {
+      try {
+        await AuthService.setNewPassword(data.password, token);
+
+        setMessage('Пароль установлен');
+      } catch (error) {
+        setMessage(parseErrorMessageToText(error.response.data.message));
+      }
+    },
+  });
+
   return (
     <>
       <main>
@@ -8,8 +31,7 @@ export default function LoginPage() {
           <div
             className="absolute top-0 w-full h-full"
             style={{
-              backgroundImage:
-                'url(' + require('../assets/img/bg.png') + ')',
+              backgroundImage: 'url(' + require('../assets/img/bg.png') + ')',
               backgroundSize: '100%',
               backgroundRepeat: 'no-repeat',
             }}
@@ -40,6 +62,9 @@ export default function LoginPage() {
                           className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                           placeholder="Пароль"
                           style={{ transition: 'all .15s ease' }}
+                          id="password"
+                          onChange={formik.handleChange}
+                          value={formik.values.email}
                         />
                       </div>
                       <div className="text-center mt-6">
@@ -47,9 +72,13 @@ export default function LoginPage() {
                           className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
                           type="button"
                           style={{ transition: 'all .15s ease' }}
+                          onClick={formik.handleSubmit}
                         >
                           ОК
                         </button>
+                      </div>
+                      <div className="text-center mt-3">
+                        <h6 className="text-sm font-bold">{message}</h6>
                       </div>
                     </form>
                   </div>
@@ -57,7 +86,7 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-          <FooterSmall absolute />
+          <Footer absolute />
         </section>
       </main>
     </>

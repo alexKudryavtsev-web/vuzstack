@@ -16,7 +16,7 @@ function App() {
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <Navbar transparent /> 
+        <Navbar transparent isAuth />
         <AppRoutes />
       </Provider>
     </BrowserRouter>

@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import AuthService from '../services/AuthService';
 import { useState } from 'react';
 import parseErrorMessageToText from '../utils/parseErrorObjectToText';
-import FooterSmall from '../components/FooterSmall';
+import Footer from '../components/Footer';
 
 function CreateAccountPage() {
   const [message, setMessage] = useState('');
@@ -15,25 +15,24 @@ function CreateAccountPage() {
       lastName: '',
       password: '',
       agree: false,
-      gender: 'other',
     },
     async onSubmit(data) {
       try {
-        const res = await AuthService.registration(
+        await AuthService.registration(
           data.email,
           data.firstName,
           data.lastName,
           data.password,
-          data.gender,
           data.agree,
         );
 
-        setMessage(res.request.statusText);
+        setMessage('Письмо было выслано');
       } catch (error) {
         setMessage(parseErrorMessageToText(error.response.data.message));
       }
     },
   });
+
   return (
     <>
       <main>
@@ -41,8 +40,7 @@ function CreateAccountPage() {
           <div
             className="absolute top-0 w-full h-full"
             style={{
-              backgroundImage:
-                'url(' + require('../assets/img/bg.png') + ')',
+              backgroundImage: 'url(' + require('../assets/img/bg.png') + ')',
               backgroundSize: '100%',
               backgroundRepeat: 'no-repeat',
             }}
@@ -73,6 +71,9 @@ function CreateAccountPage() {
                           className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                           placeholder="Email"
                           style={{ transition: 'all .15s ease' }}
+                          id="email"
+                          onChange={formik.handleChange}
+                          value={formik.values.email}
                         />
                       </div>
                       <div className="relative w-full mb-3">
@@ -85,8 +86,11 @@ function CreateAccountPage() {
                         <input
                           type="text"
                           className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                          placeholder="имя"
+                          placeholder="Имя"
                           style={{ transition: 'all .15s ease' }}
+                          id="firstName"
+                          onChange={formik.handleChange}
+                          value={formik.values.firstName}
                         />
                       </div>
                       <div className="relative w-full mb-3">
@@ -101,6 +105,9 @@ function CreateAccountPage() {
                           className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                           placeholder="Фамилия"
                           style={{ transition: 'all .15s ease' }}
+                          id="lastName"
+                          onChange={formik.handleChange}
+                          value={formik.values.lastName}
                         />
                       </div>
                       <div className="relative w-full mb-3">
@@ -115,17 +122,45 @@ function CreateAccountPage() {
                           className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                           placeholder="Пароль"
                           style={{ transition: 'all .15s ease' }}
+                          id="password"
+                          onChange={formik.handleChange}
+                          value={formik.values.password}
                         />
                       </div>
-
+                      <div>
+                        <label className="inline-flex items-center cursor-pointer">
+                          <input
+                            id="agree"
+                            onChange={formik.handleChange}
+                            value={formik.values.agree}
+                            type="checkbox"
+                            className="form-checkbox border-0 rounded text-gray-800 ml-1 w-5 h-5"
+                            style={{ transition: 'all .15s ease' }}
+                          />
+                          <span className="ml-2 text-sm font-semibold text-gray-700">
+                            Я согласен(а) с{' '}
+                            <a
+                              target="_blank"
+                              className="text-blue-600"
+                              href="/static/пользовательское соглашение.pdf"
+                            >
+                              условиями
+                            </a>
+                          </span>
+                        </label>
+                      </div>
                       <div className="text-center mt-6">
                         <button
                           className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
                           type="button"
                           style={{ transition: 'all .15s ease' }}
+                          onClick={formik.submitForm}
                         >
                           Зарегистрироваться
                         </button>
+                      </div>
+                      <div className="text-center mt-3">
+                        <h6 className="text-sm font-bold">{message}</h6>
                       </div>
                     </form>
                   </div>
@@ -133,7 +168,7 @@ function CreateAccountPage() {
               </div>
             </div>
           </div>
-          <FooterSmall absolute/>
+          <Footer absolute />
         </section>
       </main>
     </>

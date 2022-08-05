@@ -5,6 +5,7 @@ import parseRefreshTokenFromCookie from '../../utils/parseRefreshTokenFromCookie
 const initialState = {
   isAuth: Boolean(parseRefreshTokenFromCookie()),
   user: JSON.parse(localStorage.getItem('user')),
+  isFailed: null,
 };
 
 const login = createAsyncThunk('user/login', async (payload, thunkApi) => {
@@ -28,11 +29,17 @@ const userSlice = createSlice({
       state.user = action.payload.user;
 
       localStorage.setItem('user', JSON.stringify(action.payload.user));
+      state.isFailed = false;
     });
 
     builder.addCase(logout.fulfilled, (state, action) => {
       state.isAuth = false;
       state.user = {};
+      state.isFailed = null;
+    });
+
+    builder.addCase(login.rejected, (state, action) => {
+      state.isFailed = true;
     });
   },
 });

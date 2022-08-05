@@ -1,6 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { getUser } from '../store/selectors';
 
 export default function Profile() {
+  const user = useSelector(getUser);
+
   return (
     <>
       <main className="profile-page">
@@ -75,10 +79,10 @@ export default function Profile() {
                       </div>
                       <div className="mr-4 p-3 text-center">
                         <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                          НЕТ
+                          {user.isVerified ? 'да' : 'нет'}
                         </span>
                         <span className="text-sm text-gray-500">
-                          Верифицирована
+                          Верифицирован(а)
                         </span>
                       </div>
                     </div>
@@ -86,7 +90,7 @@ export default function Profile() {
                 </div>
                 <div className="text-center mt-12">
                   <h3 className="text-4xl font-semibold leading-normal text-gray-800 mb-2">
-                    Елена Ковальнова
+                    {user.firstName} {user.lastName}
                   </h3>
                 </div>
                 <div className="mt-10 py-10 border-t border-gray-300 text-center">
