@@ -7,10 +7,10 @@ export default function LoginPage() {
       <main>
         <section className="absolute w-full h-full bg-gray-900">
           <div
-            className="absolute top-0 w-full h-full"
+            className="absolute top-0 w-full h-full bg-cover"
             style={{
               backgroundImage:
-                'url(' + require('../assets/img/register_bg_2.png') + ')',
+                'url(' + require('../assets/img/bg.png') + ')',
               backgroundSize: '100%',
               backgroundRepeat: 'no-repeat',
             }}
@@ -43,7 +43,6 @@ export default function LoginPage() {
                           style={{ transition: 'all .15s ease' }}
                         />
                       </div>
-
                       <div className="relative w-full mb-3">
                         <label
                           className="block uppercase text-gray-700 text-xs font-bold mb-2"
@@ -58,7 +57,6 @@ export default function LoginPage() {
                           style={{ transition: 'all .15s ease' }}
                         />
                       </div>
-
                       <div className="text-center mt-6">
                         <button
                           className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"

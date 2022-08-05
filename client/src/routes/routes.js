@@ -5,11 +5,9 @@ import SetNewPasswordPage from '../pages/SetNewPasswordPage.jsx';
 
 import Error404Page from '../pages/Error404Page.jsx';
 
-import AboutPage from '../pages/AboutPage';
 import ProfilePage from '../pages/ProfilePage.jsx';
 
 const COMMON_ROUTES = [
-  { path: 'about', element: <AboutPage /> },
   { path: '*', element: <Error404Page /> },
 ];
 
@@ -19,6 +17,7 @@ const PUBLIC_ROUTES = [
   { path: 'create-account', element: <CreateAccountPage /> },
   { path: 'forgot-password', element: <ForgotPasswordPage /> },
   { path: 'update-password/:token', element: <SetNewPasswordPage /> },
+  { path: '/p', element: <ProfilePage /> },
   ...COMMON_ROUTES,
 ];
 
