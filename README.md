@@ -87,3 +87,4 @@ frontend:
 - JavaScript
 - React
 - Redux + Redux Toolkit
+- Tailwind

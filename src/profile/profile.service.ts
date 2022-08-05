@@ -57,7 +57,7 @@ export class ProfileService {
 
   async readExams(): Promise<string[]> {
     const exams = await fs.promises.readFile(
-      join(__dirname, '..', '..', 'static', 'exams.json'),
+      join(__dirname, '..', '..', 'etc', 'exams.json'),
       'utf-8',
     );
 
@@ -66,7 +66,7 @@ export class ProfileService {
 
   async readAchievements(): Promise<string[]> {
     const exams = await fs.promises.readFile(
-      join(__dirname, '..', '..', 'static', 'achievements.json'),
+      join(__dirname, '..', '..', 'etc', 'achievements.json'),
       'utf-8',
     );
 

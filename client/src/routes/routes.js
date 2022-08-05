@@ -5,11 +5,11 @@ import SetNewPasswordPage from '../pages/SetNewPasswordPage.jsx';
 
 import Error404Page from '../pages/Error404Page.jsx';
 
-import ExamplePage from '../pages/ExamplePage.jsx';
+import AboutPage from '../pages/AboutPage';
 import ProfilePage from '../pages/ProfilePage.jsx';
 
 const COMMON_ROUTES = [
-  { path: 'example', element: <ExamplePage /> },
+  { path: 'about', element: <AboutPage /> },
   { path: '*', element: <Error404Page /> },
 ];
 

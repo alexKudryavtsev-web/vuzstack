@@ -1,7 +1,6 @@
-import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
-import Header from './components/header/Header';
+import Navbar from './components/Navbar';
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes/routes';
 import { store } from './store';
 import { getIsAuth } from './store/selectors';
@@ -17,10 +16,8 @@ function App() {
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <ChakraProvider>
-          <Header/>
-          <AppRoutes />
-        </ChakraProvider>
+        <Navbar transparent /> 
+        <AppRoutes />
       </Provider>
     </BrowserRouter>
   );
