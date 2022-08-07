@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Footer from '../components/Footer';
 import AuthService from '../services/AuthService';
 import parseErrorMessageToText from '../utils/parseErrorObjectToText';
+import isMobileDevice from '../utils/isMobileDevice';
 
 export default function LoginPage() {
   const [message, setMessage] = useState('');
@@ -30,11 +31,16 @@ export default function LoginPage() {
         <section className="absolute w-full h-full bg-gray-900">
           <div
             className="absolute top-0 w-full h-full"
-            style={{
-              backgroundImage: 'url(' + require('../assets/img/bg.png') + ')',
-              backgroundSize: '100%',
-              backgroundRepeat: 'no-repeat',
-            }}
+            style={
+              isMobileDevice()
+                ? {}
+                : {
+                    backgroundImage:
+                      'url(' + require('../assets/img/bg.png') + ')',
+                    backgroundSize: '100%',
+                    backgroundRepeat: 'no-repeat',
+                  }
+            }
           ></div>
           <div className="container mx-auto px-4 h-full">
             <div className="flex content-center items-center justify-center h-full">

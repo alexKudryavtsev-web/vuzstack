@@ -47,7 +47,6 @@ export class ProfileService {
   async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.findOne(currentUserId);
 
-    console.log(updateUserDto);
     Object.assign(user, updateUserDto);
 
     const res = await this.userRepository.save(user);
@@ -76,7 +75,6 @@ export class ProfileService {
   async buildProfileFromUserEntity(user: UserEntity): Promise<ProfileType> {
     const avatarUrl = await this.avatarService.getURL(user.id);
 
-    console.log(avatarUrl);
     delete user.activationLink;
     delete user.agree;
     delete user.isActivated;

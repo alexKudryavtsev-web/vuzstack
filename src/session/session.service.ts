@@ -7,6 +7,7 @@ import { CreateSessionDto } from './dto/createSession.dto';
 import { SessionEntity } from './session.entity';
 import { SessionType } from './types/session.type';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import { ProfileService } from '@app/profile/profile.service';
 
 @Injectable()
 export class SessionService {
@@ -15,6 +16,7 @@ export class SessionService {
     private readonly sessionRepository: Repository<SessionEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly profileService: ProfileService,
   ) {}
 
   async createSession(
@@ -75,7 +77,10 @@ export class SessionService {
 
       delete user.password;
 
-      return { user, ...tokens };
+      return {
+        user: await this.profileService.buildProfileFromUserEntity(user),
+        ...tokens,
+      };
     }
 
     const newSession = new SessionEntity();
@@ -88,7 +93,10 @@ export class SessionService {
 
     delete user.password;
 
-    return { user, ...tokens };
+    return {
+      user: await this.profileService.buildProfileFromUserEntity(user),
+      ...tokens,
+    };
   }
 
   async deleteSession(refreshToken: string) {
@@ -96,6 +104,7 @@ export class SessionService {
   }
 
   async updateSession(refreshToken: string): Promise<SessionType> {
+    console.log(refreshToken);
     const session = await this.sessionRepository.findOne(
       { refreshToken },
       { relations: ['user'] },
@@ -111,7 +120,10 @@ export class SessionService {
 
     await this.sessionRepository.save(session);
 
-    return { user: session.user, ...newTokens };
+    return {
+      user: await this.profileService.buildProfileFromUserEntity(session.user),
+      ...newTokens,
+    };
   }
 
   generateJwt(user: UserEntity) {

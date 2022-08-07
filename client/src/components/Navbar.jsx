@@ -4,9 +4,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { store } from '../store';
 import { logout } from '../store/reducers/userReducer';
+import { getIsAuth } from '../store/selectors';
+import { useSelector } from 'react-redux';
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const isAuth = useSelector(getIsAuth);
 
   return (
     <>
@@ -76,7 +79,7 @@ export default function Navbar(props) {
               </li>
             </ul>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-              {props.isAuth ? (
+              {isAuth ? (
                 <>
                   <li className="flex items-center">
                     <Link
@@ -87,7 +90,10 @@ export default function Navbar(props) {
                           : 'bg-pink-500 text-white active:bg-pink-600') +
                         ' text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3'
                       }
-                      onClick={() => store.dispatch(logout())}
+                      onClick={() => {
+                        store.dispatch(logout());
+                        setNavbarOpen(false);
+                      }}
                       type="button"
                       style={{ transition: 'all .15s ease' }}
                     >
@@ -108,6 +114,7 @@ export default function Navbar(props) {
                       }
                       type="button"
                       style={{ transition: 'all .15s ease' }}
+                      onClick={() => setNavbarOpen(false)}
                     >
                       регистрация
                     </Link>

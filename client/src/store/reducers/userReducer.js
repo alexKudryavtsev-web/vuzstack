@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
+import ProfileService from '../../services/ProfileService';
 import parseRefreshTokenFromCookie from '../../utils/parseRefreshTokenFromCookie';
 
 const initialState = {
@@ -13,6 +14,15 @@ const login = createAsyncThunk('user/login', async (payload, thunkApi) => {
 
   return data;
 });
+
+const uploadPassport = createAsyncThunk(
+  'user/uploadPassport',
+  async (payload, thunkApi) => {
+    const { data } = await ProfileService.uploadPassport(payload);
+
+    return data;
+  },
+);
 
 const logout = createAsyncThunk('user/logout', async (payload, thunkApi) => {
   await AuthService.logout();
@@ -29,6 +39,7 @@ const userSlice = createSlice({
       state.user = action.payload.user;
 
       localStorage.setItem('user', JSON.stringify(action.payload.user));
+      localStorage.setItem('token', action.payload.accessToken);
       state.isFailed = false;
     });
 
@@ -41,8 +52,12 @@ const userSlice = createSlice({
     builder.addCase(login.rejected, (state, action) => {
       state.isFailed = true;
     });
+
+    builder.addCase(uploadPassport.fulfilled, (state, action) => {
+      state.user.isVerified = true;
+    });
   },
 });
 
 export default userSlice.reducer;
-export { login, logout };
+export { login, logout, uploadPassport };

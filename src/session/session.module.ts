@@ -1,3 +1,5 @@
+import { ImageService } from '@app/image/image.service';
+import { ProfileService } from '@app/profile/profile.service';
 import { UserEntity } from '@app/user/user.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,6 +10,6 @@ import { SessionService } from './session.service';
 @Module({
   imports: [TypeOrmModule.forFeature([SessionEntity, UserEntity])],
   controllers: [SessionController],
-  providers: [SessionService],
+  providers: [SessionService, ProfileService, ImageService],
 })
 export class SessionModule {}

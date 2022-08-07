@@ -8,6 +8,7 @@ import {
   Get,
   Patch,
   Put,
+  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -55,9 +56,9 @@ export class ProfileController {
   @UseInterceptors(FileInterceptor('passport'))
   async uploadPassport(
     @User('id') currentUserId: number,
-    @UploadedFile() avatar: Express.Multer.File,
+    @UploadedFile() passport: Express.Multer.File,
   ) {
-    await this.profileServce.uploadPassport(currentUserId, avatar);
+    await this.profileServce.uploadPassport(currentUserId, passport);
   }
 
   @Put('marks')

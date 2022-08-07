@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import AuthService from '../services/AuthService';
 import { useState } from 'react';
 import parseErrorMessageToText from '../utils/parseErrorObjectToText';
+import isMobileDevice from '../utils/isMobileDevice';
 import Footer from '../components/Footer';
 
 function CreateAccountPage() {
@@ -39,11 +40,16 @@ function CreateAccountPage() {
         <section className="absolute w-full h-full bg-gray-900">
           <div
             className="absolute top-0 w-full h-full"
-            style={{
-              backgroundImage: 'url(' + require('../assets/img/bg.png') + ')',
-              backgroundSize: '100%',
-              backgroundRepeat: 'no-repeat',
-            }}
+            style={
+              isMobileDevice()
+                ? {}
+                : {
+                    backgroundImage:
+                      'url(' + require('../assets/img/bg.png') + ')',
+                    backgroundSize: '100%',
+                    backgroundRepeat: 'no-repeat',
+                  }
+            }
           ></div>
           <div className="container mx-auto px-4 h-full">
             <div className="flex content-center items-center justify-center h-full">

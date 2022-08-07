@@ -5,6 +5,7 @@ import { store } from '../store';
 import { login } from '../store/reducers/userReducer';
 import { useSelector } from 'react-redux';
 import { getIsFailed } from '../store/selectors';
+import isMobileDevice from '../utils/isMobileDevice';
 
 export default function LoginPage() {
   const isFailed = useSelector(getIsFailed);
@@ -25,11 +26,16 @@ export default function LoginPage() {
         <section className="absolute w-full h-full bg-gray-900">
           <div
             className="absolute top-0 w-full h-full bg-cover"
-            style={{
-              backgroundImage: 'url(' + require('../assets/img/bg.png') + ')',
-              backgroundSize: '100%',
-              backgroundRepeat: 'no-repeat',
-            }}
+            style={
+              isMobileDevice()
+                ? {}
+                : {
+                    backgroundImage:
+                      'url(' + require('../assets/img/bg.png') + ')',
+                    backgroundSize: '100%',
+                    backgroundRepeat: 'no-repeat',
+                  }
+            }
           ></div>
           <div className="container mx-auto px-4 h-full">
             <div className="flex content-center items-center justify-center h-full">

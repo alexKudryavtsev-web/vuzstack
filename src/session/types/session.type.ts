@@ -1,7 +1,7 @@
-import { UserType } from '@app/user/types/user.type';
+import { ProfileType } from '@app/profile/types/profile.type';
 
 export type SessionType = {
-  user: UserType;
+  user: ProfileType;
   accessToken: string;
   refreshToken: string;
 };
