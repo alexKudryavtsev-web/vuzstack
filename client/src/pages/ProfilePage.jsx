@@ -2,6 +2,7 @@ import React from 'react';
 import Avatar from 'react-avatar';
 import { useSelector } from 'react-redux';
 import UploadPassport from '../components/UploadPassport';
+import CookieBanner from '../components/CookieBanner';
 import { getUser } from '../store/selectors';
 
 export default function Profile() {
@@ -119,6 +120,7 @@ export default function Profile() {
             </div>
           </div>
         </section>
+        <CookieBanner />
       </main>
     </>
   );

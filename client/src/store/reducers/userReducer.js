@@ -29,6 +29,13 @@ const logout = createAsyncThunk('user/logout', async (payload, thunkApi) => {
   localStorage.clear();
 });
 
+const acceptWithCookie = createAsyncThunk(
+  'user/acceptedWithCookie',
+  async (payload, thunkApi) => {
+    await ProfileService.acceptWithCookie();
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -56,8 +63,12 @@ const userSlice = createSlice({
     builder.addCase(uploadPassport.fulfilled, (state, action) => {
       state.user.isVerified = true;
     });
+
+    builder.addCase(acceptWithCookie.fulfilled, (state, action) => {
+      state.user.acceptedWithCookie = true;
+    });
   },
 });
 
 export default userSlice.reducer;
-export { login, logout, uploadPassport };
+export { login, logout, uploadPassport, acceptWithCookie };

@@ -40,6 +40,7 @@ export class SessionService {
           'updatedAt',
           'activationLink',
           'agree',
+          'acceptedWithCookie',
         ],
       },
     );

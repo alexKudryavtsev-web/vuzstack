@@ -65,7 +65,6 @@ export class ProfileService {
     const user = await this.userRepository.findOne(currentUserId);
 
     const mark = new MarkEntity();
-    console.log(createMark);
 
     Object.assign(mark, createMark);
     user.mark = mark;
@@ -74,6 +73,14 @@ export class ProfileService {
     await this.userRepository.save(user);
 
     return await this.buildProfileFromUserEntity(user);
+  }
+
+  async acceptWithCookie(currentUserId: number): Promise<void> {
+    const user = await this.userRepository.findOne(currentUserId);
+
+    user.acceptedWithCookie = true;
+
+    await this.userRepository.save(user);
   }
 
   async readExams(): Promise<string[]> {

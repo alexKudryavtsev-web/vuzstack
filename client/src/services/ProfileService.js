@@ -8,6 +8,10 @@ class ProfileService {
       },
     });
   }
+
+  static async acceptWithCookie() {
+    return $api.post('profile/accept-with-cookie')
+  }
 }
 
 export default ProfileService;

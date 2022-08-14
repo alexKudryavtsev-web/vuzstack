@@ -133,6 +133,7 @@ export class UserService {
           'updatedAt',
           'activationLink',
           'agree',
+          'acceptedWithCookie',
         ],
       },
     );

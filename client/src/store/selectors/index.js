@@ -9,3 +9,7 @@ export function getIsFailed(state) {
 export function getUser(state) {
   return state?.user?.user || {};
 }
+
+export function getAcceptedWithCookie(state) {
+  return state?.user?.user.acceptedWithCookie || false;
+}

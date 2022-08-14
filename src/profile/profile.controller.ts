@@ -7,6 +7,7 @@ import {
   Controller,
   Get,
   Patch,
+  Post,
   Put,
   UploadedFile,
   UseGuards,
@@ -40,6 +41,12 @@ export class ProfileController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<ProfileType> {
     return await this.profileServce.updateUser(currentUserId, updateUserDto);
+  }
+
+  @Post('accept-with-cookie')
+  @UseGuards(AuthGuard)
+  async acceptWithCookie(@User('id') currentUserId: number): Promise<void> {
+    await this.profileServce.acceptWithCookie(currentUserId);
   }
 
   @Patch('avatar')

@@ -34,6 +34,9 @@ export class UserEntity {
   @Column({ default: false })
   isVerified: boolean;
 
+  @Column({ default: null, nullable: true })
+  acceptedWithCookie: boolean;
+
   @Column({ type: 'uuid' })
   activationLink: string;
 
