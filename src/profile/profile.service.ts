@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import { join } from 'path';
 import { Repository } from 'typeorm';
+import { CreateMarkDto } from './dto/createMark.dto';
+import { MarkEntity } from './mark.entity';
 import { ProfileType } from './types/profile.type';
 
 @Injectable()
@@ -14,6 +16,8 @@ export class ProfileService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly avatarService: ImageService,
+    @InjectRepository(MarkEntity)
+    private readonly markRepository: Repository<MarkEntity>,
   ) {}
 
   async readProfile(userId: number): Promise<ProfileType> {
@@ -52,6 +56,24 @@ export class ProfileService {
     const res = await this.userRepository.save(user);
 
     return await this.buildProfileFromUserEntity(res);
+  }
+
+  async uploadMarks(
+    createMark: CreateMarkDto,
+    currentUserId: number,
+  ): Promise<ProfileType> {
+    const user = await this.userRepository.findOne(currentUserId);
+
+    const mark = new MarkEntity();
+    console.log(createMark);
+
+    Object.assign(mark, createMark);
+    user.mark = mark;
+
+    await this.markRepository.save(mark);
+    await this.userRepository.save(user);
+
+    return await this.buildProfileFromUserEntity(user);
   }
 
   async readExams(): Promise<string[]> {

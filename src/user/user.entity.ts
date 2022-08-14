@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -47,6 +49,7 @@ export class UserEntity {
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions: SessionEntity[];
 
-  @OneToMany(() => MarkEntity, (mark) => mark.user)
-  marks: MarkEntity[];
+  @OneToOne(() => MarkEntity)
+  @JoinColumn()
+  mark: MarkEntity;
 }

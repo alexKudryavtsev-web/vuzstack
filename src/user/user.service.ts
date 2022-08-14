@@ -48,7 +48,7 @@ export class UserService {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      link: `${process.env.API_URL}/user/activate/${user.activationLink}`,
+      link: `${process.env.CLIENT_URL}/activate-user/${user.activationLink}`,
     });
 
     return await this.userRepository.save(user);

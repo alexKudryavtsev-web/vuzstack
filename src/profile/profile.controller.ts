@@ -8,7 +8,6 @@ import {
   Get,
   Patch,
   Put,
-  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -16,6 +15,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateMarkDto } from './dto/createMark.dto';
 import { ProfileService } from './profile.service';
 import { ProfileType } from './types/profile.type';
 
@@ -31,6 +31,7 @@ export class ProfileController {
   async readCurrentProfile(@User('id') userId: number): Promise<ProfileType> {
     return this.profileServce.readProfile(userId);
   }
+
   @Patch()
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
@@ -61,9 +62,15 @@ export class ProfileController {
     await this.profileServce.uploadPassport(currentUserId, passport);
   }
 
-  @Put('marks')
+  @Put('mark')
   @UseGuards(AuthGuard)
-  async uploadMarks() {}
+  @UsePipes(new ValidationPipe())
+  async uploadMarks(
+    @Body() createMarksDto: CreateMarkDto,
+    @User('id') currentUserId: number,
+  ): Promise<ProfileType> {
+    return this.profileServce.uploadMarks(createMarksDto, currentUserId);
+  }
 
   @Get('exams')
   async readExams(): Promise<string[]> {
@@ -75,7 +82,7 @@ export class ProfileController {
     return await this.profileServce.readAchievements();
   }
 
-  @Put('direction')
-  @UseGuards(AuthGuard)
-  async uploadDirection() {}
+  // @Put('direction')
+  // @UseGuards(AuthGuard)
+  // async uploadDirection() {}
 }

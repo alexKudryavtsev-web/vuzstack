@@ -2,13 +2,7 @@ import axios from 'axios';
 import $api, { API_URL } from '../http';
 
 class AuthService {
-  static async registration(
-    email,
-    firstName,
-    lastName,
-    password,
-    agree,
-  ) {
+  static async registration(email, firstName, lastName, password, agree) {
     return axios.post(`${API_URL}/user`, {
       email,
       firstName,
@@ -34,6 +28,10 @@ class AuthService {
     return axios.patch(`${API_URL}/user/update-password/${token}`, {
       password,
     });
+  }
+
+  static async activateUser(token) {
+    return axios.post(`${API_URL}/user/activate/${token}`);
   }
 }
 

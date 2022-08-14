@@ -104,7 +104,6 @@ export class SessionService {
   }
 
   async updateSession(refreshToken: string): Promise<SessionType> {
-    console.log(refreshToken);
     const session = await this.sessionRepository.findOne(
       { refreshToken },
       { relations: ['user'] },

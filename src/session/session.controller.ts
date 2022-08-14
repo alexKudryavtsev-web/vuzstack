@@ -13,6 +13,11 @@ import { CreateSessionDto } from './dto/createSession.dto';
 import { SessionService } from './session.service';
 import { SessionType } from './types/session.type';
 
+const COOKIE_OPTION = {
+  httpOnly: true,
+  maxAge: Number(process.env.REFRESH_TIME_IN_MS),
+};
+
 @Controller('session')
 export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
@@ -24,7 +29,7 @@ export class SessionController {
     @Ip() ip: string,
   ): Promise<SessionType> {
     const data = await this.sessionService.createSession(createSessionDto, ip);
-    response.cookie('refreshToken', data.refreshToken);
+    response.cookie('refreshToken', data.refreshToken, COOKIE_OPTION);
 
     return data;
   }
@@ -37,10 +42,7 @@ export class SessionController {
     const data = await this.sessionService.updateSession(
       request.cookies.refreshToken,
     );
-    response.cookie('refreshToken', data.refreshToken, {
-      httpOnly: true,
-      maxAge: Number(process.env.REFRESH_TIME_IN_MS),
-    });
+    response.cookie('refreshToken', data.refreshToken, COOKIE_OPTION);
 
     return data;
   }

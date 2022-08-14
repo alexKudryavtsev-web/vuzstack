@@ -1,9 +1,7 @@
-import { UserEntity } from '@app/user/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,7 +12,7 @@ export class MarkEntity {
   id: number;
 
   @Column({ type: 'simple-json' })
-  exam: { subject: string; result: number };
+  exams: { subject: string; result: number }[];
 
   @Column({ type: 'simple-array' })
   achievements: string[];
@@ -24,7 +22,4 @@ export class MarkEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @ManyToOne(() => UserEntity, (user) => user.marks)
-  user: UserEntity;
 }

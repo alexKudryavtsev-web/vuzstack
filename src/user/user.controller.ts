@@ -33,8 +33,7 @@ export class UserController {
     return this.userService.buildUserResponse(user);
   }
 
-  @Get('/activate/:activationLink')
-  @Redirect(process.env.CLIENT_URL, 301)
+  @Post('/activate/:activationLink')
   async activateUser(@Param('activationLink') activationLink: string) {
     await this.userService.activateUser(activationLink);
   }
