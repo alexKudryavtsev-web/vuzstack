@@ -5,6 +5,7 @@ import { useState } from 'react';
 import parseErrorMessageToText from '../utils/parseErrorObjectToText';
 import isMobileDevice from '../utils/isMobileDevice';
 import Footer from '../components/Footer';
+import PasswordInput from '../components/PasswordInput';
 
 function CreateAccountPage() {
   const [message, setMessage] = useState('');
@@ -117,21 +118,7 @@ function CreateAccountPage() {
                         />
                       </div>
                       <div className="relative w-full mb-3">
-                        <label
-                          className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                          htmlFor="grid-password"
-                        >
-                          Пароль
-                        </label>
-                        <input
-                          type="password"
-                          className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                          placeholder="Пароль"
-                          style={{ transition: 'all .15s ease' }}
-                          id="password"
-                          onChange={formik.handleChange}
-                          value={formik.values.password}
-                        />
+                        <PasswordInput formik={formik} id='password'/>
                       </div>
                       <div>
                         <label className="inline-flex items-center cursor-pointer">

@@ -24,11 +24,11 @@ $api.interceptors.response.use(
     ) {
       originalRequest._isRetry = true;
       try {
-        const response = await axios.patch(`${API_URL}/session`, {
+        const response = await axios.patch(`${API_URL}/session`, null, {
           withCredentials: true,
         });
         localStorage.setItem('token', response.data.accessToken);
-        localStorage.setItem('user', response.data.user);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         return $api.request(originalRequest);
       } catch (e) {
         console.log(e);

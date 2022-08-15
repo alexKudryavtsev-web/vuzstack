@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
 import ProfileService from '../../services/ProfileService';
-import parseRefreshTokenFromCookie from '../../utils/parseRefreshTokenFromCookie';
+
+const userFromLocalStorate = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
-  isAuth: Boolean(parseRefreshTokenFromCookie()),
-  user: JSON.parse(localStorage.getItem('user')),
+  isAuth: Boolean(userFromLocalStorate),
+  user: userFromLocalStorate,
   isFailed: null,
 };
 
