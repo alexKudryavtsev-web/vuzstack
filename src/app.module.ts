@@ -13,6 +13,8 @@ import { join } from 'path';
 import { ProfileModule } from './api/profile/profile.module';
 import { DirectionModule } from './api/direction/direction.module';
 import { MarkModule } from './api/mark/mark.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskModule } from './tasks/task.module';
 
 @Module({
   imports: [
@@ -36,12 +38,14 @@ import { MarkModule } from './api/mark/mark.module';
       rootPath: join(__dirname, '..', 'client', 'build'),
       exclude: ['/api*'],
     }),
+    ScheduleModule.forRoot(),
     UserModule,
     SessionModule,
     CloudinaryModule,
     ProfileModule,
     DirectionModule,
     MarkModule,
+    TaskModule,
   ],
   controllers: [],
   providers: [],
