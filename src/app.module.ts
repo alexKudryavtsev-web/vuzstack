@@ -1,18 +1,18 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { UserModule } from '@app/user/user.module';
+import { UserModule } from '@app/api/user/user.module';
 import { BullModule } from '@nestjs/bull';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import ormconfig from './ormconfig';
 import { ConfigModule } from '@nestjs/config';
-import { SessionModule } from './session/session.module';
-import { AuthMiddleware } from './user/middlewares/auth.middleware';
+import { SessionModule } from './api/session/session.module';
+import { AuthMiddleware } from './api/user/middlewares/auth.middleware';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ImageModule } from './cloudinary/image.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { ProfileModule } from './profile/profile.module';
-import { DirectionModule } from './direction/direction.module';
-import { MarkModule } from './mark/mark.module';
+import { ProfileModule } from './api/profile/profile.module';
+import { DirectionModule } from './api/direction/direction.module';
+import { MarkModule } from './api/mark/mark.module';
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { MarkModule } from './mark/mark.module';
     }),
     UserModule,
     SessionModule,
-    ImageModule,
+    CloudinaryModule,
     ProfileModule,
     DirectionModule,
     MarkModule,

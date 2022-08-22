@@ -1,5 +1,4 @@
-import { MarkEntity } from '@app/profile/mark.entity';
-import { SessionEntity } from '@app/session/session.entity';
+import { SessionEntity } from '@app/api/session/session.entity';
 import {
   Column,
   CreateDateColumn,
@@ -64,8 +63,4 @@ export class UserEntity {
 
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions: SessionEntity[];
-
-  @OneToOne(() => MarkEntity)
-  @JoinColumn()
-  mark: MarkEntity;
 }

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UserService } from '@app/user/user.service';
-import { UserController } from '@app/user/user.controller';
+import { UserService } from '@app/api/user/user.service';
+import { UserController } from '@app/api/user/user.controller';
 import { BullModule } from '@nestjs/bull';
 import { EmailProcessor } from './email.processor';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { AuthGuard } from './guards/auth.guard';
-import { SessionEntity } from '@app/session/session.entity';
+import { SessionEntity } from '@app/api/session/session.entity';
 
 @Module({
   imports: [

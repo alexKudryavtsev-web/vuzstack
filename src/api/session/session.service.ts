@@ -1,4 +1,4 @@
-import { UserEntity } from '@app/user/user.entity';
+import { UserEntity } from '@app/api/user/user.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare } from 'bcryptjs';
@@ -7,7 +7,7 @@ import { CreateSessionDto } from './dto/createSession.dto';
 import { SessionEntity } from './session.entity';
 import { SessionType } from './types/session.type';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
-import { ProfileService } from '@app/profile/profile.service';
+import { ProfileService } from '@app/api/profile/profile.service';
 
 @Injectable()
 export class SessionService {

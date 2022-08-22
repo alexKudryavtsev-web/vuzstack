@@ -1,14 +1,13 @@
-import { ImageService } from '@app/cloudinary/image.service';
-import { User } from '@app/user/decorators/user.decorator';
-import { UpdateUserDto } from '@app/user/dto/updateUserDto';
-import { AuthGuard } from '@app/user/guards/auth.guard';
+import { CloudinaryService } from '@app/cloudinary/cloudinary.service';
+import { User } from '@app/api/user/decorators/user.decorator';
+import { UpdateUserDto } from '@app/api/user/dto/updateUserDto';
+import { AuthGuard } from '@app/api/user/guards/auth.guard';
 import {
   Body,
   Controller,
   Get,
   Patch,
   Post,
-  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -16,14 +15,13 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateMarkDto } from './dto/createMark.dto';
 import { ProfileService } from './profile.service';
 import { ProfileType } from './types/profile.type';
 
 @Controller('profile')
 export class ProfileController {
   constructor(
-    private readonly avatarService: ImageService,
+    private readonly avatarService: CloudinaryService,
     private readonly profileServce: ProfileService,
   ) {}
 
@@ -68,28 +66,4 @@ export class ProfileController {
   ) {
     await this.profileServce.uploadPassport(currentUserId, passport);
   }
-
-  @Put('mark')
-  @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
-  async uploadMarks(
-    @Body() createMarksDto: CreateMarkDto,
-    @User('id') currentUserId: number,
-  ): Promise<ProfileType> {
-    return this.profileServce.uploadMarks(createMarksDto, currentUserId);
-  }
-
-  @Get('exams')
-  async readExams(): Promise<string[]> {
-    return await this.profileServce.readExams();
-  }
-
-  @Get('achievements')
-  async readAchievements(): Promise<string[]> {
-    return await this.profileServce.readAchievements();
-  }
-
-  // @Put('direction')
-  // @UseGuards(AuthGuard)
-  // async uploadDirection() {}
 }

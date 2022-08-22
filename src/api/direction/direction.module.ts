@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { DirectionService } from '@app/direction/direction.service';
-import { DirectionController } from '@app/direction/direction.controller';
+import { DirectionService } from '@app/api/direction/direction.service';
+import { DirectionController } from '@app/api/direction/direction.controller';
 
 @Module({
   providers: [DirectionService],

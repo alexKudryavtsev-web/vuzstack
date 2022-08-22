@@ -28,15 +28,16 @@ export class EmailProcessor {
       }
     });
 
-    const handlebarOptions = {
-      viewEngine: {
-        partialsDir: path.join(__dirname, '..', '..', 'views', 'emails'),
-        defaultLayout: false,
-      },
-      viewPath: path.join(__dirname, '..', '..', 'views', 'emails'),
-    };
-
-    this.transporter.use('compile', hbs(handlebarOptions));
+    this.transporter.use(
+      'compile',
+      hbs({
+        viewEngine: {
+          partialsDir: path.join(__dirname, '..', '..', 'views', 'emails'),
+          defaultLayout: false,
+        },
+        viewPath: path.join(__dirname, '..', '..', 'views', 'emails'),
+      }),
+    );
   }
 
   @Process('activation-email')

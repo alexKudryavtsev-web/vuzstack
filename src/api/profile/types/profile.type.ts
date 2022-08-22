@@ -1,4 +1,4 @@
-import { UserEntity } from '@app/user/user.entity';
+import { UserEntity } from '@app/api/user/user.entity';
 
 export type ProfileType = Omit<
   UserEntity,

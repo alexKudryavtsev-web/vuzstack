@@ -9,7 +9,7 @@ export enum ImageType {
 }
 
 @Injectable()
-export class ImageService {
+export class CloudinaryService {
   constructor() {
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_NAME,

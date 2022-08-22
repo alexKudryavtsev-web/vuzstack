@@ -9,7 +9,7 @@ import { UserEntity } from './user.entity';
 import { v4 as uuid } from 'uuid';
 import { hash } from 'bcryptjs';
 import { UpdateUserDto } from './dto/updateUserDto';
-import { SessionEntity } from '@app/session/session.entity';
+import { SessionEntity } from '@app/api/session/session.entity';
 import { sign, verify } from 'jsonwebtoken';
 import { UpdatePasswordDto } from './dto/updatePassword.dto';
 

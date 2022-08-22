@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MarkController } from '@app/mark/mark.controller';
+import { MarkController } from '@app/api/mark/mark.controller';
 import { MarkService } from './mark.service';
 
 @Module({
