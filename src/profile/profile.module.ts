@@ -1,4 +1,4 @@
-import { ImageService } from '@app/image/image.service';
+import { ImageService } from '@app/cloudinary/image.service';
 import { UserEntity } from '@app/user/user.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

@@ -11,10 +11,23 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export enum UserStatusEnum {
+  PASSWORD_UPLOAD = 'PASSWORD_UPLOAD',
+  EXAMS_UPLOAD = 'EXAMS_UPLOAD',
+  DIRECTION_UPLOAD = 'DIRECTION_UPLOAD',
+}
+
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({
+    type: 'enum',
+    enum: UserStatusEnum,
+    default: UserStatusEnum.PASSWORD_UPLOAD,
+  })
+  status: string;
 
   @Column({ unique: true })
   email: string;

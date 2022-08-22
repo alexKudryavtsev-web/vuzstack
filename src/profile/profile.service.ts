@@ -1,4 +1,4 @@
-import { ImageService, ImageType } from '@app/image/image.service';
+import { ImageService, ImageType } from '@app/cloudinary/image.service';
 import { UpdateUserDto } from '@app/user/dto/updateUserDto';
 import { UserEntity } from '@app/user/user.entity';
 import { Injectable } from '@nestjs/common';

@@ -7,10 +7,12 @@ import { ConfigModule } from '@nestjs/config';
 import { SessionModule } from './session/session.module';
 import { AuthMiddleware } from './user/middlewares/auth.middleware';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ImageModule } from './image/image.module';
+import { ImageModule } from './cloudinary/image.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ProfileModule } from './profile/profile.module';
+import { DirectionModule } from './direction/direction.module';
+import { MarkModule } from './mark/mark.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { ProfileModule } from './profile/profile.module';
     SessionModule,
     ImageModule,
     ProfileModule,
+    DirectionModule,
+    MarkModule,
   ],
   controllers: [],
   providers: [],

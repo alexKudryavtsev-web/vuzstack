@@ -1,4 +1,4 @@
-import { ImageService } from '@app/image/image.service';
+import { ImageService } from '@app/cloudinary/image.service';
 import { User } from '@app/user/decorators/user.decorator';
 import { UpdateUserDto } from '@app/user/dto/updateUserDto';
 import { AuthGuard } from '@app/user/guards/auth.guard';

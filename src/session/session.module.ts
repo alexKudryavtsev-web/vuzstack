@@ -1,4 +1,4 @@
-import { ImageService } from '@app/image/image.service';
+import { ImageService } from '@app/cloudinary/image.service';
 import { MarkEntity } from '@app/profile/mark.entity';
 import { ProfileService } from '@app/profile/profile.service';
 import { UserEntity } from '@app/user/user.entity';
