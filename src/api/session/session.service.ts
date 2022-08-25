@@ -41,6 +41,7 @@ export class SessionService {
           'activationLink',
           'agree',
           'acceptedWithCookie',
+          'status',
         ],
       },
     );

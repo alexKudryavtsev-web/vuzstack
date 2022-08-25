@@ -134,6 +134,7 @@ export class UserService {
           'activationLink',
           'agree',
           'acceptedWithCookie',
+          'status',
         ],
       },
     );

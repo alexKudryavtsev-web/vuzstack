@@ -3,12 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ExamEntity } from '../exam/exam.entity';
 
 export enum UserStatusEnum {
   PASSWORD_UPLOAD = 'PASSWORD_UPLOAD',
@@ -63,4 +62,7 @@ export class UserEntity {
 
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions: SessionEntity[];
+
+  @OneToMany(() => ExamEntity, (exam) => exam.user)
+  exams: ExamEntity[];
 }

@@ -1,12 +1,22 @@
 import React from 'react';
-import Avatar from 'react-avatar';
 import { useSelector } from 'react-redux';
 import UploadPassport from '../components/UploadPassport';
 import CookieBanner from '../components/CookieBanner';
 import { getUser } from '../store/selectors';
+import ProfileHeader from '../components/ProfileHeader';
 
 export default function Profile() {
   const user = useSelector(getUser);
+
+  let content;
+
+  switch (user.status) {
+    case 'PASSWORD_UPLOAD':
+      content = <UploadPassport />;
+      break;
+    default:
+      content = <div></div>;
+  }
 
   return (
     <>
@@ -47,75 +57,9 @@ export default function Profile() {
         <section className="relative py-16 bg-gray-300">
           <div className="container mx-auto px-4">
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
-              <div className="px-6 mt-5">
-                <div className="flex flex-wrap justify-center">
-                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                    <div className="relative">
-                      {user.avatar === null ? (
-                        <Avatar
-                          name={`${user.firstName} ${user.lastName}`}
-                          round={true}
-                          size={150}
-                        />
-                      ) : (
-                        <Avatar src={user.avatar} round={true} size={150} />
-                      )}
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-1 lg:self-center">
-                    <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                          {user.isVerified ? 'да' : 'нет'}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          Паспорт загружен
-                        </span>
-                      </div>
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                          да
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          ЕГЭ и ИД загружены
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                    <div className="flex justify-center py-4 lg:pt-4 pt-8">
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                          нет
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          Выбрана "Мечта" и "Запас"
-                        </span>
-                      </div>
-                      <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                          0/7
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          Направлений выбрано
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center mt-12">
-                  <h3 className="text-4xl font-semibold leading-normal text-gray-800 mb-2">
-                    {user.firstName} {user.lastName}
-                  </h3>
-                </div>
-                {user.isVerified || <UploadPassport />}
-                <div className="mt-10 py-10 border-t border-gray-300 text-center">
-                  <div className="flex flex-wrap justify-center">
-                    <div className="w-full lg:w-9/12 px-4">
-                      <p className="mb-4 text-lg leading-relaxed text-gray-800"></p>
-                    </div>
-                  </div>
-                </div>
+              <div className="px-6 mt-10 mb-10">
+                <ProfileHeader />
+                {content}
               </div>
             </div>
           </div>

@@ -14,15 +14,16 @@ export default function UploadPassport() {
   }
 
   function handleFileSelect(event) {
+    console.log('here')
     setPassport(event.target.files[0]);
   }
 
   return (
-    <div className="mt-10 py-10 border-t border-gray-300 text-center">
+    <div className="py-10 border-t border-gray-300 text-center">
       <div className="flex flex-wrap justify-center">
         <div className="w-full lg:w-9/12 px-4">
           <p className="mb-4 text-lg leading-relaxed text-gray-800">
-            Необходимо указать свой паспорт (это тест - грузите любую картинку)
+            Необходимо указать свой паспорт:
           </p>
         </div>
       </div>
@@ -32,7 +33,7 @@ export default function UploadPassport() {
             <div className="flex justify-center items-center w-full">
               <label
                 htmlFor="dropzone-file"
-                className="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                className="flex flex-col justify-center items-center h-64 w-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
               >
                 <div className="flex flex-col justify-center items-center pt-5 pb-6 m-2">
                   <svg
