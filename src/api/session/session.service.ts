@@ -43,6 +43,7 @@ export class SessionService {
           'acceptedWithCookie',
           'status',
         ],
+        relations: ['directions', 'marks'],
       },
     );
 

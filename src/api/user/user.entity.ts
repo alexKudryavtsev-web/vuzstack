@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { DirectionEntity } from '../direction/direction.entity';
-import { ExamEntity } from '../exam/exam.entity';
+import { MarkEntity } from '../mark/mark.entity';
 
 export enum UserStatusEnum {
   PASSWORD_UPLOAD = 'PASSWORD_UPLOAD',
@@ -66,8 +66,8 @@ export class UserEntity {
   @OneToMany(() => SessionEntity, (session) => session.user)
   sessions: SessionEntity[];
 
-  @OneToMany(() => ExamEntity, (exam) => exam.user)
-  exams: ExamEntity[];
+  @OneToMany(() => MarkEntity, (mark) => mark.user)
+  marks: MarkEntity[];
 
   @Column({ type: 'simple-array' })
   priority: number[];

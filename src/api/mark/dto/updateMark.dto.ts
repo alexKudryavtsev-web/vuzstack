@@ -1,6 +1,6 @@
 import { IsInt, IsNumber, Max, Min } from 'class-validator';
 
-export class UpdateExamDto {
+export class UpdateMarkDto {
   @IsNumber()
   id: number;
 

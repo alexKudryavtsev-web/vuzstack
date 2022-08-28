@@ -55,7 +55,7 @@ export class DirectionService {
       relations: ['exams'],
     });
 
-    const exams = user.exams.map((exam) => exam.exam);
+    const exams = user.marks.map((exam) => exam.exam);
 
     const queryBuilder = getRepository(DirectionEntity)
       .createQueryBuilder('directions')

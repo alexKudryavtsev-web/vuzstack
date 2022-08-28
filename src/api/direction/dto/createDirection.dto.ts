@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsString } from 'class-validator';
-import { ExamEnum } from '@app/api/exam/exam.entity';
+import { ExamEnum } from '@app/api/mark/mark.entity';
 
 export class CreateDirectionDto {
   @IsString()

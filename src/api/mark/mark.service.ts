@@ -2,38 +2,38 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
-import { CreateExamDto } from './dto/createExam.dto';
-import { UpdateExamDto } from './dto/updateExam.dto';
-import { ExamEntity } from './exam.entity';
-import { ExamResponseInterface } from './types/examResponse.interface';
+import { CreateMarkDto } from './dto/createMark.dto';
+import { UpdateMarkDto } from './dto/updateMark.dto';
+import { MarkEntity } from './mark.entity';
+import { MarkResponseInterface } from './types/markResponse.interface';
 
 @Injectable()
-export class ExamService {
+export class MarkService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(ExamEntity)
-    private readonly examRepository: Repository<ExamEntity>,
+    @InjectRepository(MarkEntity)
+    private readonly examRepository: Repository<MarkEntity>,
   ) {}
 
   async createExam(
     currentUserId: number,
-    createExamDto: CreateExamDto,
-  ): Promise<ExamResponseInterface> {
+    createExamDto: CreateMarkDto,
+  ): Promise<MarkResponseInterface> {
     const user = await this.userRepository.findOne(currentUserId, {
-      relations: ['exams'],
+      relations: ['marks'],
     });
 
-    if (user.exams.find((element) => createExamDto.exam === element.exam)) {
+    if (user.marks.find((element) => createExamDto.exam === element.exam)) {
       throw new HttpException('Экзамен уже загружен', HttpStatus.BAD_REQUEST);
     }
 
-    const exam = new ExamEntity();
+    const exam = new MarkEntity();
 
     Object.assign(exam, createExamDto);
     await this.examRepository.save(exam);
 
-    user.exams.push(exam);
+    user.marks.push(exam);
 
     await this.userRepository.save(user);
 
@@ -41,8 +41,8 @@ export class ExamService {
   }
 
   async updateExam(
-    updateExamDto: UpdateExamDto,
-  ): Promise<ExamResponseInterface> {
+    updateExamDto: UpdateMarkDto,
+  ): Promise<MarkResponseInterface> {
     const exam = await this.examRepository.findOne(updateExamDto.id);
 
     Object.assign(exam, updateExamDto);

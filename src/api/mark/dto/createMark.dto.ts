@@ -1,7 +1,7 @@
 import { IsEnum, IsInt, Max, Min } from 'class-validator';
-import { ExamEnum } from '../exam.entity';
+import { ExamEnum } from '../mark.entity';
 
-export class CreateExamDto {
+export class CreateMarkDto {
   @IsEnum(ExamEnum)
   exam: ExamEnum;
 

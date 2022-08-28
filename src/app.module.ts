@@ -12,7 +12,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ProfileModule } from './api/profile/profile.module';
 import { DirectionModule } from './api/direction/direction.module';
-import { ExamModule } from './api/exam/exam.module';
+import { MarkModule } from './api/mark/mark.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './tasks/task.module';
 
@@ -44,7 +44,7 @@ import { TaskModule } from './tasks/task.module';
     CloudinaryModule,
     ProfileModule,
     DirectionModule,
-    ExamModule,
+    MarkModule,
     TaskModule,
   ],
   controllers: [],

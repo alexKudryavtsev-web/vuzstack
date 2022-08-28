@@ -18,7 +18,10 @@ export class ProfileService {
   ) {}
 
   async readProfile(userId: number): Promise<ProfileType> {
-    const user = await this.userRepository.findOne(userId);
+    const user = await this.userRepository.findOne(userId, {
+      relations: ['directions', 'exams'],
+    });
+
     const avatarUrl = await this.avatarService.getURL(userId);
 
     delete user.activationLink;
