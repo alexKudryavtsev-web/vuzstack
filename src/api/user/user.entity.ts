@@ -3,10 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { DirectionEntity } from '../direction/direction.entity';
 import { ExamEntity } from '../exam/exam.entity';
 
 export enum UserStatusEnum {
@@ -65,4 +68,11 @@ export class UserEntity {
 
   @OneToMany(() => ExamEntity, (exam) => exam.user)
   exams: ExamEntity[];
+
+  @Column({ type: 'simple-array' })
+  priority: number[];
+
+  @ManyToMany(() => DirectionEntity)
+  @JoinTable()
+  directions: DirectionEntity[];
 }

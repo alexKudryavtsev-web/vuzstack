@@ -34,10 +34,10 @@ import { TaskModule } from './tasks/task.module';
       rootPath: join(__dirname, '..', 'static'),
       serveRoot: '/static/',
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client', 'build'),
-      exclude: ['/api*'],
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'client', 'build'),
+    //   exclude: ['/api*'],
+    // }),
     ScheduleModule.forRoot(),
     UserModule,
     SessionModule,
