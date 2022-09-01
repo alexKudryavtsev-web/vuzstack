@@ -10,5 +10,6 @@ import { UserEntity } from '../user/user.entity';
   imports: [TypeOrmModule.forFeature([DirectionEntity, VuzEntity, UserEntity])],
   providers: [DirectionService],
   controllers: [DirectionController],
+  exports: [DirectionService],
 })
 export class DirectionModule {}

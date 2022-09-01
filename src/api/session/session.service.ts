@@ -42,8 +42,9 @@ export class SessionService {
           'agree',
           'acceptedWithCookie',
           'status',
+          'priority',
         ],
-        relations: ['directions', 'marks'],
+        relations: ['directions', 'directions.vuz', 'marks'],
       },
     );
 

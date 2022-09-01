@@ -1,5 +1,6 @@
 import { SessionEntity } from '@app/api/session/session.entity';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -70,7 +71,7 @@ export class UserEntity {
   marks: MarkEntity[];
 
   @Column({ type: 'simple-array' })
-  priority: number[];
+  priority: string[];
 
   @ManyToMany(() => DirectionEntity)
   @JoinTable()

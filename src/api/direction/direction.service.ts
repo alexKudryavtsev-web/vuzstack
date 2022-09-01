@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getRepository, Repository } from 'typeorm';
 import { DirectionEntity } from './direction.entity';
 import { VuzEntity } from './vuz.entity';
 import { CreateVuzDto } from './dto/createVuz.dto';
 import { CreateDirectionDto } from './dto/createDirection.dto';
-import { DirectionsResponseInterface } from './interfaces/directionsResponse.interface';
+import { DirectionsWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
 import { UserEntity } from '../user/user.entity';
+import { DirectionsResponseInterface } from './interfaces/directionResponse.interface';
+import { UpdatePriorityDto } from './dto/updatePriority.dto';
 
 @Injectable()
 export class DirectionService {
@@ -48,11 +50,11 @@ export class DirectionService {
   async readDirections(
     currentUserId: number,
     query: any,
-  ): Promise<DirectionsResponseInterface> {
+  ): Promise<DirectionsWithMetaResponseInterface> {
     const { limit = 10, offset = 0, city } = query;
 
     const user = await this.userRepository.findOne(currentUserId, {
-      relations: ['exams'],
+      relations: ['marks'],
     });
 
     const exams = user.marks.map((exam) => exam.exam);
@@ -69,15 +71,15 @@ export class DirectionService {
       });
     }
 
-    // TODO: add filters by exam
-    // for (const exam of exams) {
-    //   queryBuilder.orWhere('directions.requiredExams LIKE :exam', {
-    //     exam: `%${exam}%`,
-    //   });
-    //   queryBuilder.orWhere('directions.optionalExams LIKE :exam', {
-    //     exam: `%${exam}`,
-    //   });
-    // }
+    // TODO: v1
+    for (const exam of exams) {
+      queryBuilder.andWhere(
+        "concat_ws(',', directions.optionalExams, directions.requiredExams) LIKE :exam",
+        {
+          exam: `%${exam}%`,
+        },
+      );
+    }
 
     const filtred = await queryBuilder.getCount();
 
@@ -95,5 +97,112 @@ export class DirectionService {
         filtred,
       },
     };
+  }
+
+  async selectDirection(
+    userId: number,
+    directionId: number,
+  ): Promise<DirectionsResponseInterface> {
+    const user = await this.userRepository.findOne(userId, {
+      relations: ['directions'],
+    });
+
+    const direction = await this.directionRepository.findOne(directionId);
+
+    if (user.priority.length > Number(process.env.MAX_AMOUNT_DIRECTION)) {
+      throw new HttpException(
+        'Выбрано слишком много направлений',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (user.directions.find((current) => current.id === direction.id)) {
+      throw new HttpException(
+        'Направление уже выбрано',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    user.directions.push(direction);
+    user.priority.push(String(directionId));
+
+    await this.userRepository.save(user);
+
+    return {
+      directions: await this.prepareDirections(user.directions, user.priority),
+    };
+  }
+
+  async deselectDirection(
+    userId: number,
+    directionId: number,
+  ): Promise<DirectionsResponseInterface> {
+    const user = await this.userRepository.findOne(userId, {
+      relations: ['directions'],
+    });
+    const direction = await this.directionRepository.findOne(directionId);
+
+    const directionIndex = user.directions.findIndex(
+      (current) => current.id === direction.id,
+    );
+
+    if (directionIndex >= 0) {
+      user.directions.splice(directionIndex, 1);
+
+      const indexInPriorities = user.priority.indexOf(String(directionId));
+      user.priority.splice(indexInPriorities, 1);
+
+      await this.userRepository.save(user);
+      await this.directionRepository.save(direction);
+    }
+
+    return {
+      directions: await this.prepareDirections(user.directions, user.priority),
+    };
+  }
+
+  async updatePriority(
+    userId: number,
+    updatePriority: UpdatePriorityDto,
+  ): Promise<DirectionsResponseInterface> {
+    const user = await this.userRepository.findOne(userId, {
+      relations: ['directions'],
+    });
+
+    const indexInPriorities = user.priority.indexOf(
+      String(updatePriority.directionId),
+    );
+
+    user.priority = this._moveElementInArray(
+      user.priority,
+      indexInPriorities,
+      updatePriority.priority - 1,
+    );
+
+    await this.userRepository.save(user);
+
+    return {
+      directions: await this.prepareDirections(user.directions, user.priority),
+    };
+  }
+
+  _moveElementInArray(array: any[], oldIndex: number, newIndex: number) {
+    if (newIndex >= array.length) {
+      let k = newIndex - array.length + 1;
+      while (k--) {
+        array.push(undefined);
+      }
+    }
+    array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+    return array;
+  }
+
+  async prepareDirections(
+    directions: DirectionEntity[],
+    priority: string[],
+  ): Promise<DirectionEntity[]> {
+    return priority.map((current) =>
+      directions.find((direction) => direction.id === Number(current)),
+    );
   }
 }

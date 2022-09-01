@@ -18,7 +18,8 @@ import { CreateDirectionDto } from './dto/createDirection.dto';
 import { CreateVuzDto } from './dto/createVuz.dto';
 import { SelectDirectionDto } from './dto/selectDirection.dto';
 import { UpdatePriorityDto } from './dto/updatePriority.dto';
-import { DirectionsResponseInterface } from './interfaces/directionsResponse.interface';
+import { DirectionsResponseInterface } from './interfaces/directionResponse.interface';
+import { DirectionsWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
 
 @Controller()
 export class DirectionController {
@@ -41,7 +42,7 @@ export class DirectionController {
   async readDirection(
     @User('id') currentUserId: number,
     @Query() query: any,
-  ): Promise<DirectionsResponseInterface> {
+  ): Promise<DirectionsWithMetaResponseInterface> {
     return await this.directionService.readDirections(currentUserId, query);
   }
 
@@ -51,19 +52,35 @@ export class DirectionController {
   async selectDirection(
     @User('id') currentUserId: number,
     @Body() selectDirectionDto: SelectDirectionDto,
-  ) {}
+  ): Promise<DirectionsResponseInterface> {
+    return await this.directionService.selectDirection(
+      currentUserId,
+      selectDirectionDto.directionId,
+    );
+  }
 
   @Delete('direction/:directionId')
   @UseGuards(AuthGuard)
-  async deleteDirection(
+  async deselectDirection(
     @User('id') currentUserId: number,
     @Param('directionId') directionId: number,
-  ) {}
+  ): Promise<DirectionsResponseInterface> {
+    return await this.directionService.deselectDirection(
+      currentUserId,
+      directionId,
+    );
+  }
 
   @Patch('direction')
   @UseGuards(AuthGuard)
+  @UsePipes(new ValidationPipe())
   async updatePriority(
     @User('id') currentUserId: number,
     @Body() updatePriority: UpdatePriorityDto,
-  ) {}
+  ): Promise<DirectionsResponseInterface> {
+    return await this.directionService.updatePriority(
+      currentUserId,
+      updatePriority,
+    );
+  }
 }

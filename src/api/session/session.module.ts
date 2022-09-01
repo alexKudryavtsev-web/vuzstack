@@ -6,10 +6,25 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionController } from './session.controller';
 import { SessionEntity } from './session.entity';
 import { SessionService } from './session.service';
+import { DirectionService } from '../direction/direction.service';
+import { DirectionEntity } from '../direction/direction.entity';
+import { VuzEntity } from '../direction/vuz.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SessionEntity, UserEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      SessionEntity,
+      UserEntity,
+      DirectionEntity,
+      VuzEntity,
+    ]),
+  ],
   controllers: [SessionController],
-  providers: [SessionService, ProfileService, CloudinaryService],
+  providers: [
+    SessionService,
+    ProfileService,
+    CloudinaryService,
+    DirectionService,
+  ],
 })
 export class SessionModule {}
