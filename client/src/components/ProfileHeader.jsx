@@ -26,13 +26,13 @@ function ProfileHeader() {
           <div className="flex justify-center py-4 lg:pt-4 pt-8">
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                {user.isVerified ? 'да' : 'нет'}
+                {user.status === 'PASSWORD_UPLOAD' ? 'нет' : 'да'}
               </span>
               <span className="text-sm text-gray-500">Паспорт загружен</span>
             </div>
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                {user.marks ? 'да' : 'нет'}
+                {user.status === 'MARKS_UPLOAD' ? 'да' : 'нет'}
               </span>
               <span className="text-sm text-gray-500">ЕГЭ указано</span>
             </div>
@@ -42,7 +42,7 @@ function ProfileHeader() {
           <div className="flex justify-center py-4 lg:pt-4 pt-8">
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                нет
+                {user.directions.length >= 2 ? 'да' : 'нет'}
               </span>
               <span className="text-sm text-gray-500">
                 Выбрана "Мечта" и "Запас"
@@ -50,7 +50,7 @@ function ProfileHeader() {
             </div>
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                0/7
+                {user.directions.length}/7
               </span>
               <span className="text-sm text-gray-500">Направлений выбрано</span>
             </div>

@@ -1,9 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import UploadPassport from '../components/UploadPassport';
+import UploadMarks from '../components/UploadMarks';
+import UploadDirections from '../components/UploadDirections';
 import CookieBanner from '../components/CookieBanner';
 import { getUser } from '../store/selectors';
 import ProfileHeader from '../components/ProfileHeader';
+import Error404Page from './Error404Page';
 
 export default function Profile() {
   const user = useSelector(getUser);
@@ -14,8 +17,20 @@ export default function Profile() {
     case 'PASSWORD_UPLOAD':
       content = <UploadPassport />;
       break;
+    case 'MARKS_UPLOAD':
+      content = <UploadMarks />;
+      break;
+    case 'DIRECTIONS_UPLOAD':
+      content = <UploadDirections />;
+      break;
+    case 'AWAITING_RESULT':
+      content = null;
+      break;
+    case 'GET_RESULT':
+      content = null;
+      break;
     default:
-      content = <div></div>;
+      content = <Error404Page />;
   }
 
   return (

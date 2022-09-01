@@ -1,6 +1,5 @@
 import { SessionEntity } from '@app/api/session/session.entity';
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -15,8 +14,10 @@ import { MarkEntity } from '../mark/mark.entity';
 
 export enum UserStatusEnum {
   PASSWORD_UPLOAD = 'PASSWORD_UPLOAD',
-  EXAMS_UPLOAD = 'EXAMS_UPLOAD',
-  DIRECTION_UPLOAD = 'DIRECTION_UPLOAD',
+  MARKS_UPLOAD = 'MARKS_UPLOAD',
+  DIRECTIONS_UPLOAD = 'DIRECTIONS_UPLOAD',
+  AWAITING_RESULT = 'AWAITING_RESULT',
+  GET_RESULT = 'GET_RESULT',
 }
 
 @Entity({ name: 'users' })
