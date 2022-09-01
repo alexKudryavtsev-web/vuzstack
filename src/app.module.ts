@@ -15,7 +15,6 @@ import { DirectionModule } from './api/direction/direction.module';
 import { MarkModule } from './api/mark/mark.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './tasks/task.module';
-import { UnisenderModule } from './unisender/unisender.module';
 
 @Module({
   imports: [
@@ -43,7 +42,6 @@ import { UnisenderModule } from './unisender/unisender.module';
     UserModule,
     SessionModule,
     CloudinaryModule,
-    UnisenderModule,
     ProfileModule,
     DirectionModule,
     MarkModule,
