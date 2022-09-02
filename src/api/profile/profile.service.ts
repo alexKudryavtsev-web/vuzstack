@@ -3,7 +3,7 @@ import {
   ImageType,
 } from '@app/cloudinary/cloudinary.service';
 import { UpdateUserDto } from '@app/api/user/dto/updateUserDto';
-import { UserEntity } from '@app/api/user/user.entity';
+import { UserEntity, UserStatusEnum } from '@app/api/user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -21,7 +21,7 @@ export class ProfileService {
 
   async readProfile(userId: number): Promise<ProfileType> {
     const user = await this.userRepository.findOne(userId, {
-      relations: ['directions', 'exams'],
+      relations: ['directions', 'marks'],
     });
 
     const avatarUrl = await this.avatarService.getURL(userId);
@@ -33,11 +33,18 @@ export class ProfileService {
 
     return {
       ...user,
+      directions: await this.directionService.prepareDirections(
+        user.directions,
+        user.priority,
+      ),
       avatar: avatarUrl,
     };
   }
 
-  async uploadPassport(currentUserId: number, passport: Express.Multer.File) {
+  async uploadPassport(
+    currentUserId: number,
+    passport: Express.Multer.File,
+  ): Promise<ProfileType> {
     const user = await this.userRepository.findOne(currentUserId);
     await this.avatarService.uploadFile(
       currentUserId,
@@ -46,8 +53,11 @@ export class ProfileService {
     );
 
     user.isVerified = true;
+    user.status = UserStatusEnum.MARKS_UPLOAD;
 
     await this.userRepository.save(user);
+
+    return await this.buildProfileFromUserId(currentUserId);
   }
 
   async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
@@ -69,6 +79,27 @@ export class ProfileService {
   }
 
   async buildProfileFromUserEntity(user: UserEntity): Promise<ProfileType> {
+    const avatarUrl = await this.avatarService.getURL(user.id);
+
+    delete user.activationLink;
+    delete user.agree;
+    delete user.isActivated;
+    delete user.updatedAt;
+
+    return {
+      ...user,
+      directions: await this.directionService.prepareDirections(
+        user.directions,
+        user.priority,
+      ),
+      avatar: avatarUrl,
+    };
+  }
+
+  async buildProfileFromUserId(userId: number): Promise<ProfileType> {
+    const user = await this.userRepository.findOne(userId, {
+      relations: ['marks', 'directions', 'directions.vuz'],
+    });
     const avatarUrl = await this.avatarService.getURL(user.id);
 
     delete user.activationLink;

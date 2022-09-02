@@ -74,7 +74,7 @@ export default function Navbar(props) {
                       ' far fa-file-alt text-lg leading-lg mr-2'
                     }
                   />{' '}
-                  о проекте
+                  о сервисе
                 </a>
               </li>
             </ul>

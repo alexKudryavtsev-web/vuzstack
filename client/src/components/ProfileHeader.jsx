@@ -32,7 +32,7 @@ function ProfileHeader() {
             </div>
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                {user.status === 'MARKS_UPLOAD' ? 'да' : 'нет'}
+                {user.status === 'MARKS_UPLOAD' ? 'нет' : 'да'}
               </span>
               <span className="text-sm text-gray-500">ЕГЭ указано</span>
             </div>
@@ -57,8 +57,8 @@ function ProfileHeader() {
           </div>
         </div>
       </div>
-      <div className="text-center mt-12">
-        <h3 className="text-4xl font-semibold leading-normal text-gray-800 mb-2">
+      <div className="text-center mt-5 mb-5">
+        <h3 className="text-3xl font-semibold leading-normal text-gray-800 mb-2">
           {user.firstName} {user.lastName}
         </h3>
       </div>

@@ -6,6 +6,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Patch,
   Post,
   UploadedFile,
@@ -63,7 +65,10 @@ export class ProfileController {
   async uploadPassport(
     @User('id') currentUserId: number,
     @UploadedFile() passport: Express.Multer.File,
-  ) {
-    await this.profileServce.uploadPassport(currentUserId, passport);
+  ): Promise<ProfileType> {
+    if (!passport) {
+      throw new HttpException('Паспорт не загружен', HttpStatus.BAD_REQUEST);
+    }
+    return await this.profileServce.uploadPassport(currentUserId, passport);
   }
 }

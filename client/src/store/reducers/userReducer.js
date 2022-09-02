@@ -62,7 +62,7 @@ const userSlice = createSlice({
     });
 
     builder.addCase(uploadPassport.fulfilled, (state, action) => {
-      state.user.isVerified = true;
+      state.user = action.payload;
     });
 
     builder.addCase(acceptWithCookie.fulfilled, (state, action) => {
