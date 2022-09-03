@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Patch,
   Post,
   UseGuards,
@@ -11,29 +12,36 @@ import { User } from '../user/decorators/user.decorator';
 import { AuthGuard } from '../user/guards/auth.guard';
 import { CreateMarkDto } from './dto/createMark.dto';
 import { UpdateMarkDto } from './dto/updateMark.dto';
+import { ExamEnum } from './mark.entity';
 import { MarkService } from './mark.service';
 import { MarkResponseInterface } from './types/markResponse.interface';
 
-@Controller('exam')
+@Controller('mark')
 export class MarkController {
-  constructor(private readonly examService: MarkService) {}
+  constructor(private readonly markService: MarkService) {}
 
   @Post()
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
-  async createExam(
+  async createMark(
     @User('id') currentUserId: number,
     @Body() createExamDto: CreateMarkDto,
   ): Promise<MarkResponseInterface> {
-    return this.examService.createExam(currentUserId, createExamDto);
+    return this.markService.createMark(currentUserId, createExamDto);
   }
 
   @Patch()
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
-  async updateExam(
-    @Body() updateExamDto: UpdateMarkDto,
+  async updateMark(
+    @User('id') userId: number,
+    @Body() updateMarkDto: UpdateMarkDto,
   ): Promise<MarkResponseInterface> {
-    return await this.examService.updateExam(updateExamDto);
+    return await this.markService.updateMark(userId, updateMarkDto);
+  }
+
+  @Get()
+  async readExamsList(): Promise<ExamEnum[]> {
+    return Object.values(ExamEnum);
   }
 }

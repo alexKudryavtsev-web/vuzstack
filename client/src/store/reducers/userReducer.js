@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
+import MarkService from '../../services/MarkService';
 import ProfileService from '../../services/ProfileService';
 
 const userFromLocalStorate = JSON.parse(localStorage.getItem('user'));
@@ -37,39 +38,70 @@ const acceptWithCookie = createAsyncThunk(
   },
 );
 
+const uploadMarks = createAsyncThunk(
+  'user/marks',
+  async (payload, thunkApi) => {
+    const { data } = await ProfileService.uploadMarks();
+    return data;
+  },
+);
+
+const createMark = createAsyncThunk(
+  'mark/create',
+  async (payload, thunkApi) => {
+    const { data } = await MarkService.createMark(payload.exam, payload.result);
+
+    return data;
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.isAuth = true;
-      state.user = action.payload.user;
+    builder
+      .addCase(login.fulfilled, (state, action) => {
+        state.isAuth = true;
+        state.user = action.payload.user;
 
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
-      localStorage.setItem('token', action.payload.accessToken);
-      state.isFailed = false;
-    });
+        localStorage.setItem('user', JSON.stringify(action.payload.user));
+        localStorage.setItem('token', action.payload.accessToken);
+        state.isFailed = false;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isFailed = true;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isAuth = false;
+        state.user = {};
+        state.isFailed = null;
+      });
 
-    builder.addCase(logout.fulfilled, (state, action) => {
-      state.isAuth = false;
-      state.user = {};
-      state.isFailed = null;
-    });
-
-    builder.addCase(login.rejected, (state, action) => {
-      state.isFailed = true;
-    });
-
-    builder.addCase(uploadPassport.fulfilled, (state, action) => {
-      state.user = action.payload;
-    });
+    builder
+      .addCase(uploadPassport.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(uploadMarks.fulfilled, (state, action) => {
+        state.user = action.payload;
+      });
 
     builder.addCase(acceptWithCookie.fulfilled, (state, action) => {
       state.user.acceptedWithCookie = true;
+    });
+
+    builder.addCase(createMark.fulfilled, (state, action) => {
+      state.user.marks = action.payload.marks;
     });
   },
 });
 
 export default userSlice.reducer;
-export { login, logout, uploadPassport, acceptWithCookie };
+export {
+  login,
+  logout,
+  uploadPassport,
+  uploadMarks,
+  createMark,
+  acceptWithCookie,
+};

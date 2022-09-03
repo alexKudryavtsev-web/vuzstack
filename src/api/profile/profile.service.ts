@@ -57,7 +57,17 @@ export class ProfileService {
 
     await this.userRepository.save(user);
 
-    return await this.buildProfileFromUserId(currentUserId);
+    return await this.buildProfile(currentUserId);
+  }
+
+  async uploadMarks(userId: number): Promise<ProfileType> {
+    const user = await this.userRepository.findOne(userId);
+
+    user.status = UserStatusEnum.DIRECTIONS_UPLOAD;
+
+    await this.userRepository.save(user);
+
+    return await this.buildProfile(userId);
   }
 
   async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
@@ -65,9 +75,9 @@ export class ProfileService {
 
     Object.assign(user, updateUserDto);
 
-    const res = await this.userRepository.save(user);
+    await this.userRepository.save(user);
 
-    return await this.buildProfileFromUserEntity(res);
+    return await this.buildProfile(currentUserId);
   }
 
   async acceptWithCookie(currentUserId: number): Promise<void> {
@@ -78,25 +88,7 @@ export class ProfileService {
     await this.userRepository.save(user);
   }
 
-  async buildProfileFromUserEntity(user: UserEntity): Promise<ProfileType> {
-    const avatarUrl = await this.avatarService.getURL(user.id);
-
-    delete user.activationLink;
-    delete user.agree;
-    delete user.isActivated;
-    delete user.updatedAt;
-
-    return {
-      ...user,
-      directions: await this.directionService.prepareDirections(
-        user.directions,
-        user.priority,
-      ),
-      avatar: avatarUrl,
-    };
-  }
-
-  async buildProfileFromUserId(userId: number): Promise<ProfileType> {
+  async buildProfile(userId: number): Promise<ProfileType> {
     const user = await this.userRepository.findOne(userId, {
       relations: ['marks', 'directions', 'directions.vuz'],
     });

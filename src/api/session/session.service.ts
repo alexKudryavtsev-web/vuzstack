@@ -28,23 +28,7 @@ export class SessionService {
         email: createSessionDto.email,
       },
       {
-        select: [
-          'id',
-          'email',
-          'firstName',
-          'lastName',
-          'password',
-          'isActivated',
-          'isVerified',
-          'createdAt',
-          'updatedAt',
-          'activationLink',
-          'agree',
-          'acceptedWithCookie',
-          'status',
-          'priority',
-        ],
-        relations: ['directions', 'directions.vuz', 'marks'],
+        select: ['id', 'email', 'password', 'isActivated'],
       },
     );
 
@@ -82,7 +66,7 @@ export class SessionService {
       delete user.password;
 
       return {
-        user: await this.profileService.buildProfileFromUserEntity(user),
+        user: await this.profileService.buildProfile(user.id),
         ...tokens,
       };
     }
@@ -98,7 +82,7 @@ export class SessionService {
     delete user.password;
 
     return {
-      user: await this.profileService.buildProfileFromUserEntity(user),
+      user: await this.profileService.buildProfile(user.id),
       ...tokens,
     };
   }
@@ -124,7 +108,7 @@ export class SessionService {
     await this.sessionRepository.save(session);
 
     return {
-      user: await this.profileService.buildProfileFromUserEntity(session.user),
+      user: await this.profileService.buildProfile(session.user.id),
       ...newTokens,
     };
   }

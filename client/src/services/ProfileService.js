@@ -10,7 +10,11 @@ class ProfileService {
   }
 
   static async acceptWithCookie() {
-    return $api.post('profile/accept-with-cookie')
+    return $api.post('profile/accept-with-cookie');
+  }
+
+  static async uploadMarks() {
+    return $api.post('profile/marks');
   }
 }
 

@@ -13,3 +13,11 @@ export function getUser(state) {
 export function getAcceptedWithCookie(state) {
   return state?.user?.user.acceptedWithCookie || false;
 }
+
+export function getDirections(state) {
+  return state?.user?.user.directions || [];
+}
+
+export function getMarks(state) {
+  return state?.user?.user.marks || [];
+}

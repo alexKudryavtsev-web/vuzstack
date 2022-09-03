@@ -1,7 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useFormik } from 'formik';
+import MarkService from '../services/MarkService';
+import translateExamName from '../utils/translateExamName';
+import { store } from '../store';
+import { createMark } from '../store/reducers/userReducer';
 
 function CreateMarkModal() {
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [examsList, setExamsList] = useState([]);
+
+  const fetchExams = useCallback(async () => {
+    const response = await MarkService.readExamsList();
+    setExamsList(await response.json());
+  }, []);
+
+  useEffect(() => {
+    fetchExams();
+  }, [fetchExams]);
+
+  const formik = useFormik({
+    initialValues: {
+      exam: '',
+      result: 0,
+    },
+    onSubmit: (value) => {
+      store.dispatch(createMark(value));
+      formik.resetForm();
+    },
+  });
 
   return (
     <>
@@ -32,35 +58,42 @@ function CreateMarkModal() {
                   <div className="mb-4">
                     <label
                       className="block text-grey-darker text-sm font-bold mb-2"
-                      htmlFor="username"
+                      htmlFor="exam"
                     >
                       предмет
                     </label>
                     <select
-                      id="countries"
+                      id="exam"
+                      name="exam"
+                      value={formik.exam}
+                      onChange={formik.handleChange}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option>предмет</option>
-                      <option defaultValue="US">United States</option>
-                      <option defaultValue="CA">Canada</option>
-                      <option defaultValue="FR">France</option>
-                      <option defaultValue="DE">Germany</option>
+                      {examsList.map((exam) => (
+                        <option value={exam} key={exam}>
+                          {translateExamName(exam)}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="mb-2">
                     <label
                       className="block text-grey-darker text-sm font-bold"
-                      htmlFor="password"
+                      htmlFor="result"
                     >
                       балл
                     </label>
                     <input
                       className="appearance-none border border-red w-full text-grey-darker mb-3 rounded-md  border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-                      id="password"
+                      id="result"
+                      name="result"
                       type="number"
                       placeholder="балл"
                       min={1}
                       max={100}
+                      value={formik.result}
+                      onChange={formik.handleChange}
                     />
                   </div>
                 </div>
@@ -68,7 +101,10 @@ function CreateMarkModal() {
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={(event) => {
+                      setShowModal(false);
+                      formik.handleSubmit(event);
+                    }}
                   >
                     Ок
                   </button>

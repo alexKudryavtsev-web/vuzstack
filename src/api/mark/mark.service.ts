@@ -13,10 +13,10 @@ export class MarkService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(MarkEntity)
-    private readonly examRepository: Repository<MarkEntity>,
+    private readonly markRepository: Repository<MarkEntity>,
   ) {}
 
-  async createExam(
+  async createMark(
     currentUserId: number,
     createExamDto: CreateMarkDto,
   ): Promise<MarkResponseInterface> {
@@ -31,23 +31,30 @@ export class MarkService {
     const exam = new MarkEntity();
 
     Object.assign(exam, createExamDto);
-    await this.examRepository.save(exam);
+    await this.markRepository.save(exam);
 
     user.marks.push(exam);
 
     await this.userRepository.save(user);
 
-    return { exam };
+    return {
+      marks: user.marks,
+    };
   }
 
-  async updateExam(
-    updateExamDto: UpdateMarkDto,
+  async updateMark(
+    userId: number,
+    updateMarkDto: UpdateMarkDto,
   ): Promise<MarkResponseInterface> {
-    const exam = await this.examRepository.findOne(updateExamDto.id);
+    const mark = await this.markRepository.findOne(updateMarkDto.id);
 
-    Object.assign(exam, updateExamDto);
-    await this.examRepository.save(exam);
+    Object.assign(mark, updateMarkDto);
+    await this.markRepository.save(mark);
 
-    return { exam };
+    const user = await this.userRepository.findOne(userId, {
+      relations: ['marks'],
+    });
+
+    return { marks: user.marks };
   }
 }
