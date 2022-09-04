@@ -16,6 +16,10 @@ class ProfileService {
   static async uploadMarks() {
     return $api.post('profile/marks');
   }
+
+  static async uploadDirections() {
+    return $api.post('profile/directions');
+  }
 }
 
 export default ProfileService;

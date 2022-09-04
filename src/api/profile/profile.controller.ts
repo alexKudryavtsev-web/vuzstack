@@ -77,4 +77,12 @@ export class ProfileController {
   async uploadMarks(@User('id') currentUserId: number): Promise<ProfileType> {
     return await this.profileServce.uploadMarks(currentUserId);
   }
+
+  @Post('directions')
+  @UseGuards(AuthGuard)
+  async uploadDirections(
+    @User('id') currentUserId: number,
+  ): Promise<ProfileType> {
+    return await this.profileServce.uploadDirections(currentUserId);
+  }
 }

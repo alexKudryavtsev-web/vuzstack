@@ -46,6 +46,14 @@ const uploadMarks = createAsyncThunk(
   },
 );
 
+const uploadDirections = createAsyncThunk(
+  'user/directions',
+  async (payload, thunkApi) => {
+    const { data } = await ProfileService.uploadDirections();
+    return data;
+  },
+);
+
 const createMark = createAsyncThunk(
   'mark/create',
   async (payload, thunkApi) => {
@@ -84,6 +92,9 @@ const userSlice = createSlice({
       })
       .addCase(uploadMarks.fulfilled, (state, action) => {
         state.user = action.payload;
+      })
+      .addCase(uploadDirections.fulfilled, (state, action) => {
+        state.user = action.payload;
       });
 
     builder.addCase(acceptWithCookie.fulfilled, (state, action) => {
@@ -102,6 +113,7 @@ export {
   logout,
   uploadPassport,
   uploadMarks,
+  uploadDirections,
   createMark,
   acceptWithCookie,
 };

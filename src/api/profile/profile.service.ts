@@ -70,6 +70,16 @@ export class ProfileService {
     return await this.buildProfile(userId);
   }
 
+  async uploadDirections(userId: number): Promise<ProfileType> {
+    const user = await this.userRepository.findOne(userId);
+
+    user.status = UserStatusEnum.AWAITING_RESULT;
+
+    await this.userRepository.save(user);
+
+    return await this.buildProfile(userId);
+  }
+
   async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.findOne(currentUserId);
 
