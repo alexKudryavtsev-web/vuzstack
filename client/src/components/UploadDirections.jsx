@@ -1,4 +1,5 @@
 import React from 'react';
+import DirectionsList from './directions/DirectionsList';
 
 function UploadDirections() {
   return (
@@ -78,6 +79,7 @@ function UploadDirections() {
           </div>
         </div>
       </form>
+      <DirectionsList />
     </div>
   );
 }
