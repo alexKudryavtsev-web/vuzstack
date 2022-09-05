@@ -9,9 +9,7 @@ export class AddRelationsBetweenUserAndDirections1661507669532
     await queryRunner.query(
       `CREATE TABLE \`users_directions_directions\` (\`usersId\` int NOT NULL, \`directionsId\` int NOT NULL, INDEX \`IDX_6441f1694c8780caa5b5d862f9\` (\`usersId\`), INDEX \`IDX_837792fa5651877d781add2566\` (\`directionsId\`), PRIMARY KEY (\`usersId\`, \`directionsId\`)) ENGINE=InnoDB`,
     );
-    await queryRunner.query(
-      `ALTER TABLE \`users\` ADD \`priority\` text NOT NULL`,
-    );
+    await queryRunner.query(`ALTER TABLE \`users\` ADD \`priority\` text`);
     await queryRunner.query(
       `ALTER TABLE \`users_directions_directions\` ADD CONSTRAINT \`FK_6441f1694c8780caa5b5d862f90\` FOREIGN KEY (\`usersId\`) REFERENCES \`users\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`,
     );

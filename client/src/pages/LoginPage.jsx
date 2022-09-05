@@ -99,7 +99,6 @@ export default function LoginPage() {
                   <div className="w-1/2 text-right z-50">
                     <NavLink
                       to="/create-account"
-                      onClick={(e) => console.log('clicke')}
                       className="text-white"
                     >
                       <small>Зарегистрироваться</small>

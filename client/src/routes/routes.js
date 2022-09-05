@@ -4,11 +4,15 @@ import ForgotPasswordPage from '../pages/ForgotPasswordPage.jsx';
 import SetNewPasswordPage from '../pages/SetNewPasswordPage.jsx';
 
 import Error404Page from '../pages/Error404Page.jsx';
+import ArticlePage from '../pages/ArticlePage';
 
 import ProfilePage from '../pages/ProfilePage.jsx';
 import ActivateUser from '../pages/ActivateUser.jsx';
 
-const COMMON_ROUTES = [{ path: '*', element: <Error404Page /> }];
+const COMMON_ROUTES = [
+  { path: 'article/:id', element: <ArticlePage /> },
+  { path: '*', element: <Error404Page /> },
+];
 
 const PUBLIC_ROUTES = [
   { path: '/', element: <LoginPage /> },

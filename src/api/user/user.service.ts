@@ -44,6 +44,9 @@ export class UserService {
     user.password = await hash(createUserDto.password, HASH_ROUNDS);
     user.activationLink = uuid();
 
+    // TODO: crutch
+    user.priority = [];
+
     await this.emailQueue.add('activation-email', {
       email: user.email,
       firstName: user.firstName,

@@ -15,6 +15,7 @@ import { DirectionModule } from './api/direction/direction.module';
 import { MarkModule } from './api/mark/mark.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './tasks/task.module';
+import { ArticleModule } from './api/article/article.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { TaskModule } from './tasks/task.module';
     DirectionModule,
     MarkModule,
     TaskModule,
+    ArticleModule,
   ],
   controllers: [],
   providers: [],
