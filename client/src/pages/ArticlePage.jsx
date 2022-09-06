@@ -3,150 +3,31 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 const markdown = `
-# Сервис VuzStack
+# Dillinger
+## _The Last Markdown Editor, Ever_
 
-**Сервис VuzStack - без русской рулетки!**
+[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
-Поступление в ВУЗ-ы России в 2021 и 2022 было похоже на русскую рулетку: правила были нечеткие, а сама система очень не стабильной. Сайты постоянно "ложились", а приемная коммисия просто опускала руки.
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-Но сервис VuzStack должен побороть всю эту систему, предоставив: удобный дизайн, мобильное приложение и ясные правила поступления, основанные на математическом алгоритме.
+Dillinger is a cloud-enabled, mobile-ready, offline-storage compatible,
+AngularJS-powered HTML5 Markdown editor.
 
-Пример работы:
+- Type some Markdown on the left
+- See HTML in the right
+- ✨Magic ✨
 
-1. Вася Пупкин закончил 11 классов и сдал ЕГЭ
-2. Он регистрируется на сайте vuzstack.ru: указывая ФИО и почту
-3. Верифицируется, показав фото, где он держит паспорт.
-4. Указывает на сайте свои баллы ЕГЭ
-5. Указывает направления в вуз-ах, куда хочет поступть: от самого желанного, к запасному варианту
-6. В начале августа компьютер рассчитывает желания и баллы всех абитуриентов и выдает каждому компромисное решение
-7. В вузы отправляется список поступивших, а абитуриентам - поздравительные письма
+## Features
 
-# Q&A
-
-### Что за математический алгоритм использует сервис?
-
-Сервис использует алгоритм Гейла-Шепли - нобелевских лауреатов по экономике.
-
-### Как работает алгоритм Гейла-Шепли и выдержит ли он полмиллиона абитуриентов?
-
-Начнем с описания работы алгоритмы:
-
-    1. Все "условно поступают" на направление с приоритетом 1.
-    2. Списки "условно поступивших" сортируются. Все те, кто не попал в бюджет "условно поступают" на направление с приоритетом 2
-    3. И все это до тех пор, пока все выбранные направления не будут "попробованы"
-
-Он максимально простой. Доказательство строится на индукции. Найти его можно в Интернете.
-
-Самое главное его преимущество, что он работает за O(n)! Для гуманитариев - это лучшее, что может быть!!!
-
-### В чем преимущество для абитуриентов?
-
-- Меньше вероятность никуда не поступить на бюджет
-- Жители Москвы и Санкт-Петербурга не имеют никаких преимуществ в поступлении, чем жители регионов России
-- Можно без проблем "поступать" в несколько городов одновременно
-- Надо будет купить только один билет!
-
-### В чем преимущество для ВУЗ-ов?
-
-- Больше бюджетных мест заполнится
-- Нет необходимости вести приемную комиссию на бюджетные места на программы бакалавриата/специалитет
-
-### Через это можно поступить?
-
-Это всего лишь проект, а точнее инициатива. "Критикуешь - предлагай".
-
-### Обязательно ли загружать свой паспорт и указывать свои результаты ЕГЭ и ИД?
-
-Как написано выше, это всего лишь проект на стадии бета, поэтому указывать паспорт - излишне. Просто загрузите любое фото и идите дальше :)
-
-### Кто разработчик?
-
-Разработал сервис простой школьник из Тверской области Александр Кудрявцев, параллельно своей основной работе NodeJS Backend Developer-а на таллинский it-консалтинг компанию.
-
-### Как поддержать проект?
-
-Автор сам зарабатывает на оплату серверов и лицензий, но для него очень важна медийная поддержка: не все умеют писать код, но сделать репост и **рассказать друзьям про одиозный проект** - могут все.
-
-Но если ты:
-
-- Front-end разработчик
-- DevOps инженер
-- React Native разработчик
-- Юрист, который поможет составить пользовательское соглашение
-- UI/UX дизайнер, который поможет советами по дизайну
-- Иллюстратор, который поможет с логотипом
-
-то твой даже маленький вклад может помочь с проектом. Смотри stack в самом конце.
-
-### Что будет дальше?
-
-После разработки сервиса проект будет передан в Министерство. В дальнейшем они могут использовать этот почти готовый проект, прикрутив проверку на верность введеных баллов ЕГЭ и ИД, добавив функционал для льготников, конкурсы на общежитие и т.п.
-
-Также проект использует лицензию MIT - каждый может брать наработки и использовать в своих целях.
-
-# Road Map
-
-**Август-сентябрь 2022** - разработка основного функционала: регистрация и верификация, выбор вузов, само поступление и алгоритм Гейла-Шепли
-
-**Октябрь-ноябрь 2022** - создание мобильного приложения
-
-# Stack
-
-backend:
-
-- Node
-- Linux
-- TypeScript
-- Nest + TypeORM
-- MySQL
-- Redis + BullJS
-- Cloudinary для пользовательских данных
-- Unisender для почты
-
-frontend:
-
-- JavaScript
-- React
-- Redux + Redux Toolkit
-- Tailwind
-
-mobile app:
-
-- JavaScript
-- ReactNative
-- ExpoCLI
+- Import a HTML file and watch it magically convert to Markdown
+- Drag and drop images (requires your Dropbox account be linked)
+- Import and save files from GitHub, Dropbox, Google Drive and One Drive
+- Drag and drop markdown and HTML files into Dillinger
+- Export documents as Markdown, HTML and PDF
 `;
 
 function ArticlePage() {
-  return (
-    <main className="profile-page h-screen">
-      <section className="relative block" style={{ height: '350px' }}>
-        <div
-          className="absolute top-0 w-full h-full bg-center bg-cover"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2710&q=80')",
-          }}
-        >
-          <span
-            id="blackOverlay"
-            className="w-full h-full absolute opacity-50 bg-black"
-          ></span>
-        </div>
-      </section>
-      <section className="relative py-16">
-        <div className="container mx-auto px-4">
-          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
-            <div className="px-6 my-10 min-h-[50vh]">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} className="prose">
-                {markdown}
-              </ReactMarkdown>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+  return <ReactMarkdown children={markdown} remarkPlugins={[remarkGfm]} className='prose prose-lg'/>;
 }
 
 export default ArticlePage;
