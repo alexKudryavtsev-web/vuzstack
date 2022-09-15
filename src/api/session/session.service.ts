@@ -34,13 +34,13 @@ export class SessionService {
 
     if (!user) {
       throw new HttpException(
-        'Credentials are not valid',
+        'Неверный логин/пароль',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
 
     if (!user) {
-      throw new HttpException('User not activated', HttpStatus.FORBIDDEN);
+      throw new HttpException('Почта не активизирована', HttpStatus.FORBIDDEN);
     }
 
     const isComparedPassword = await compare(
@@ -50,7 +50,7 @@ export class SessionService {
 
     if (!isComparedPassword) {
       throw new HttpException(
-        'Credentials are not valid',
+        'Неверный логин/пароль',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }

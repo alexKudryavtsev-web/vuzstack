@@ -31,10 +31,7 @@ export class UserService {
     });
 
     if (candidate) {
-      throw new HttpException(
-        'Email is taken',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new HttpException('Почта занята', HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     const user = new UserEntity();
@@ -64,7 +61,7 @@ export class UserService {
     const user = await this.userRepository.findOne(currentUserId);
 
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     }
 
     Object.assign(user, updateUserDto);
@@ -143,7 +140,7 @@ export class UserService {
     );
 
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     }
 
     if (dataFromToken.id !== user.id) {

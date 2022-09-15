@@ -53,11 +53,11 @@ export class DirectionService {
   ): Promise<DirectionsWithMetaResponseInterface> {
     const { limit = 10, offset = 0, city } = query;
 
-    const user = await this.userRepository.findOne(currentUserId, {
-      relations: ['marks'],
-    });
+    // const user = await this.userRepository.findOne(currentUserId, {
+    //   relations: ['marks'],
+    // });
 
-    const exams = user.marks.map((exam) => exam.exam);
+    // const exams = user.marks.map((exam) => exam.exam);
 
     const queryBuilder = getRepository(DirectionEntity)
       .createQueryBuilder('directions')
@@ -72,14 +72,14 @@ export class DirectionService {
     }
 
     // TODO: v1
-    for (const exam of exams) {
-      queryBuilder.andWhere(
-        "concat_ws(',', directions.optionalExams, directions.requiredExams) LIKE :exam",
-        {
-          exam: `%${exam}%`,
-        },
-      );
-    }
+    // for (const exam of exams) {
+    //   queryBuilder.andWhere(
+    //     "concat_ws(',', directions.optionalExams, directions.requiredExams) LIKE :exam",
+    //     {
+    //       exam: `%${exam}%`,
+    //     },
+    //   );
+    // }
 
     const filtred = await queryBuilder.getCount();
 
