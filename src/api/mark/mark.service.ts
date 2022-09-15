@@ -20,7 +20,8 @@ export class MarkService {
     currentUserId: number,
     createExamDto: CreateMarkDto,
   ): Promise<MarkResponseInterface> {
-    const user = await this.userRepository.findOne(currentUserId, {
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
       relations: ['marks'],
     });
 
@@ -46,12 +47,15 @@ export class MarkService {
     userId: number,
     updateMarkDto: UpdateMarkDto,
   ): Promise<MarkResponseInterface> {
-    const mark = await this.markRepository.findOne(updateMarkDto.id);
+    const mark = await this.markRepository.findOne({
+      where: { id: updateMarkDto.id },
+    });
 
     Object.assign(mark, updateMarkDto);
     await this.markRepository.save(mark);
 
-    const user = await this.userRepository.findOne(userId, {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
       relations: ['marks'],
     });
 

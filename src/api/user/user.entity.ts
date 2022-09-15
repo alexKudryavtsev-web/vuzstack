@@ -1,4 +1,4 @@
-import { SessionEntity } from '@app/api/session/session.entity';
+import { SessionEntity } from '../session/session.entity';
 import {
   Column,
   CreateDateColumn,

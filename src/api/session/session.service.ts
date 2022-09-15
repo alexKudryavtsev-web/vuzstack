@@ -23,14 +23,10 @@ export class SessionService {
     createSessionDto: CreateSessionDto,
     ip: string,
   ): Promise<SessionType> {
-    const user = await this.userRepository.findOne(
-      {
-        email: createSessionDto.email,
-      },
-      {
-        select: ['id', 'email', 'password', 'isActivated'],
-      },
-    );
+    const user = await this.userRepository.findOne({
+      where: { email: createSessionDto.email },
+      select: ['id', 'email', 'password', 'isActivated'],
+    });
 
     if (!user) {
       throw new HttpException(
@@ -56,7 +52,9 @@ export class SessionService {
     }
 
     const tokens = this.generateJwt(user);
-    const candidate = await this.sessionRepository.findOne({ user, ip });
+    const candidate = await this.sessionRepository.findOne({
+      where: { user: { id: user.id }, ip },
+    });
 
     if (candidate) {
       candidate.refreshToken = tokens.refreshToken;
@@ -92,10 +90,10 @@ export class SessionService {
   }
 
   async updateSession(refreshToken: string): Promise<SessionType> {
-    const session = await this.sessionRepository.findOne(
-      { refreshToken },
-      { relations: ['user'] },
-    );
+    const session = await this.sessionRepository.findOne({
+      where: { refreshToken },
+      relations: ['user'],
+    });
     const dataFromToken = this.verifyRefreshJwt(refreshToken);
 
     if (!session || !dataFromToken) {

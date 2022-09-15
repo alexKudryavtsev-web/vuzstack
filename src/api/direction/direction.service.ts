@@ -30,7 +30,8 @@ export class DirectionService {
   }
 
   async createDirection(createDirectionDto: CreateDirectionDto) {
-    const vuz = await this.vuzRepository.findOne(createDirectionDto.vuzId, {
+    const vuz = await this.vuzRepository.findOne({
+      where: { id: createDirectionDto.vuzId },
       relations: ['directions'],
     });
     const newDirection = new DirectionEntity();
@@ -103,11 +104,14 @@ export class DirectionService {
     userId: number,
     directionId: number,
   ): Promise<DirectionsResponseInterface> {
-    const user = await this.userRepository.findOne(userId, {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
       relations: ['directions'],
     });
 
-    const direction = await this.directionRepository.findOne(directionId);
+    const direction = await this.directionRepository.findOne({
+      where: { id: directionId },
+    });
 
     if (user.priority.length > Number(process.env.MAX_AMOUNT_DIRECTION)) {
       throw new HttpException(
@@ -137,10 +141,15 @@ export class DirectionService {
     userId: number,
     directionId: number,
   ): Promise<DirectionsResponseInterface> {
-    const user = await this.userRepository.findOne(userId, {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
       relations: ['directions'],
     });
-    const direction = await this.directionRepository.findOne(directionId);
+    const direction = await this.directionRepository.findOne({
+      where: {
+        id: directionId,
+      },
+    });
 
     const directionIndex = user.directions.findIndex(
       (current) => current.id === direction.id,
@@ -165,7 +174,8 @@ export class DirectionService {
     userId: number,
     updatePriority: UpdatePriorityDto,
   ): Promise<DirectionsResponseInterface> {
-    const user = await this.userRepository.findOne(userId, {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
       relations: ['directions'],
     });
 

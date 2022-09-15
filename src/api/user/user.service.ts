@@ -27,7 +27,9 @@ export class UserService {
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const candidate = await this.userRepository.findOne({
-      email: createUserDto.email,
+      where: {
+        email: createUserDto.email,
+      },
     });
 
     if (candidate) {
@@ -58,7 +60,9 @@ export class UserService {
     updateUserDto: UpdateUserDto,
     currentUserId: number,
   ): Promise<UserEntity> {
-    const user = await this.userRepository.findOne(currentUserId);
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+    });
 
     if (!user) {
       throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
@@ -70,14 +74,19 @@ export class UserService {
   }
 
   async deleteUser(currentUserId: number): Promise<void> {
-    const user = await this.userRepository.findOne(currentUserId);
-    await this.sessionRepository.delete({ user });
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+    });
+    // TODO: update delete
+    // await this.sessionRepository.delete({ user });
 
     await this.userRepository.remove(user);
   }
 
   async activateUser(activationLink: string): Promise<void> {
-    const user = await this.userRepository.findOne({ activationLink });
+    const user = await this.userRepository.findOne({
+      where: { activationLink },
+    });
 
     if (!user || user.activationLink !== activationLink) {
       throw new HttpException('Wrong link', HttpStatus.UNPROCESSABLE_ENTITY);
@@ -89,9 +98,12 @@ export class UserService {
   }
 
   async resetPassword(currentUserId: number): Promise<void> {
-    const user = await this.userRepository.findOne(currentUserId);
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+    });
 
-    await this.sessionRepository.delete({ user });
+    // TODO: update delete
+    // await this.sessionRepository.delete({  user });
 
     const token = this.generateResetPasswordToken(user);
 
@@ -116,28 +128,24 @@ export class UserService {
       );
     }
 
-    const user = await this.userRepository.findOne(
-      {
-        email: dataFromToken.email,
+    const user = await this.userRepository.findOne({
+      where: { email: dataFromToken.email },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        password: true,
+        isVerified: true,
+        isActivated: true,
+        createdAt: true,
+        updatedAt: true,
+        activationLink: true,
+        agree: true,
+        acceptedWithCookie: true,
+        status: true,
       },
-      {
-        select: [
-          'id',
-          'email',
-          'firstName',
-          'lastName',
-          'password',
-          'isVerified',
-          'isActivated',
-          'createdAt',
-          'updatedAt',
-          'activationLink',
-          'agree',
-          'acceptedWithCookie',
-          'status',
-        ],
-      },
-    );
+    });
 
     if (!user) {
       throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
@@ -153,7 +161,7 @@ export class UserService {
   }
 
   async readById(id: number): Promise<UserEntity> {
-    return await this.userRepository.findOne(id);
+    return await this.userRepository.findOne({ where: { id } });
   }
 
   buildUserResponse(user: UserEntity): UserResponseInterface {

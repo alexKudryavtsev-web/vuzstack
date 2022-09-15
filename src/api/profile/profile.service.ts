@@ -20,7 +20,8 @@ export class ProfileService {
   ) {}
 
   async readProfile(userId: number): Promise<ProfileType> {
-    const user = await this.userRepository.findOne(userId, {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
       relations: ['directions', 'marks'],
     });
 
@@ -45,7 +46,9 @@ export class ProfileService {
     currentUserId: number,
     passport: Express.Multer.File,
   ): Promise<ProfileType> {
-    const user = await this.userRepository.findOne(currentUserId);
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+    });
     await this.avatarService.uploadFile(
       currentUserId,
       passport,
@@ -61,7 +64,7 @@ export class ProfileService {
   }
 
   async uploadMarks(userId: number): Promise<ProfileType> {
-    const user = await this.userRepository.findOne(userId);
+    const user = await this.userRepository.findOne({ where: { id: userId } });
 
     user.status = UserStatusEnum.DIRECTIONS_UPLOAD;
 
@@ -71,7 +74,7 @@ export class ProfileService {
   }
 
   async uploadDirections(userId: number): Promise<ProfileType> {
-    const user = await this.userRepository.findOne(userId);
+    const user = await this.userRepository.findOne({ where: { id: userId } });
 
     user.status = UserStatusEnum.AWAITING_RESULT;
 
@@ -81,7 +84,9 @@ export class ProfileService {
   }
 
   async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOne(currentUserId);
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+    });
 
     Object.assign(user, updateUserDto);
 
@@ -91,7 +96,9 @@ export class ProfileService {
   }
 
   async acceptWithCookie(currentUserId: number): Promise<void> {
-    const user = await this.userRepository.findOne(currentUserId);
+    const user = await this.userRepository.findOne({
+      where: { id: currentUserId },
+    });
 
     user.acceptedWithCookie = true;
 
@@ -99,7 +106,8 @@ export class ProfileService {
   }
 
   async buildProfile(userId: number): Promise<ProfileType> {
-    const user = await this.userRepository.findOne(userId, {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
       relations: ['marks', 'directions', 'directions.vuz'],
     });
     const avatarUrl = await this.avatarService.getURL(user.id);

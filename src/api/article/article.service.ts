@@ -12,7 +12,9 @@ export class ArticleService {
   ) {}
 
   async readArticleById(articleId: number): Promise<ArticleResponseInterface> {
-    const article = await this.articleRepository.findOne(articleId);
+    const article = await this.articleRepository.findOne({
+      where: { id: articleId },
+    });
 
     return {
       article,
