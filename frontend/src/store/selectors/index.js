@@ -21,3 +21,7 @@ export function getDirections(state) {
 export function getMarks(state) {
   return state?.user?.user.marks || [];
 }
+
+export function getIsLoading(state) {
+  return state?.user?.isLoading || false;
+}

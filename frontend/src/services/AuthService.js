@@ -31,6 +31,12 @@ class AuthService {
   static async activateUser(token) {
     return axios.post(`${API_URL}/user/activate/${token}`);
   }
+
+  static async checkAuth() {
+    return axios.patch(`${API_URL}/session`, null, {
+      withCredentials: true,
+    });
+  }
 }
 
 export default AuthService;

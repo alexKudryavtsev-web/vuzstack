@@ -3,16 +3,21 @@ import AuthService from '../../services/AuthService';
 import MarkService from '../../services/MarkService';
 import ProfileService from '../../services/ProfileService';
 
-const userFromLocalStorate = JSON.parse(localStorage.getItem('user'));
-
 const initialState = {
-  isAuth: Boolean(userFromLocalStorate),
-  user: userFromLocalStorate,
+  isAuth: null,
+  user: {},
   isFailed: null,
+  isLoading: false,
 };
 
 const login = createAsyncThunk('user/login', async (payload, thunkApi) => {
   const { data } = await AuthService.login(payload.email, payload.password);
+
+  return data;
+});
+
+const checkAuth = createAsyncThunk('user/checkAuth', async () => {
+  const { data } = await AuthService.checkAuth();
 
   return data;
 });
@@ -104,6 +109,23 @@ const userSlice = createSlice({
     builder.addCase(createMark.fulfilled, (state, action) => {
       state.user.marks = action.payload.marks;
     });
+
+    builder
+      .addCase(checkAuth.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isAuth = true;
+        state.user = action.payload.user;
+
+        localStorage.setItem('user', JSON.stringify(action.payload.user));
+        localStorage.setItem('token', action.payload.accessToken);
+        state.isFailed = false;
+        state.isLoading = false;
+      })
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.isLoading = false;
+      });
   },
 });
 
@@ -116,4 +138,5 @@ export {
   uploadDirections,
   createMark,
   acceptWithCookie,
+  checkAuth,
 };
