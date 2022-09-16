@@ -15,9 +15,9 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "migration:create": "cd src/migrations && npx typeorm-ts-node-commonjs migration:create",
-    "migration:generate": "cd src/migrations && npx typeorm-ts-node-commonjs migration:generate -d ../ormconfig.ts",
-    "migration:run": "cd src/migrations && npx typeorm-ts-node-commonjs migration:run -d ../ormconfig.ts",
-    "schema:drop": "cd src/migrations && npx typeorm-ts-node-commonjs schema:drop -d ../ormconfig.ts"
+    "migration:generate": "cd src/migrations && npx typeorm-ts-node-commonjs migration:generate -d ../cli.ts",
+    "migration:run": "cd src/migrations && npx typeorm-ts-node-commonjs migration:run -d ../cli.ts",
+    "schema:drop": "cd src/migrations && npx typeorm-ts-node-commonjs schema:drop -d ../cli.ts"
   },
   "dependencies": {
     "@nestjs/bull": "^0.6.1",
