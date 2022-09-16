@@ -7,6 +7,7 @@ import CookieBanner from '../components/CookieBanner';
 import { getUser } from '../store/selectors';
 import ProfileHeader from '../components/ProfileHeader';
 import Error404Page from './Error404Page';
+import UserForm from '../components/userForm/UserForm';
 
 export default function Profile() {
   const user = useSelector(getUser);
@@ -15,7 +16,7 @@ export default function Profile() {
 
   switch (user.status) {
     case 'PASSPORT_UPLOAD':
-      content = <UploadPassport />;
+      content = <UserForm />;
       break;
     case 'MARKS_UPLOAD':
       content = <UploadMarks />;
