@@ -2,11 +2,9 @@ import axios from 'axios';
 import $api, { API_URL } from '../http';
 
 class AuthService {
-  static async registration(email, firstName, lastName, password, agree) {
+  static async registration(email, password, agree) {
     return axios.post(`${API_URL}/user`, {
       email,
-      firstName,
-      lastName,
       password,
       agree,
     });

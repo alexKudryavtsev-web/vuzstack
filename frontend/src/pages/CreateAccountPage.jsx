@@ -13,8 +13,6 @@ function CreateAccountPage() {
   const formik = useFormik({
     initialValues: {
       email: '',
-      firstName: '',
-      lastName: '',
       password: '',
       agree: false,
     },
@@ -22,8 +20,6 @@ function CreateAccountPage() {
       try {
         await AuthService.registration(
           data.email,
-          data.firstName,
-          data.lastName,
           data.password,
           data.agree,
         );
@@ -81,40 +77,6 @@ function CreateAccountPage() {
                           id="email"
                           onChange={formik.handleChange}
                           value={formik.values.email}
-                        />
-                      </div>
-                      <div className="relative w-full mb-3">
-                        <label
-                          className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                          htmlFor="grid-password"
-                        >
-                          Имя
-                        </label>
-                        <input
-                          type="text"
-                          className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                          placeholder="Имя"
-                          style={{ transition: 'all .15s ease' }}
-                          id="firstName"
-                          onChange={formik.handleChange}
-                          value={formik.values.firstName}
-                        />
-                      </div>
-                      <div className="relative w-full mb-3">
-                        <label
-                          className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                          htmlFor="grid-password"
-                        >
-                          Фамилия
-                        </label>
-                        <input
-                          type="text"
-                          className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                          placeholder="Фамилия"
-                          style={{ transition: 'all .15s ease' }}
-                          id="lastName"
-                          onChange={formik.handleChange}
-                          value={formik.values.lastName}
                         />
                       </div>
                       <div className="relative w-full mb-3">

@@ -14,7 +14,7 @@ export default function Profile() {
   let content;
 
   switch (user.status) {
-    case 'PASSWORD_UPLOAD':
+    case 'PASSPORT_UPLOAD':
       content = <UploadPassport />;
       break;
     case 'MARKS_UPLOAD':

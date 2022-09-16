@@ -73,16 +73,6 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async deleteUser(currentUserId: number): Promise<void> {
-    const user = await this.userRepository.findOne({
-      where: { id: currentUserId },
-    });
-    // TODO: update delete
-    // await this.sessionRepository.delete({ user });
-
-    await this.userRepository.remove(user);
-  }
-
   async activateUser(activationLink: string): Promise<void> {
     const user = await this.userRepository.findOne({
       where: { activationLink },
@@ -102,8 +92,7 @@ export class UserService {
       where: { id: currentUserId },
     });
 
-    // TODO: update delete
-    // await this.sessionRepository.delete({  user });
+    await this.sessionRepository.delete({ user: { id: user.id } });
 
     const token = this.generateResetPasswordToken(user);
 
@@ -123,7 +112,7 @@ export class UserService {
 
     if (!dataFromToken) {
       throw new HttpException(
-        'The token is invalid (Its lifetime is 1 hour)',
+        'Поздно (на восстановление пароля дается 2 часа)',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -152,7 +141,7 @@ export class UserService {
     }
 
     if (dataFromToken.id !== user.id) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      throw new HttpException('Запрещенно', HttpStatus.FORBIDDEN);
     }
 
     user.password = await hash(updatePasswordDto.password, HASH_ROUNDS);

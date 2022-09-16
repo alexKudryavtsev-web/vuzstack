@@ -13,7 +13,7 @@ import { DirectionEntity } from '../direction/direction.entity';
 import { MarkEntity } from '../mark/mark.entity';
 
 export enum UserStatusEnum {
-  PASSWORD_UPLOAD = 'PASSWORD_UPLOAD',
+  PASSPORT_UPLOAD = 'PASSPORT_UPLOAD',
   MARKS_UPLOAD = 'MARKS_UPLOAD',
   DIRECTIONS_UPLOAD = 'DIRECTIONS_UPLOAD',
   AWAITING_RESULT = 'AWAITING_RESULT',
@@ -28,7 +28,7 @@ export class UserEntity {
   @Column({
     type: 'enum',
     enum: UserStatusEnum,
-    default: UserStatusEnum.PASSWORD_UPLOAD,
+    default: UserStatusEnum.PASSPORT_UPLOAD,
   })
   status: string;
 
@@ -38,10 +38,10 @@ export class UserEntity {
   @Column({ select: false })
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName: string;
 
   @Column({ default: false })
