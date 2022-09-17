@@ -13,7 +13,7 @@ export function validURL(string) {
 }
 
 export function validPhone(string) {
-  return !/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/.test(string);
+  return !/^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/.test(string);
 }
 
 export function validText(string) {

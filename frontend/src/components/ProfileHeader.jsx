@@ -26,15 +26,15 @@ function ProfileHeader() {
           <div className="flex justify-center py-4 lg:pt-4 pt-8">
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                {user.status === 'PASSPORT_UPLOAD' ? 'нет' : 'да'}
+                да
               </span>
-              <span className="text-sm text-gray-500">Паспорт загружен</span>
+              <span className="text-sm text-gray-500">Данные внесены</span>
             </div>
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                {user.status === 'MARKS_UPLOAD' ? 'нет' : 'да'}
+                {user.status === 'PASSPORT_UPLOAD' ? 'нет' : 'да'}
               </span>
-              <span className="text-sm text-gray-500">ЕГЭ указано</span>
+              <span className="text-sm text-gray-500">Паспорт загружен</span>
             </div>
           </div>
         </div>
@@ -42,17 +42,15 @@ function ProfileHeader() {
           <div className="flex justify-center py-4 lg:pt-4 pt-8">
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
-                {user.directions.length >= 2 ? 'да' : 'нет'}
+                {user.status === 'MARKS_UPLOAD' ? 'нет' : 'да'}
               </span>
-              <span className="text-sm text-gray-500">
-                Выбрана "Мечта" и "Запас"
-              </span>
+              <span className="text-sm text-gray-500">ЕГЭ указано</span>
             </div>
             <div className="mr-4 p-3 text-center">
               <span className="text-xl font-bold block uppercase tracking-wide text-gray-700">
                 {user.directions.length}/7
               </span>
-              <span className="text-sm text-gray-500">Направлений выбрано</span>
+              <span className="text-sm text-gray-500">Мест выбрано</span>
             </div>
           </div>
         </div>

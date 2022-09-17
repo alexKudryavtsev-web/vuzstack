@@ -89,7 +89,7 @@ function UserForm() {
                 />
                 <label
                   htmlFor="first"
-                  className="absolute left-2 transition-all bg-white px-1 text-black-600 text-xs top-0"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.firstName || 'Имя'}
                 </label>
@@ -106,7 +106,7 @@ function UserForm() {
                 />
                 <label
                   htmlFor="link"
-                  className="absolute left-2 transition-all bg-white px-1 text-black-600 text-xs top-0"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.link || 'Ссылка на соц.сеть'}
                 </label>
@@ -123,7 +123,7 @@ function UserForm() {
                 />
                 <label
                   htmlFor="lastName"
-                  className="absolute left-2 transition-all bg-white px-1 text-black-600 text-xs top-0"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.lastName || 'Фамилия'}
                 </label>
@@ -140,7 +140,7 @@ function UserForm() {
                 />
                 <label
                   htmlFor="phone"
-                  className="absolute left-2 transition-all bg-white px-1 text-black-600 text-xs top-0"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.phone || 'Телефон'}
                 </label>
@@ -158,7 +158,7 @@ function UserForm() {
                 />
                 <label
                   htmlFor="snils"
-                  className="absolute left-2 transition-all bg-white px-1 text-black-600 text-xs top-0"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.snils || 'Номер'}
                 </label>
@@ -176,7 +176,7 @@ function UserForm() {
                 />
                 <label
                   htmlFor="passportSeries"
-                  className="absolute left-2 transition-all bg-white px-1 text-black-600 text-xs top-0"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.passportSeries || 'Серия'}
                 </label>
@@ -193,7 +193,7 @@ function UserForm() {
                 />
                 <label
                   htmlFor="passportID"
-                  className="absolute left-2 transition-all bg-white px-1 text-black-600 text-xs top-0"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.passportID || 'Номер'}
                 </label>

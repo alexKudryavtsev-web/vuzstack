@@ -9,6 +9,7 @@ import { SessionService } from './session.service';
 import { DirectionService } from '../direction/direction.service';
 import { DirectionEntity } from '../direction/direction.entity';
 import { VuzEntity } from '../direction/vuz.entity';
+import { ProfileEntity } from '../profile/profile.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { VuzEntity } from '../direction/vuz.entity';
       UserEntity,
       DirectionEntity,
       VuzEntity,
+      ProfileEntity,
     ]),
   ],
   controllers: [SessionController],

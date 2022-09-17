@@ -3,34 +3,22 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { DirectionEntity } from '../direction/direction.entity';
 import { MarkEntity } from '../mark/mark.entity';
-
-export enum UserStatusEnum {
-  PASSPORT_UPLOAD = 'PASSPORT_UPLOAD',
-  MARKS_UPLOAD = 'MARKS_UPLOAD',
-  DIRECTIONS_UPLOAD = 'DIRECTIONS_UPLOAD',
-  AWAITING_RESULT = 'AWAITING_RESULT',
-  GET_RESULT = 'GET_RESULT',
-}
+import { ProfileEntity } from '../profile/profile.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({
-    type: 'enum',
-    enum: UserStatusEnum,
-    default: UserStatusEnum.PASSPORT_UPLOAD,
-  })
-  status: string;
 
   @Column({ unique: true })
   email: string;
@@ -38,20 +26,8 @@ export class UserEntity {
   @Column({ select: false })
   password: string;
 
-  @Column({ nullable: true })
-  firstName: string;
-
-  @Column({ nullable: true })
-  lastName: string;
-
   @Column({ default: false })
   isActivated: boolean;
-
-  @Column({ default: false })
-  isVerified: boolean;
-
-  @Column({ default: null, nullable: true })
-  acceptedWithCookie: boolean;
 
   @Column({ type: 'uuid' })
   activationLink: string;
@@ -77,4 +53,8 @@ export class UserEntity {
   @ManyToMany(() => DirectionEntity)
   @JoinTable()
   directions: DirectionEntity[];
+
+  @OneToOne(() => ProfileEntity)
+  @JoinColumn()
+  profile: ProfileEntity;
 }

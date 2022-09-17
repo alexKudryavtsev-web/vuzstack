@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { v2 as cloudinary } from 'cloudinary';
-import { getLogger } from 'nodemailer/lib/shared';
 import * as streamifier from 'streamifier';
 
 export enum ImageType {
@@ -23,21 +22,10 @@ export class CloudinaryService {
     file: Express.Multer.File,
     type: ImageType = ImageType.AVATAR,
   ): Promise<void> {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: type,
-        public_id: calculatePublicId(currentUserId, type),
-      },
-      function (error, result) {
-        const logger = getLogger();
-
-        if (error) {
-          logger.error(error);
-        } else {
-          logger.info(result);
-        }
-      },
-    );
+    const stream = cloudinary.uploader.upload_stream({
+      folder: type,
+      public_id: calculatePublicId(currentUserId, type),
+    });
 
     streamifier.createReadStream(file.buffer).pipe(stream);
   }

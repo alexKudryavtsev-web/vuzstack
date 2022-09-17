@@ -3,7 +3,6 @@ import { User } from '@app/api/user/decorators/user.decorator';
 import { AuthGuard } from '@app/api/user/guards/auth.guard';
 import {
   Controller,
-  Get,
   HttpException,
   HttpStatus,
   Patch,
@@ -23,16 +22,12 @@ export class ProfileController {
     private readonly profileServce: ProfileService,
   ) {}
 
-  @Get()
-  @UseGuards(AuthGuard)
-  async readCurrentProfile(@User('id') userId: number): Promise<ProfileType> {
-    return this.profileServce.readProfile(userId);
-  }
-
   @Post('accept-with-cookie')
   @UseGuards(AuthGuard)
-  async acceptWithCookie(@User('id') currentUserId: number): Promise<void> {
-    await this.profileServce.acceptWithCookie(currentUserId);
+  async acceptWithCookie(
+    @User('id') currentUserId: number,
+  ): Promise<ProfileType> {
+    return await this.profileServce.acceptWithCookie(currentUserId);
   }
 
   @Patch('avatar')

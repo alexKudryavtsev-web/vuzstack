@@ -11,6 +11,7 @@ import { hash } from 'bcryptjs';
 import { SessionEntity } from '@app/api/session/session.entity';
 import { sign, verify } from 'jsonwebtoken';
 import { UpdatePasswordDto } from './dto/updatePassword.dto';
+import { ProfileEntity } from '../profile/profile.entity';
 
 const HASH_ROUNDS = 10;
 
@@ -22,9 +23,14 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(SessionEntity)
     private readonly sessionRepository: Repository<SessionEntity>,
+    @InjectRepository(ProfileEntity)
+    private readonly profileRepository: Repository<ProfileEntity>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const profile = new ProfileEntity();
+    await this.profileRepository.save(profile);
+
     const candidate = await this.userRepository.findOne({
       where: {
         email: createUserDto.email,
@@ -44,11 +50,10 @@ export class UserService {
 
     // TODO: crutch
     user.priority = [];
+    user.profile = profile;
 
     await this.emailQueue.add('activation-email', {
       email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
       link: `${process.env.CLIENT_URL}/activate-user/${user.activationLink}`,
     });
 
@@ -80,8 +85,6 @@ export class UserService {
 
     await this.emailQueue.add('reset-password-email', {
       email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
       link: `${process.env.CLIENT_URL}/update-password/${token}`,
     });
   }
@@ -104,17 +107,12 @@ export class UserService {
       select: {
         id: true,
         email: true,
-        firstName: true,
-        lastName: true,
         password: true,
-        isVerified: true,
         isActivated: true,
         createdAt: true,
         updatedAt: true,
         activationLink: true,
         agree: true,
-        acceptedWithCookie: true,
-        status: true,
       },
     });
 

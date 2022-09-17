@@ -12,27 +12,27 @@ import UserForm from '../components/userForm/UserForm';
 export default function Profile() {
   const user = useSelector(getUser);
 
-  let content;
+  let content = <UserForm />;
 
-  switch (user.status) {
-    case 'PASSPORT_UPLOAD':
-      content = <UserForm />;
-      break;
-    case 'MARKS_UPLOAD':
-      content = <UploadMarks />;
-      break;
-    case 'DIRECTIONS_UPLOAD':
-      content = <UploadDirections />;
-      break;
-    case 'AWAITING_RESULT':
-      content = null;
-      break;
-    case 'GET_RESULT':
-      content = null;
-      break;
-    default:
-      content = <Error404Page />;
-  }
+  // switch (user.status) {
+  //   case 'PASSPORT_UPLOAD':
+  //     content = <UserForm />;
+  //     break;
+  //   case 'MARKS_UPLOAD':
+  //     content = <UploadMarks />;
+  //     break;
+  //   case 'DIRECTIONS_UPLOAD':
+  //     content = <UploadDirections />;
+  //     break;
+  //   case 'AWAITING_RESULT':
+  //     content = null;
+  //     break;
+  //   case 'GET_RESULT':
+  //     content = null;
+  //     break;
+  //   default:
+  //     content = <Error404Page />;
+  // }
 
   return (
     <>
