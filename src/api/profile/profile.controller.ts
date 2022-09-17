@@ -2,6 +2,7 @@ import { CloudinaryService } from '@app/cloudinary/cloudinary.service';
 import { User } from '@app/api/user/decorators/user.decorator';
 import { AuthGuard } from '@app/api/user/guards/auth.guard';
 import {
+  Body,
   Controller,
   HttpException,
   HttpStatus,
@@ -14,6 +15,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProfileService } from './profile.service';
 import { ProfileType } from './types/profile.type';
+import { UploadUserInfoDto } from './dto/uploadUserInfo.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -28,6 +30,18 @@ export class ProfileController {
     @User('id') currentUserId: number,
   ): Promise<ProfileType> {
     return await this.profileServce.acceptWithCookie(currentUserId);
+  }
+
+  @Post('user-info')
+  @UseGuards(AuthGuard)
+  async uploadUserInfo(
+    @User('id') currentUserId: number,
+    @Body() uploadUserInfoDto: UploadUserInfoDto,
+  ): Promise<ProfileType> {
+    return await this.profileServce.uploadUserInfo(
+      currentUserId,
+      uploadUserInfoDto,
+    );
   }
 
   @Patch('avatar')

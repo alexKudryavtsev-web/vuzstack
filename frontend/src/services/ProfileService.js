@@ -9,6 +9,10 @@ class ProfileService {
     });
   }
 
+  static async uploadUserInfo(data) {
+    return $api.post('profile/user-info', data)
+  }
+
   static async acceptWithCookie() {
     return $api.post('profile/accept-with-cookie');
   }

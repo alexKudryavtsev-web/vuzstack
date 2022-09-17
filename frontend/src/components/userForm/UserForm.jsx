@@ -9,6 +9,8 @@ import {
   validSnils,
   validURL,
 } from '../../utils/validate';
+import { store } from '../../store';
+import { uploadUserInfo } from '../../store/reducers/userReducer';
 
 function UserForm() {
   const formik = useFormik({
@@ -22,7 +24,7 @@ function UserForm() {
       passportSeries: '',
     },
     async onSubmit(data) {
-      console.log(data);
+      store.dispatch(uploadUserInfo(data));
     },
     validate(data) {
       const errors = {};
@@ -99,8 +101,8 @@ function UserForm() {
                   id="link"
                   htmltype="url"
                   name="link"
-                  value={formik.link}
                   onChange={formik.handleChange}
+                  value={formik.link}
                   className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
             rounded-md focus:ring-0 group focus:outline-0 border text-sm"
                 />

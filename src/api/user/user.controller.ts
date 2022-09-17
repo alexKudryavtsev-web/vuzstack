@@ -18,7 +18,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @UsePipes(new ValidationPipe())
   async createUser(
     @Body() createUserDto: CreateUserDto,
   ): Promise<UserResponseInterface> {
@@ -38,7 +37,6 @@ export class UserController {
   }
 
   @Patch('/update-password/:token')
-  @UsePipes(new ValidationPipe())
   async updatePassword(
     @Param('token') token: string,
     @Body() updatePasswordDto: UpdatePasswordDto,

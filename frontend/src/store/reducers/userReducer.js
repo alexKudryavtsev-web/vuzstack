@@ -31,6 +31,15 @@ const uploadPassport = createAsyncThunk(
   },
 );
 
+const uploadUserInfo = createAsyncThunk(
+  'user/uploadUserInfo',
+  async (payload, thunkApi) => {
+    const { data } = await ProfileService.uploadUserInfo(payload);
+
+    return data;
+  },
+);
+
 const logout = createAsyncThunk('user/logout', async (payload, thunkApi) => {
   await AuthService.logout();
   localStorage.clear();
@@ -126,6 +135,10 @@ const userSlice = createSlice({
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
       });
+
+    builder.addCase(uploadUserInfo.fulfilled, (state, action) => {
+      state.user = action.payload;
+    })
   },
 });
 
@@ -136,6 +149,7 @@ export {
   uploadPassport,
   uploadMarks,
   uploadDirections,
+  uploadUserInfo,
   createMark,
   acceptWithCookie,
   checkAuth,

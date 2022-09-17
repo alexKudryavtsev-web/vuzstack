@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Patch,
-  Post,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { User } from '../user/decorators/user.decorator';
 import { AuthGuard } from '../user/guards/auth.guard';
 import { CreateMarkDto } from './dto/createMark.dto';
@@ -22,7 +13,6 @@ export class MarkController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
   async createMark(
     @User('id') currentUserId: number,
     @Body() createExamDto: CreateMarkDto,
@@ -32,7 +22,6 @@ export class MarkController {
 
   @Patch()
   @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
   async updateMark(
     @User('id') userId: number,
     @Body() updateMarkDto: UpdateMarkDto,

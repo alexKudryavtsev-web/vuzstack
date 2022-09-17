@@ -8,8 +8,6 @@ import {
   Post,
   Query,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { User } from '../user/decorators/user.decorator';
 import { AuthGuard } from '../user/guards/auth.guard';
@@ -26,13 +24,11 @@ export class DirectionController {
   constructor(private readonly directionService: DirectionService) {}
 
   @Post('admin/vuz')
-  @UsePipes(new ValidationPipe())
   async createVuz(@Body() createVuzDto: CreateVuzDto) {
     return await this.directionService.createVuz(createVuzDto);
   }
 
   @Post('admin/direction')
-  @UsePipes(new ValidationPipe())
   async createDirection(@Body() createDirectionDto: CreateDirectionDto) {
     return await this.directionService.createDirection(createDirectionDto);
   }
@@ -48,7 +44,6 @@ export class DirectionController {
 
   @Post('direction')
   @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
   async selectDirection(
     @User('id') currentUserId: number,
     @Body() selectDirectionDto: SelectDirectionDto,
@@ -73,7 +68,6 @@ export class DirectionController {
 
   @Patch('direction')
   @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
   async updatePriority(
     @User('id') currentUserId: number,
     @Body() updatePriority: UpdatePriorityDto,

@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { ProfileType } from './types/profile.type';
 import { DirectionService } from '../direction/direction.service';
 import { ProfileEntity } from './profile.entity';
+import { UploadUserInfoDto } from './dto/uploadUserInfo.dto';
 
 @Injectable()
 export class ProfileService {
@@ -66,6 +67,24 @@ export class ProfileService {
     await this.profileRepository.save(user.profile);
 
     return this.buildProfile(currentUserId);
+  }
+
+  async uploadUserInfo(
+    userId: number,
+    uploadUserInfoDto: UploadUserInfoDto,
+  ): Promise<ProfileType> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      relations: ['profile'],
+    });
+
+    Object.assign(user.profile, uploadUserInfoDto);
+
+    await this.profileRepository.save(user.profile);
+
+    return await this.buildProfile(userId);
   }
 
   async buildProfile(userId: number): Promise<ProfileType> {
