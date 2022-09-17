@@ -8,7 +8,6 @@ import { UserResponseInterface } from './types/userResponse.interface';
 import { UserEntity } from './user.entity';
 import { v4 as uuid } from 'uuid';
 import { hash } from 'bcryptjs';
-import { UpdateUserDto } from './dto/updateUserDto';
 import { SessionEntity } from '@app/api/session/session.entity';
 import { sign, verify } from 'jsonwebtoken';
 import { UpdatePasswordDto } from './dto/updatePassword.dto';
@@ -52,23 +51,6 @@ export class UserService {
       lastName: user.lastName,
       link: `${process.env.CLIENT_URL}/activate-user/${user.activationLink}`,
     });
-
-    return await this.userRepository.save(user);
-  }
-
-  async updateUser(
-    updateUserDto: UpdateUserDto,
-    currentUserId: number,
-  ): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({
-      where: { id: currentUserId },
-    });
-
-    if (!user) {
-      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
-    }
-
-    Object.assign(user, updateUserDto);
 
     return await this.userRepository.save(user);
   }

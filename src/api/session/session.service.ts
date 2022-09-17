@@ -35,7 +35,7 @@ export class SessionService {
       );
     }
 
-    if (!user) {
+    if (!user.isActivated) {
       throw new HttpException('Почта не активизирована', HttpStatus.FORBIDDEN);
     }
 

@@ -1,9 +1,7 @@
 import { CloudinaryService } from '@app/cloudinary/cloudinary.service';
 import { User } from '@app/api/user/decorators/user.decorator';
-import { UpdateUserDto } from '@app/api/user/dto/updateUserDto';
 import { AuthGuard } from '@app/api/user/guards/auth.guard';
 import {
-  Body,
   Controller,
   Get,
   HttpException,
@@ -13,8 +11,6 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProfileService } from './profile.service';
@@ -31,16 +27,6 @@ export class ProfileController {
   @UseGuards(AuthGuard)
   async readCurrentProfile(@User('id') userId: number): Promise<ProfileType> {
     return this.profileServce.readProfile(userId);
-  }
-
-  @Patch()
-  @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
-  async updateUser(
-    @User('id') currentUserId: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<ProfileType> {
-    return await this.profileServce.updateUser(currentUserId, updateUserDto);
   }
 
   @Post('accept-with-cookie')

@@ -4,15 +4,12 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { User } from './decorators/user.decorator';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdatePasswordDto } from './dto/updatePassword.dto';
-import { UpdateUserDto } from './dto/updateUserDto';
-import { AuthGuard } from './guards/auth.guard';
 import { UserResponseInterface } from './types/userResponse.interface';
 import { UserService } from './user.service';
 
@@ -33,21 +30,6 @@ export class UserController {
   @Post('/activate/:activationLink')
   async activateUser(@Param('activationLink') activationLink: string) {
     await this.userService.activateUser(activationLink);
-  }
-
-  @Patch()
-  @UsePipes(new ValidationPipe())
-  @UseGuards(AuthGuard)
-  async update(
-    @User('id') currentUserId: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<UserResponseInterface> {
-    const user = await this.userService.updateUser(
-      updateUserDto,
-      currentUserId,
-    );
-
-    return this.userService.buildUserResponse(user);
   }
 
   @Post('/reset-password')

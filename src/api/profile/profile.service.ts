@@ -2,7 +2,6 @@ import {
   CloudinaryService,
   ImageType,
 } from '@app/cloudinary/cloudinary.service';
-import { UpdateUserDto } from '@app/api/user/dto/updateUserDto';
 import { UserEntity, UserStatusEnum } from '@app/api/user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -81,18 +80,6 @@ export class ProfileService {
     await this.userRepository.save(user);
 
     return await this.buildProfile(userId);
-  }
-
-  async updateUser(currentUserId: number, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOne({
-      where: { id: currentUserId },
-    });
-
-    Object.assign(user, updateUserDto);
-
-    await this.userRepository.save(user);
-
-    return await this.buildProfile(currentUserId);
   }
 
   async acceptWithCookie(currentUserId: number): Promise<void> {
