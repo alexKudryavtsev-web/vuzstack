@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { checkAuth } from './store/reducers/userReducer';
 import Loader from './components/loader/Loader';
+import { readSettings } from './store/reducers/settingsReducer';
 
 function AppRoutes() {
   const isAuth = useSelector(getIsAuth);
@@ -18,6 +19,9 @@ function App() {
   const isLoading = useSelector(getIsLoading);
 
   useEffect(() => {
+
+    store.dispatch(readSettings())
+
     if (localStorage.getItem('token')) {
       store.dispatch(checkAuth());
     }

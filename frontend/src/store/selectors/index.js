@@ -25,3 +25,11 @@ export function getMarks(state) {
 export function getIsLoading(state) {
   return state?.user?.isLoading || false;
 }
+
+export function getExams(state) {
+  return state?.settings?.exams || []
+}
+
+export function getMaxAmountDirection(state) {
+  return state?.settings?.maxAmountDirection || []
+}

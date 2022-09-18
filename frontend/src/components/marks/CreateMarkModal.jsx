@@ -1,29 +1,36 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import MarkService from '../../services/MarkService';
 import translateExamName from '../../utils/translateExamName';
 import { store } from '../../store';
 import { createMark } from '../../store/reducers/userReducer';
+import { useSelector } from 'react-redux';
+import { getExams } from '../../store/selectors';
 
 function CreateMarkModal() {
   const [showModal, setShowModal] = useState(false);
-  const [examsList, setExamsList] = useState([]);
-
-  const fetchExams = useCallback(async () => {
-    const response = await MarkService.readExamsList();
-    setExamsList(await response.json());
-  }, []);
-
-  useEffect(() => {
-    fetchExams();
-  }, [fetchExams]);
+  const exams = useSelector(getExams);
 
   const formik = useFormik({
     initialValues: {
       exam: '',
       result: 0,
     },
+    validate(data) {
+      const errors = {};
+
+      if (data.result <= 0 || data.result > 100) {
+        errors.result = 'Значение от 0 до 100';
+      }
+
+      if (!data.exam) {
+        errors.exam = 'Предмет не выбран';
+      }
+
+      return errors;
+    },
     onSubmit: (value) => {
+      setShowModal(false);
+
       store.dispatch(createMark(value));
       formik.resetForm();
     },
@@ -60,7 +67,7 @@ function CreateMarkModal() {
                       className="block text-grey-darker text-sm font-bold mb-2"
                       htmlFor="exam"
                     >
-                      предмет
+                      {formik.errors.exam || 'предмет'}
                     </label>
                     <select
                       id="exam"
@@ -70,7 +77,7 @@ function CreateMarkModal() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option>предмет</option>
-                      {examsList.map((exam) => (
+                      {exams.map((exam) => (
                         <option value={exam} key={exam}>
                           {translateExamName(exam)}
                         </option>
@@ -82,7 +89,7 @@ function CreateMarkModal() {
                       className="block text-grey-darker text-sm font-bold"
                       htmlFor="result"
                     >
-                      балл
+                      {formik.errors.result || 'балл'}
                     </label>
                     <input
                       className="appearance-none border border-red w-full text-grey-darker mb-3 rounded-md  border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
@@ -92,7 +99,7 @@ function CreateMarkModal() {
                       placeholder="балл"
                       min={1}
                       max={100}
-                      value={formik.result}
+                      value={formik.values.result}
                       onChange={formik.handleChange}
                     />
                   </div>
@@ -101,10 +108,7 @@ function CreateMarkModal() {
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={(event) => {
-                      setShowModal(false);
-                      formik.handleSubmit(event);
-                    }}
+                    onClick={formik.handleSubmit}
                   >
                     Ок
                   </button>

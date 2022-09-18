@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CookieBanner from '../components/CookieBanner';
 import ProfileHeader from '../components/ProfileHeader';
 import { Outlet } from 'react-router-dom';
+import { store } from '../store';
+import { readSettings } from '../store/reducers/settingsReducer';
 
 export default function Profile() {
+  useEffect(() => {
+    store.dispatch(readSettings);
+  }, []);
 
   return (
     <>

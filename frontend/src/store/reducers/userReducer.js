@@ -112,6 +112,8 @@ const userSlice = createSlice({
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
+        state.isAuth = false;
+        state.user = {}
       });
 
     builder.addCase(uploadUserInfo.fulfilled, (state, action) => {
