@@ -40,22 +40,6 @@ export class ProfileService {
     return await this.buildProfile(currentUserId);
   }
 
-  async uploadMarks(userId: number): Promise<ProfileType> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-
-    await this.userRepository.save(user);
-
-    return await this.buildProfile(userId);
-  }
-
-  async uploadDirections(userId: number): Promise<ProfileType> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-
-    await this.userRepository.save(user);
-
-    return await this.buildProfile(userId);
-  }
-
   async acceptWithCookie(currentUserId: number): Promise<ProfileType> {
     const user = await this.userRepository.findOne({
       where: { id: currentUserId },

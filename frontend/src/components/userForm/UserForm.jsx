@@ -11,17 +11,21 @@ import {
 } from '../../utils/validate';
 import { store } from '../../store';
 import { uploadUserInfo } from '../../store/reducers/userReducer';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../store/selectors';
 
 function UserForm() {
+  const user = useSelector(getUser);
+
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      link: '',
-      phone: '',
-      snils: '',
-      passportID: '',
-      passportSeries: '',
+      firstName: user.firstName,
+      lastName: user.lastName,
+      link: user.link,
+      phone: user.phone,
+      snils: user.snils,
+      passportID: user.passportID,
+      passportSeries: user.passportSeries,
     },
     async onSubmit(data) {
       store.dispatch(uploadUserInfo(data));
@@ -96,21 +100,21 @@ function UserForm() {
                   {formik.errors.firstName || 'Имя'}
                 </label>
               </div>
-              <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:-mx-1 sm:pl-1 sm:w-1/2">
+              <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:w-1/2 sm:pr-1">
                 <input
                   id="link"
                   htmltype="url"
                   name="link"
                   onChange={formik.handleChange}
-                  value={formik.link}
+                  value={formik.values.link}
                   className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
-            rounded-md focus:ring-0 group focus:outline-0 border text-sm"
+              rounded-md focus:ring-0 group focus:outline-0 border text-sm"
                 />
                 <label
-                  htmlFor="link"
+                  htmlFor="first"
                   className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
-                  {formik.errors.link || 'Ссылка на соц.сеть'}
+                  {formik.errors.lastName || 'Фамилия'}
                 </label>
               </div>
               <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:w-1/2 sm:pr-1">
@@ -118,13 +122,13 @@ function UserForm() {
                   id="lastName"
                   htmltype="text"
                   name="lastName"
-                  value={formik.lastName}
                   onChange={formik.handleChange}
+                  value={formik.values.lastName}
                   className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
               rounded-md focus:ring-0 group focus:outline-0 border text-sm"
                 />
                 <label
-                  htmlFor="lastName"
+                  htmlFor="first"
                   className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.lastName || 'Фамилия'}
@@ -135,7 +139,7 @@ function UserForm() {
                   id="phone"
                   htmltype="text"
                   name="phone"
-                  value={formik.phone}
+                  value={formik.values.phone}
                   onChange={formik.handleChange}
                   className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
             rounded-md focus:ring-0 group focus:outline-0 border text-sm"
@@ -153,7 +157,7 @@ function UserForm() {
                   id="snils"
                   htmltype="text"
                   name="snils"
-                  value={formik.snils}
+                  value={formik.values.snils}
                   onChange={formik.handleChange}
                   className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
             rounded-md focus:ring-0 group focus:outline-0 border text-sm"
@@ -171,7 +175,7 @@ function UserForm() {
                   id="passportSeries"
                   htmltype="text"
                   name="passportSeries"
-                  value={formik.passportSeries}
+                  value={formik.values.passportSeries}
                   onChange={formik.handleChange}
                   className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
               rounded-md focus:ring-0 group focus:outline-0 border text-sm"
@@ -188,7 +192,7 @@ function UserForm() {
                   id="passportID"
                   htmltype="text"
                   name="passportID"
-                  value={formik.passportID}
+                  value={formik.values.passportID}
                   onChange={formik.handleChange}
                   className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
             rounded-md focus:ring-0 group focus:outline-0 border text-sm"

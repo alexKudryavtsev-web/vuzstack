@@ -1,38 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import UploadPassport from '../components/UploadPassport';
-import UploadMarks from '../components/UploadMarks';
-import UploadDirections from '../components/UploadDirections';
 import CookieBanner from '../components/CookieBanner';
-import { getUser } from '../store/selectors';
 import ProfileHeader from '../components/ProfileHeader';
-import Error404Page from './Error404Page';
-import UserForm from '../components/userForm/UserForm';
+import { Outlet } from 'react-router-dom';
 
 export default function Profile() {
-  const user = useSelector(getUser);
-
-  let content = <UserForm />;
-
-  // switch (user.status) {
-  //   case 'PASSPORT_UPLOAD':
-  //     content = <UserForm />;
-  //     break;
-  //   case 'MARKS_UPLOAD':
-  //     content = <UploadMarks />;
-  //     break;
-  //   case 'DIRECTIONS_UPLOAD':
-  //     content = <UploadDirections />;
-  //     break;
-  //   case 'AWAITING_RESULT':
-  //     content = null;
-  //     break;
-  //   case 'GET_RESULT':
-  //     content = null;
-  //     break;
-  //   default:
-  //     content = <Error404Page />;
-  // }
 
   return (
     <>
@@ -57,7 +28,7 @@ export default function Profile() {
               <div className="px-6 my-10">
                 <ProfileHeader />
                 <div className="border-t border-gray-300 text-center pt-10">
-                  {content}
+                  <Outlet />
                 </div>
               </div>
             </div>

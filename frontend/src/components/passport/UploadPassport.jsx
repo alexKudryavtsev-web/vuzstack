@@ -1,6 +1,6 @@
 import React from 'react';
-import { store } from '../store';
-import { uploadPassport } from '../store/reducers/userReducer';
+import { store } from '../../store';
+import { uploadPassport } from '../../store/reducers/userReducer';
 
 export default function UploadPassport() {
   async function handleFileSelect(event) {

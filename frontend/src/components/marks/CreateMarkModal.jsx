@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFormik } from 'formik';
-import MarkService from '../services/MarkService';
-import translateExamName from '../utils/translateExamName';
-import { store } from '../store';
-import { createMark } from '../store/reducers/userReducer';
+import MarkService from '../../services/MarkService';
+import translateExamName from '../../utils/translateExamName';
+import { store } from '../../store';
+import { createMark } from '../../store/reducers/userReducer';
 
 function CreateMarkModal() {
   const [showModal, setShowModal] = useState(false);
