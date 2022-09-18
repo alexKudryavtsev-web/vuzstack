@@ -1,8 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { store } from '../../store';
 import { uploadPassport } from '../../store/reducers/userReducer';
+import { getUser } from '../../store/selectors';
 
 export default function UploadPassport() {
+  const user = useSelector(getUser);
+
   async function handleFileSelect(event) {
     if (!event.target.files[0]) {
       return;
@@ -11,6 +15,19 @@ export default function UploadPassport() {
     formData.append('passport', event.target.files[0]);
 
     store.dispatch(uploadPassport(formData));
+  }
+
+  if (user.passport) {
+    return (
+      <div>
+        <p>Паспорт загружен</p>
+        <img
+          src={user.passport}
+          alt="passport"
+          className="object-cover"
+        />
+      </div>
+    );
   }
 
   return (

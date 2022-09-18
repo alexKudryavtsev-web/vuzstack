@@ -28,6 +28,7 @@ export class ProfileService {
   ): Promise<ProfileType> {
     const user = await this.userRepository.findOne({
       where: { id: currentUserId },
+      relations: ['profile'],
     });
     await this.avatarService.uploadFile(
       currentUserId,
@@ -35,7 +36,15 @@ export class ProfileService {
       ImageType.PASSPORT,
     );
 
+    const url = await this.avatarService.getURL(
+      currentUserId,
+      ImageType.PASSPORT,
+    );
+
+    user.profile.passport = url;
+
     await this.userRepository.save(user);
+    await this.profileRepository.save(user.profile);
 
     return await this.buildProfile(currentUserId);
   }

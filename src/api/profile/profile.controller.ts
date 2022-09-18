@@ -44,16 +44,6 @@ export class ProfileController {
     );
   }
 
-  @Patch('avatar')
-  @UseGuards(AuthGuard)
-  @UseInterceptors(FileInterceptor('avatar'))
-  async uploadAvatar(
-    @User('id') currentUserId: number,
-    @UploadedFile() avatar: Express.Multer.File,
-  ) {
-    await this.avatarService.uploadFile(currentUserId, avatar);
-  }
-
   @Patch('passport')
   @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('passport'))
