@@ -79,6 +79,17 @@ const selectDirection = createAsyncThunk(
   },
 );
 
+const deselectDirection = createAsyncThunk(
+  'direction/deselect',
+  async (payload, thunkApi) => {
+    const { data } = await DirectionService.deselectDirection(
+      payload.directionId,
+    );
+
+    return data;
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -145,6 +156,10 @@ const userSlice = createSlice({
       state.user.directions = action.payload.directions;
       state.isFailed = null;
     });
+
+    builder.addCase(deselectDirection.fulfilled, (state, action) => {
+      state.user.directions = action.payload.directions;
+    });
   },
 });
 
@@ -159,4 +174,5 @@ export {
   checkAuth,
   setReady,
   selectDirection,
+  deselectDirection,
 };

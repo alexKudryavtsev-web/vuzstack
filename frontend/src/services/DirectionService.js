@@ -13,6 +13,10 @@ class DirectionService {
   static async selectDirection(directionId) {
     return await $api.post(`${API_URL}/direction`, { directionId });
   }
+
+  static async deselectDirection(directionId) {
+    return await $api.delete(`${API_URL}/direction/${directionId}`);
+  }
 }
 
 export default DirectionService;
