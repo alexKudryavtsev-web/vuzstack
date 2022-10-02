@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import { getDirections } from '../../store/selectors';
-import DirectionItem from './DirectionItem';
+import DirectionItem from './SelectedDirection';
 
-function DirectionsList() {
+function Selected() {
   const [directions, setDirections] = useState(useSelector(getDirections));
 
   function onDragEnd(result) {
@@ -72,4 +72,4 @@ function DirectionsList() {
   );
 }
 
-export default DirectionsList;
+export default Selected;

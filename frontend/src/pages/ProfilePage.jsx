@@ -1,19 +1,35 @@
 import React, { useEffect } from 'react';
 import CookieBanner from '../components/CookieBanner';
 import ProfileHeader from '../components/ProfileHeader';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { store } from '../store';
 import { readSettings } from '../store/reducers/settingsReducer';
+import { useSelector } from 'react-redux';
+import { getUser } from '../store/selectors';
+import ReadyButton from '../components/readyButton/ReadyButton';
 
 export default function Profile() {
+  const navigate = useNavigate();
+  const user = useSelector(getUser);
+
   useEffect(() => {
     store.dispatch(readSettings);
+
+    if (!user.firstName) {
+      navigate('user-form');
+    } else if (!user.passport) {
+      navigate('passport');
+    } else if (user.marks.length < 3) {
+      navigate('marks');
+    } else {
+      navigate('directions');
+    }
   }, []);
 
   return (
     <>
       <main className="profile-page">
-        <section className="relative block" style={{ height: '350px' }}>
+        <section className="relative block" style={{ minHeight: '350px' }}>
           <div
             className="absolute top-0 w-full h-full bg-center bg-cover"
             style={{
@@ -34,6 +50,7 @@ export default function Profile() {
                 <ProfileHeader />
                 <div className="border-t border-gray-300 text-center pt-10">
                   <Outlet />
+                  <ReadyButton />
                 </div>
               </div>
             </div>

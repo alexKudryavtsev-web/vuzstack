@@ -3,7 +3,7 @@ import {
   ImageType,
 } from '@app/cloudinary/cloudinary.service';
 import { UserEntity } from '@app/api/user/user.entity';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProfileType } from './types/profile.type';
@@ -73,7 +73,7 @@ export class ProfileService {
       relations: ['profile'],
     });
 
-    Object.assign(user.profile, uploadUserInfoDto);
+    Object.assign(user.profile, uploadUserInfoDto, { userInfoUploaded: true });
 
     await this.profileRepository.save(user.profile);
 
@@ -100,5 +100,43 @@ export class ProfileService {
       ...user.profile,
       profile: undefined,
     };
+  }
+
+  async setReady(userId: number): Promise<ProfileType> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['directions', 'marks', 'profile'],
+    });
+
+    if (!user.profile.userInfoUploaded) {
+      throw new HttpException(
+        'Информация "Обо мне" не указана',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (!user.profile.passport) {
+      throw new HttpException('Паспорт не загружен', HttpStatus.BAD_REQUEST);
+    }
+
+    if (user.marks.length < 3) {
+      throw new HttpException(
+        'ЕГЭ не указано до конца',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (user.directions.length < 2) {
+      throw new HttpException(
+        '"Мечта" и "Запас" для поступления не выбраны',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    user.profile.ready = true;
+
+    await this.profileRepository.save(user.profile);
+
+    return await this.buildProfile(userId);
   }
 }

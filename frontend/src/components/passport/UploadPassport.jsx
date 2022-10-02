@@ -1,11 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { store } from '../../store';
 import { uploadPassport } from '../../store/reducers/userReducer';
 import { getUser } from '../../store/selectors';
 
 export default function UploadPassport() {
   const user = useSelector(getUser);
+  const navigate = useNavigate();
 
   async function handleFileSelect(event) {
     if (!event.target.files[0]) {
@@ -15,17 +17,15 @@ export default function UploadPassport() {
     formData.append('passport', event.target.files[0]);
 
     store.dispatch(uploadPassport(formData));
+
+    navigate('../marks')
   }
 
   if (user.passport) {
     return (
       <div>
         <p>Паспорт загружен</p>
-        <img
-          src={user.passport}
-          alt="passport"
-          className="object-cover"
-        />
+        <img src={user.passport} alt="passport" className="object-cover" />
       </div>
     );
   }

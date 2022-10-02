@@ -1,6 +1,6 @@
-import { DirectionEntity } from '../direction.entity';
+import { VuzEntity } from '../vuz.entity';
 
-export class DirectionsWithMetaResponseInterface {
-  directions: DirectionEntity[];
+export class VuzListWithMetaResponseInterface {
+  vuzList: VuzEntity[];
   meta: { total: number; limit: number; offset: number; filtred: number };
 }

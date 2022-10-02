@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { DirectionEntity } from './direction.entity';
 import { VuzEntity } from './vuz.entity';
 import { CreateVuzDto } from './dto/createVuz.dto';
 import { CreateDirectionDto } from './dto/createDirection.dto';
-import { DirectionsWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
+import { VuzListWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
 import { UserEntity } from '../user/user.entity';
 import { DirectionsResponseInterface } from './interfaces/directionResponse.interface';
 import { UpdatePriorityDto } from './dto/updatePriority.dto';
@@ -48,49 +48,31 @@ export class DirectionService {
     return newDirection;
   }
 
-  async readDirections(
-    currentUserId: number,
-    query: any,
-  ): Promise<DirectionsWithMetaResponseInterface> {
-    const { limit = 10, offset = 0, city } = query;
-
-    // const user = await this.userRepository.findOne(currentUserId, {
-    //   relations: ['marks'],
-    // });
-
-    // const exams = user.marks.map((exam) => exam.exam);
-
-    const queryBuilder = getRepository(DirectionEntity)
-      .createQueryBuilder('directions')
-      .leftJoinAndSelect('directions.vuz', 'vuz');
+  async readDirections(query: any): Promise<VuzListWithMetaResponseInterface> {
+    const { limit = 10, offset = 0, text } = query;
+    const queryBuilder = this.vuzRepository
+      .createQueryBuilder('vuz')
+      .leftJoinAndSelect('vuz.directions', 'directions');
 
     const total = await queryBuilder.getCount();
 
-    if (city) {
-      queryBuilder.andWhere('vuz.city=:city', {
-        city,
+    if (text) {
+      queryBuilder.andWhere("concat_ws(',', vuz.city, vuz.name) LIKE :text", {
+        text: `%${text}%`,
       });
     }
-
-    // TODO: v1
-    // for (const exam of exams) {
-    //   queryBuilder.andWhere(
-    //     "concat_ws(',', directions.optionalExams, directions.requiredExams) LIKE :exam",
-    //     {
-    //       exam: `%${exam}%`,
-    //     },
-    //   );
-    // }
 
     const filtred = await queryBuilder.getCount();
 
     queryBuilder.limit(limit);
     queryBuilder.offset(offset);
 
-    const directions = await queryBuilder.getMany();
+    queryBuilder.orderBy('vuz.name', 'DESC');
+
+    const vuzList = await queryBuilder.getMany();
 
     return {
-      directions,
+      vuzList,
       meta: {
         total,
         limit,

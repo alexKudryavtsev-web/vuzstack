@@ -34,4 +34,10 @@ export class ProfileEntity {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @Column({ default: false })
+  ready: boolean;
+
+  @Column({ default: false })
+  userInfoUploaded: boolean;
 }

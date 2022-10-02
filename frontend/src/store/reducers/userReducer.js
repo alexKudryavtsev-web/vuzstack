@@ -22,6 +22,12 @@ const checkAuth = createAsyncThunk('user/checkAuth', async () => {
   return data;
 });
 
+const setReady = createAsyncThunk('user/ready', async () => {
+  const { data } = await ProfileService.setReady();
+
+  return data;
+})
+
 const uploadPassport = createAsyncThunk(
   'user/uploadPassport',
   async (payload, thunkApi) => {
@@ -119,6 +125,10 @@ const userSlice = createSlice({
     builder.addCase(uploadUserInfo.fulfilled, (state, action) => {
       state.user = action.payload;
     })
+
+    builder.addCase(setReady.fulfilled, (state, action) => {
+      state.user = action.payload;
+    })
   },
 });
 
@@ -131,4 +141,5 @@ export {
   createMark,
   acceptWithCookie,
   checkAuth,
+  setReady
 };

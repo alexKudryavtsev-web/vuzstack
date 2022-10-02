@@ -10,7 +10,7 @@ function ProfileHeader() {
             <div className="mr-4 p-3 text-center">
               <NavLink to="user-form">
                 <span className="text-xl font-bold block tracking-wide text-gray-700">
-                  Личные данные
+                  Обо мне
                 </span>
               </NavLink>
             </div>
@@ -28,14 +28,14 @@ function ProfileHeader() {
             <div className="mr-4 p-3 text-center">
               <NavLink to="marks">
                 <span className="text-xl font-bold block tracking-wide text-gray-700">
-                  Результаты ЕГЭ
+                  Баллы ЕГЭ
                 </span>
               </NavLink>
             </div>
             <div className="mr-4 p-3 text-center">
-              <NavLink to='directions'>
+              <NavLink to="directions">
                 <span className="text-xl font-bold block tracking-wide text-gray-700">
-                  Места
+                  ВУЗ-ы
                 </span>
               </NavLink>
             </div>

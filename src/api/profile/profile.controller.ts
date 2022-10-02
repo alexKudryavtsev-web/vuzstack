@@ -1,4 +1,3 @@
-import { CloudinaryService } from '@app/cloudinary/cloudinary.service';
 import { User } from '@app/api/user/decorators/user.decorator';
 import { AuthGuard } from '@app/api/user/guards/auth.guard';
 import {
@@ -19,10 +18,7 @@ import { UploadUserInfoDto } from './dto/uploadUserInfo.dto';
 
 @Controller('profile')
 export class ProfileController {
-  constructor(
-    private readonly avatarService: CloudinaryService,
-    private readonly profileServce: ProfileService,
-  ) {}
+  constructor(private readonly profileServce: ProfileService) {}
 
   @Post('accept-with-cookie')
   @UseGuards(AuthGuard)
@@ -55,5 +51,11 @@ export class ProfileController {
       throw new HttpException('Паспорт не загружен', HttpStatus.BAD_REQUEST);
     }
     return await this.profileServce.uploadPassport(currentUserId, passport);
+  }
+
+  @Post('ready')
+  @UseGuards(AuthGuard)
+  async setReady(@User('id') currentUserId: number): Promise<ProfileType> {
+    return await this.profileServce.setReady(currentUserId);
   }
 }

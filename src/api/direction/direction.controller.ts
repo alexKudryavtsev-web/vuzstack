@@ -17,7 +17,7 @@ import { CreateVuzDto } from './dto/createVuz.dto';
 import { SelectDirectionDto } from './dto/selectDirection.dto';
 import { UpdatePriorityDto } from './dto/updatePriority.dto';
 import { DirectionsResponseInterface } from './interfaces/directionResponse.interface';
-import { DirectionsWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
+import { VuzListWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
 
 @Controller()
 export class DirectionController {
@@ -34,12 +34,10 @@ export class DirectionController {
   }
 
   @Get('direction')
-  @UseGuards(AuthGuard)
   async readDirection(
-    @User('id') currentUserId: number,
     @Query() query: any,
-  ): Promise<DirectionsWithMetaResponseInterface> {
-    return await this.directionService.readDirections(currentUserId, query);
+  ): Promise<VuzListWithMetaResponseInterface> {
+    return await this.directionService.readDirections(query);
   }
 
   @Post('direction')

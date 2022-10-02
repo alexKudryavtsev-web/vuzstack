@@ -13,8 +13,10 @@ import { store } from '../../store';
 import { uploadUserInfo } from '../../store/reducers/userReducer';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../store/selectors';
+import { useNavigate } from 'react-router-dom';
 
 function UserForm() {
+  const navigate = useNavigate();
   const user = useSelector(getUser);
 
   const formik = useFormik({
@@ -29,6 +31,7 @@ function UserForm() {
     },
     async onSubmit(data) {
       store.dispatch(uploadUserInfo(data));
+      navigate('../passport')
     },
     validate(data) {
       const errors = {};
@@ -80,7 +83,7 @@ function UserForm() {
   return (
     <div className="grid place-items-center">
       <div className="w-full md:w-11/12 lg:w-8/12 sm:mx-auto">
-        <div className="bg-white shadow-sm">
+        <div className="bg-white">
           <div className="leading-loose">
             <form onSubmit={formik.handleSubmit}>
               <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:w-1/2 sm:pr-1">
@@ -102,23 +105,6 @@ function UserForm() {
               </div>
               <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:w-1/2 sm:pr-1">
                 <input
-                  id="link"
-                  htmltype="url"
-                  name="link"
-                  onChange={formik.handleChange}
-                  value={formik.values.link}
-                  className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
-              rounded-md focus:ring-0 group focus:outline-0 border text-sm"
-                />
-                <label
-                  htmlFor="first"
-                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
-                >
-                  {formik.errors.lastName || 'Фамилия'}
-                </label>
-              </div>
-              <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:w-1/2 sm:pr-1">
-                <input
                   id="lastName"
                   htmltype="text"
                   name="lastName"
@@ -134,7 +120,7 @@ function UserForm() {
                   {formik.errors.lastName || 'Фамилия'}
                 </label>
               </div>
-              <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:-mx-1 sm:pl-1 sm:w-1/2">
+              <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:w-1/2 sm:pr-1">
                 <input
                   id="phone"
                   htmltype="text"
@@ -149,6 +135,23 @@ function UserForm() {
                   className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
                 >
                   {formik.errors.phone || 'Телефон'}
+                </label>
+              </div>
+              <div className="relative h-10 input-component mb-5 empty sm:inline-block mt-2 sm:w-1/2 sm:pr-1">
+                <input
+                  id="link"
+                  htmltype="url"
+                  name="link"
+                  onChange={formik.handleChange}
+                  value={formik.values.link}
+                  className="h-full w-full border-gray-300 px-2 transition-all hover:border-gray-500 focus:border-black-500 
+              rounded-md focus:ring-0 group focus:outline-0 border text-sm"
+                />
+                <label
+                  htmlFor="first"
+                  className="absolute left-2 transition-all px-1 text-black-600 text-xs top-0"
+                >
+                  {formik.errors.url || 'Ссылка на соц.сеть'}
                 </label>
               </div>
               <p className="text-gray-800 font-medium">СНИЛС</p>

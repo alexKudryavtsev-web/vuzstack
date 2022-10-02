@@ -24,6 +24,10 @@ class ProfileService {
   static async uploadDirections() {
     return $api.post('profile/directions');
   }
+
+  static async setReady() {
+    return $api.post('profile/ready');
+  }
 }
 
 export default ProfileService;
