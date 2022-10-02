@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
+import DirectionService from '../../services/DirectionService';
 import MarkService from '../../services/MarkService';
 import ProfileService from '../../services/ProfileService';
 
@@ -26,7 +27,7 @@ const setReady = createAsyncThunk('user/ready', async () => {
   const { data } = await ProfileService.setReady();
 
   return data;
-})
+});
 
 const uploadPassport = createAsyncThunk(
   'user/uploadPassport',
@@ -67,6 +68,17 @@ const createMark = createAsyncThunk(
   },
 );
 
+const selectDirection = createAsyncThunk(
+  'direction/select',
+  async (payload, thunkApi) => {
+    const { data } = await DirectionService.selectDirection(
+      payload.directionId,
+    );
+
+    return data;
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -90,10 +102,9 @@ const userSlice = createSlice({
         state.isFailed = null;
       });
 
-    builder
-      .addCase(uploadPassport.fulfilled, (state, action) => {
-        state.user = action.payload;
-      });
+    builder.addCase(uploadPassport.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
 
     builder.addCase(acceptWithCookie.fulfilled, (state, action) => {
       state.user.acceptedWithCookie = true;
@@ -119,16 +130,21 @@ const userSlice = createSlice({
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
-        state.user = {}
+        state.user = {};
       });
 
     builder.addCase(uploadUserInfo.fulfilled, (state, action) => {
       state.user = action.payload;
-    })
+    });
 
     builder.addCase(setReady.fulfilled, (state, action) => {
       state.user = action.payload;
-    })
+    });
+
+    builder.addCase(selectDirection.fulfilled, (state, action) => {
+      state.user.directions = action.payload.directions;
+      state.isFailed = null;
+    });
   },
 });
 
@@ -141,5 +157,6 @@ export {
   createMark,
   acceptWithCookie,
   checkAuth,
-  setReady
+  setReady,
+  selectDirection,
 };

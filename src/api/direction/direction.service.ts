@@ -49,7 +49,8 @@ export class DirectionService {
   }
 
   async readDirections(query: any): Promise<VuzListWithMetaResponseInterface> {
-    const { limit = 10, offset = 0, text } = query;
+    const text = query.text;
+
     const queryBuilder = this.vuzRepository
       .createQueryBuilder('vuz')
       .leftJoinAndSelect('vuz.directions', 'directions');
@@ -57,15 +58,12 @@ export class DirectionService {
     const total = await queryBuilder.getCount();
 
     if (text) {
-      queryBuilder.andWhere("concat_ws(',', vuz.city, vuz.name) LIKE :text", {
+      queryBuilder.andWhere("concat_ws(' ', vuz.city, vuz.name) LIKE :text", {
         text: `%${text}%`,
       });
     }
 
     const filtred = await queryBuilder.getCount();
-
-    queryBuilder.limit(limit);
-    queryBuilder.offset(offset);
 
     queryBuilder.orderBy('vuz.name', 'DESC');
 
@@ -75,8 +73,6 @@ export class DirectionService {
       vuzList,
       meta: {
         total,
-        limit,
-        offset,
         filtred,
       },
     };
@@ -88,7 +84,7 @@ export class DirectionService {
   ): Promise<DirectionsResponseInterface> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['directions'],
+      relations: ['directions', 'marks'],
     });
 
     const direction = await this.directionRepository.findOne({
@@ -98,6 +94,29 @@ export class DirectionService {
     if (user.priority.length > Number(process.env.MAX_AMOUNT_DIRECTION)) {
       throw new HttpException(
         'Выбрано слишком много направлений',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    let requiredExamsPassed = true;
+
+    for (const exam of direction.requiredExams) {
+      if (!user.marks.find((mark) => mark.exam === exam)) {
+        requiredExamsPassed = false;
+      }
+    }
+
+    let optionalExamPassed = false;
+
+    for (const exam of direction.optionalExams) {
+      if (user.marks.find((mark) => mark.exam === exam)) {
+        optionalExamPassed = true;
+      }
+    }
+
+    if (!requiredExamsPassed || !optionalExamPassed) {
+      throw new HttpException(
+        'Подходящие предметы не сданы (или результаты не загружены)',
         HttpStatus.BAD_REQUEST,
       );
     }

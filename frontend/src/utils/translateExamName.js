@@ -23,4 +23,30 @@ function translateExamName(exam) {
   }
 }
 
+function translateExamToShortName(exam) {
+  switch (exam) {
+    case 'RUSSIAN_LANGUAGE':
+      return 'русский';
+    case 'MATH':
+      return 'мат.';
+    case 'PHYSIC':
+      return 'физика';
+    case 'CHEMISTRY':
+      return 'химия';
+    case 'HISTORY':
+      return 'история';
+    case 'SOCIAL_SCIENCE':
+      return 'общ.';
+    case 'COMPUTER_SCIENCE':
+      return 'инф.';
+    case 'BIOLOGY':
+      return 'био.';
+    case 'FOREIGN_LANGUAGE':
+      return 'иностранный';
+    default:
+      return null;
+  }
+}
+
 export default translateExamName
+export { translateExamToShortName }

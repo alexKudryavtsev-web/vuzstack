@@ -9,6 +9,10 @@ class DirectionService {
       }
     });
   }
+
+  static async selectDirection(directionId) {
+    return await $api.post(`${API_URL}/direction`, { directionId });
+  }
 }
 
 export default DirectionService;
