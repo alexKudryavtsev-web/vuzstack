@@ -1,8 +1,7 @@
-import Avatar from 'react-avatar';
 import { store } from '../../store';
 import { deselectDirection } from '../../store/reducers/userReducer';
 
-function DirectionItem({ direction }) {
+function DirectionItem({ direction, index }) {
   function deselectDirectionHandler() {
     store.dispatch(deselectDirection({ directionId: direction.id }));
   }
@@ -14,7 +13,7 @@ function DirectionItem({ direction }) {
           <div className="flex-grow">
             <div className="w-full sm:flex justify-between items-center mb-3">
               <h2 className="text-2xl leading-snug truncate mb-1 sm:mb-0">
-                {direction.name}
+                {index + 1}. {direction.name}
               </h2>
             </div>
             <div className="flex items-center whitespace-normal">

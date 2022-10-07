@@ -1,32 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+import { store } from '../../store';
+import { updatePriority } from '../../store/reducers/userReducer';
 import { getDirections } from '../../store/selectors';
 import DirectionItem from './SelectedDirection';
 
 function Selected() {
-  const [directions, setDirections] = useState(useSelector(getDirections));
+  const directions = useSelector(getDirections);
 
   function onDragEnd(result) {
     if (!result.destination) return;
     if (result.destination.index === result.source.index) return;
-    const projects = reorder(
-      directions,
-      result.source.index,
-      result.destination.index,
-    );
 
-    setDirections(projects);
+    store.dispatch(
+      updatePriority({
+        directionId: directions[result.source.index].id,
+        priority: result.destination.index + 1,
+      }),
+    );
   }
 
   function onDragStart() {}
-
-  function reorder(list, startIndex, endIndex) {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-  }
 
   if (!directions.length) {
     return (
@@ -58,12 +53,12 @@ function Selected() {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <DirectionItem direction={item} />
-                      {provided.placeholder}
+                      <DirectionItem direction={item} index={index} />
                     </div>
                   )}
                 </Draggable>
               ))}
+              <span style={{ display: 'none' }}>{provided.placeholder}</span>
             </div>
           )}
         </Droppable>

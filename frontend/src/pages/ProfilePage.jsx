@@ -45,12 +45,12 @@ export default function Profile() {
         </section>
         <section className="relative py-16">
           <div className="container mx-auto px-4">
-            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
               <div className="px-6 my-10">
                 <ProfileHeader />
                 <div className="border-t border-gray-300 text-center pt-10">
-                  <Outlet />
                   <ReadyButton />
+                  <Outlet />
                 </div>
               </div>
             </div>

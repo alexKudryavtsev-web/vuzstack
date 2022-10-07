@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Param,
-  Patch,
-  Post,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { User } from './decorators/user.decorator';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdatePasswordDto } from './dto/updatePassword.dto';

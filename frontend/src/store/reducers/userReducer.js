@@ -90,6 +90,18 @@ const deselectDirection = createAsyncThunk(
   },
 );
 
+const updatePriority = createAsyncThunk(
+  'direction/updatePriority',
+  async (payload, thunkApi) => {
+    const { data } = await DirectionService.updatePriority(
+      payload.directionId,
+      payload.priority,
+    );
+
+    return data;
+  },
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -160,6 +172,10 @@ const userSlice = createSlice({
     builder.addCase(deselectDirection.fulfilled, (state, action) => {
       state.user.directions = action.payload.directions;
     });
+
+    builder.addCase(updatePriority.fulfilled, (state, action) => {
+      state.user.directions = action.payload.directions;
+    });
   },
 });
 
@@ -175,4 +191,5 @@ export {
   setReady,
   selectDirection,
   deselectDirection,
+  updatePriority,
 };

@@ -84,11 +84,12 @@ export class DirectionService {
   ): Promise<DirectionsResponseInterface> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['directions', 'marks'],
+      relations: ['directions', 'marks', 'directions.vuz'],
     });
 
     const direction = await this.directionRepository.findOne({
       where: { id: directionId },
+      select: ['vuz'],
     });
 
     if (user.priority.length > Number(process.env.MAX_AMOUNT_DIRECTION)) {
@@ -133,9 +134,7 @@ export class DirectionService {
 
     await this.userRepository.save(user);
 
-    return {
-      directions: await this.prepareDirections(user.directions, user.priority),
-    };
+    return await this.readSelectedDirections(userId);
   }
 
   async deselectDirection(
@@ -144,7 +143,7 @@ export class DirectionService {
   ): Promise<DirectionsResponseInterface> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['directions'],
+      relations: ['directions', 'directions.vuz'],
     });
     const direction = await this.directionRepository.findOne({
       where: {
@@ -166,9 +165,7 @@ export class DirectionService {
       await this.directionRepository.save(direction);
     }
 
-    return {
-      directions: await this.prepareDirections(user.directions, user.priority),
-    };
+    return await this.readSelectedDirections(userId);
   }
 
   async updatePriority(
@@ -177,7 +174,7 @@ export class DirectionService {
   ): Promise<DirectionsResponseInterface> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['directions'],
+      relations: ['directions', 'directions.vuz'],
     });
 
     const indexInPriorities = user.priority.indexOf(
@@ -191,6 +188,17 @@ export class DirectionService {
     );
 
     await this.userRepository.save(user);
+
+    return await this.readSelectedDirections(userId);
+  }
+
+  async readSelectedDirections(
+    userId: number,
+  ): Promise<DirectionsResponseInterface> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['directions', 'directions.vuz'],
+    });
 
     return {
       directions: await this.prepareDirections(user.directions, user.priority),
