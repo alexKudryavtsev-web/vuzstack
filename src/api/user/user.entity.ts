@@ -6,6 +6,7 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -57,4 +58,10 @@ export class UserEntity {
   @OneToOne(() => ProfileEntity)
   @JoinColumn()
   profile: ProfileEntity;
+
+  @ManyToOne(() => DirectionEntity, (direction) => direction.abits)
+  result: DirectionEntity;
+
+  @Column({ default: false })
+  isProcessed: boolean;
 }

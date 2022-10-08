@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { UserEntity } from '../user/user.entity';
 import { VuzEntity } from './vuz.entity';
 
 @Entity({ name: 'directions' })
@@ -24,4 +31,7 @@ export class DirectionEntity {
 
   @ManyToOne(() => VuzEntity, (vuz) => vuz.directions)
   vuz: VuzEntity;
+
+  @OneToMany(() => UserEntity, (user) => user.result)
+  abits: UserEntity[];
 }

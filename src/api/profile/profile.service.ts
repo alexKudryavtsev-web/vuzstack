@@ -83,7 +83,14 @@ export class ProfileService {
   async buildProfile(userId: number): Promise<ProfileType> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['marks', 'directions', 'directions.vuz', 'profile'],
+      relations: [
+        'marks',
+        'directions',
+        'directions.vuz',
+        'profile',
+        'result',
+        'result.vuz',
+      ],
     });
 
     delete user.activationLink;

@@ -26,6 +26,80 @@ export default function Profile() {
     }
   }, []);
 
+  let content;
+
+  if (user.isProcessed && user.result) {
+    content = (
+      <div className="container mx-auto px-4">
+        <div className="relative min-h-[50vh] shadow-lg flex flex-col items-center justify-center min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
+          <div className="px-6 my-10">
+            <div className="pb-6">
+              <div className="text-xl font-bold block tracking-wide text-center text-gray-700">
+                Поздравляем с успешным поступлением!
+              </div>
+            </div>
+            <div className="text-sm px-10 font-bold block tracking-wide text-center text-gray-700">
+              Ты поступил на "{user.result.name}" в "{user.result.vuz.name}"
+            </div>
+            <div className="text-sm px-10 font-bold block tracking-wide text-center text-gray-700">
+              Твои контактные данные высланы в этот ВУЗ. Жди звонка или почты от
+              него.
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } else if (user.isProcessed) {
+    content = (
+      <div className="container mx-auto px-4">
+        <div className="relative min-h-[50vh] shadow-lg flex flex-col items-center justify-center min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
+          <div className="px-6 my-10">
+            <div className="pb-6">
+              <div className="text-xl font-bold block tracking-wide text-center text-gray-700">
+                К сожалению, ты никуда не поступил :(
+              </div>
+            </div>
+            <div className="text-sm px-10 font-bold block tracking-wide text-center text-gray-700">
+              Но не унывай... Все хорошо, что хорошо кончается.
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } else if (user.ready) {
+    content = (
+      <div className="container mx-auto px-4">
+        <div className="relative min-h-[50vh] shadow-lg flex flex-col items-center justify-center min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
+          <div className="px-6 my-10">
+            <div className="pb-6">
+              <div className="text-xl font-bold block tracking-wide text-center text-gray-700">
+                Твои данные успешно загружены. 5 августа придет результат :)
+              </div>
+            </div>
+            <div className="text-sm px-10 font-bold block tracking-wide text-center text-gray-700">
+              На основе алгоритма сервис сопоставит твои предпочтения с твоими
+              баллами и баллами конкурентов
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    content = (
+      <div className="container mx-auto px-4">
+        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
+          <div className="px-6 my-10">
+            <ProfileHeader />
+            <div className="border-t border-gray-300 text-center pt-10">
+              <ReadyButton />
+              <Outlet />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <main className="profile-page">
@@ -43,38 +117,7 @@ export default function Profile() {
             ></span>
           </div>
         </section>
-        <section className="relative py-16">
-          {user.ready ? (
-            <div className="container mx-auto px-4">
-              <div className="relative min-h-[50vh] shadow-lg flex flex-col items-center justify-center min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
-                <div className="px-6 my-10">
-                  <div className="pb-6">
-                    <div className="text-xl font-bold block tracking-wide text-center text-gray-700">
-                      Твои данные успешно загружены. 5 августа придет результат
-                      :)
-                    </div>
-                  </div>
-                  <div className="text-sm px-10 font-bold block tracking-wide text-center text-gray-700">
-                    На основе алгоритма сервис сопоставит твои предпочтения с
-                    твоими баллами и баллами конкурентов
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="container mx-auto px-4">
-              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
-                <div className="px-6 my-10">
-                  <ProfileHeader />
-                  <div className="border-t border-gray-300 text-center pt-10">
-                    <ReadyButton />
-                    <Outlet />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
+        <section className="relative py-16">{content}</section>
         <CookieBanner />
       </main>
     </>
