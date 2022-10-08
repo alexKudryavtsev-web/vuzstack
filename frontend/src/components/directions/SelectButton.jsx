@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { store } from '../../store';
 import { selectDirection } from '../../store/reducers/userReducer';
-import { getDirections, getMarks } from '../../store/selectors';
+import {
+  getDirections,
+  getMarks,
+  getMaxAmountDirection,
+} from '../../store/selectors';
 import userPassedExams from '../../utils/userPassedExams';
 
 function SelectButton({ direction }) {
@@ -11,11 +15,15 @@ function SelectButton({ direction }) {
   const directions = useSelector(getDirections);
   const marks = useSelector(getMarks);
 
+  const maxAmountDirection = useSelector(getMaxAmountDirection);
+
   function handleSelectButton() {
     if (directions.find((anyDirection) => anyDirection.id === direction.id)) {
       setMessage('Место уже было выбрано');
     } else if (!userPassedExams(marks, direction)) {
       setMessage('Подходящие предметы не сданы (или результаты не загружены)');
+    } else if (directions.length === maxAmountDirection) {
+      setMessage('Выбрано слишком много мест для поступления');
     } else {
       store.dispatch(selectDirection({ directionId: direction.id }));
       setMessage('Место выбрано');

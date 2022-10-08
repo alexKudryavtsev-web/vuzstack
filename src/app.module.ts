@@ -2,21 +2,21 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { UserModule } from '@app/api/user/user.module';
 import { BullModule } from '@nestjs/bull';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import ormconfig from './ormconfig';
+import ormconfig from '@app/ormconfig';
 import { ConfigModule } from '@nestjs/config';
-import { SessionModule } from './api/session/session.module';
-import { AuthMiddleware } from './api/user/middlewares/auth.middleware';
+import { SessionModule } from '@app/api/session/session.module';
+import { AuthMiddleware } from '@app/api/user/middlewares/auth.middleware';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { CloudinaryModule } from '@app/cloudinary/cloudinary.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { ProfileModule } from './api/profile/profile.module';
-import { DirectionModule } from './api/direction/direction.module';
-import { MarkModule } from './api/mark/mark.module';
+import { ProfileModule } from '@app/api/profile/profile.module';
+import { DirectionModule } from '@app/api/direction/direction.module';
+import { MarkModule } from '@app/api/mark/mark.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { TaskModule } from './tasks/task.module';
-import { SettingsService } from './api/settings/settings.service';
-import { SettingsModule } from './api/settings/settings.module';
+import { TaskModule } from '@app/tasks/task.module';
+import { SettingsModule } from '@app/api/settings/settings.module';
+import { LogicModule } from '@app/api/logic/logic.module';
 
 @Module({
   imports: [
@@ -49,6 +49,7 @@ import { SettingsModule } from './api/settings/settings.module';
     MarkModule,
     TaskModule,
     SettingsModule,
+    LogicModule,
   ],
   controllers: [],
   providers: [],

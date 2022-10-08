@@ -1,11 +1,9 @@
-import { DirectionEntity } from '@app/api/direction/direction.entity';
-import { UserEntity } from '@app/api/user/user.entity';
+import { LogicModule } from '@app/api/logic/logic.module';
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { TaskService } from './task.service';
+import { TaskService } from '@app/tasks/task.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, DirectionEntity])],
+  imports: [LogicModule],
   providers: [TaskService],
 })
 export class TaskModule {}

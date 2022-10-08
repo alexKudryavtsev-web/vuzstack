@@ -92,7 +92,7 @@ export class DirectionService {
       select: ['vuz'],
     });
 
-    if (user.priority.length > Number(process.env.MAX_AMOUNT_DIRECTION)) {
+    if (user.priority.length >= Number(process.env.MAX_AMOUNT_DIRECTION)) {
       throw new HttpException(
         'Выбрано слишком много направлений',
         HttpStatus.BAD_REQUEST,
