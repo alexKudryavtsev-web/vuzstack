@@ -12,9 +12,12 @@ function DirectionItem({ direction, index }) {
         <div className="flex flex-wrap">
           <div className="flex-grow">
             <div className="w-full sm:flex justify-between items-center mb-3">
-              <h2 className="text-2xl leading-snug truncate mb-1 sm:mb-0">
+              <h2 className="text-2xl mb-1 sm:mb-0">
                 {index + 1}. {direction.name}
               </h2>
+            </div>
+            <div className="flex items-center whitespace-normal">
+              {direction.budgetPlaces} бюджетных мест
             </div>
             <div className="flex items-center whitespace-normal">
               <div className="max-w-md">

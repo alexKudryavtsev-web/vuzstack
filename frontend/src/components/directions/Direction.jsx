@@ -31,6 +31,9 @@ function Direction({ direction }) {
             </div>
           ))}
         </div>
+        <div className="text-gray-700 text-start mt-1 text-sm font-bold">
+          {direction.budgetPlaces} бюджетных мест
+        </div>
       </div>
       <SelectButton direction={direction} />
     </div>
