@@ -1,7 +1,5 @@
-import { InjectQueue } from '@nestjs/bull';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Queue } from 'bull';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserResponseInterface } from './types/userResponse.interface';
@@ -12,19 +10,20 @@ import { SessionEntity } from '@app/api/session/session.entity';
 import { sign, verify } from 'jsonwebtoken';
 import { UpdatePasswordDto } from './dto/updatePassword.dto';
 import { ProfileEntity } from '../profile/profile.entity';
+import { EmailService } from '@app/email/email.service';
 
 const HASH_ROUNDS = 10;
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectQueue('email') private readonly emailQueue: Queue,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(SessionEntity)
     private readonly sessionRepository: Repository<SessionEntity>,
     @InjectRepository(ProfileEntity)
     private readonly profileRepository: Repository<ProfileEntity>,
+    private readonly emailService: EmailService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -52,10 +51,7 @@ export class UserService {
     user.priority = [];
     user.profile = profile;
 
-    await this.emailQueue.add('activation-email', {
-      email: user.email,
-      link: `${process.env.CLIENT_URL}/activate-user/${user.activationLink}`,
-    });
+    this.emailService.sendActivationMail(user.email, user.activationLink);
 
     return await this.userRepository.save(user);
   }
@@ -83,10 +79,7 @@ export class UserService {
 
     const token = this.generateResetPasswordToken(user);
 
-    await this.emailQueue.add('reset-password-email', {
-      email: user.email,
-      link: `${process.env.CLIENT_URL}/update-password/${token}`,
-    });
+    this.emailService.sendResetPasswordMail(user.email, token);
   }
 
   async updatePassword(

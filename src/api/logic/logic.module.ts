@@ -1,3 +1,4 @@
+import { EmailModule } from '@app/email/email.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DirectionEntity } from '../direction/direction.entity';
@@ -6,7 +7,10 @@ import { LogicController } from './logic.controller';
 import { LogicService } from './logic.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, DirectionEntity])],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, DirectionEntity]),
+    EmailModule,
+  ],
   controllers: [LogicController],
   providers: [LogicService],
   exports: [LogicService],

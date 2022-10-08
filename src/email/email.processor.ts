@@ -4,8 +4,10 @@ import { Job } from 'bull';
 import * as nodemailer from 'nodemailer';
 import * as hbs from 'nodemailer-express-handlebars';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { EmailDto } from './dto/email.dto';
+import { EmailDto } from '@app/email/dto/email.dto';
 import * as path from 'path';
+import { RegretEmailDto } from './dto/regret.dto';
+import { CongratulationsDto } from './dto/congratulations.dto';
 
 @Processor('email')
 export class EmailProcessor {
@@ -32,17 +34,17 @@ export class EmailProcessor {
       'compile',
       hbs({
         viewEngine: {
-          partialsDir: path.join(__dirname, '..', '..', 'views', 'emails'),
+          partialsDir: path.join(__dirname, 'templates'),
           defaultLayout: false,
         },
-        viewPath: path.join(__dirname, '..', '..', 'views', 'emails'),
+        viewPath: path.join(__dirname, 'templates'),
       }),
     );
   }
 
   @Process('activation-email')
   async sendActivationMail(job: Job<EmailDto>) {
-    const { email, firstName, link } = job.data;
+    const { email, link } = job.data;
 
     const mailOptions = {
       from: process.env.MAIL_USER,
@@ -50,7 +52,6 @@ export class EmailProcessor {
       subject: 'Welcome!',
       template: 'activate-user',
       context: {
-        name: firstName,
         url: link,
       },
     };
@@ -67,7 +68,7 @@ export class EmailProcessor {
 
   @Process('reset-password-email')
   async sendResetPasswordMail(job: Job<EmailDto>) {
-    const { email, firstName, link } = job.data;
+    const { email, link } = job.data;
 
     const mailOptions = {
       from: process.env.MAIL_USER,
@@ -75,8 +76,57 @@ export class EmailProcessor {
       subject: 'Welcome!',
       template: 'reset-password',
       context: {
-        name: firstName,
         url: link,
+      },
+    };
+
+    this.transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return console.log(error);
+      }
+      console.log('Message sent: ' + info.response);
+    });
+
+    return {};
+  }
+
+  @Process('congratulations-email')
+  async sendCongratulations(job: Job<CongratulationsDto>) {
+    const { email, vuz, direction } = job.data;
+
+    const mailOptions = {
+      from: process.env.MAIL_USER,
+      to: email,
+      subject: 'Congratulations!',
+      template: 'congratulations',
+      context: {
+        email,
+        vuz,
+        direction,
+      },
+    };
+
+    this.transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return console.log(error);
+      }
+      console.log('Message sent: ' + info.response);
+    });
+
+    return {};
+  }
+
+  @Process('regret-email')
+  async sendRegret(job: Job<RegretEmailDto>) {
+    const { email } = job.data;
+
+    const mailOptions = {
+      from: process.env.MAIL_USER,
+      to: email,
+      subject: 'Regret',
+      template: 'regret',
+      context: {
+        email,
       },
     };
 

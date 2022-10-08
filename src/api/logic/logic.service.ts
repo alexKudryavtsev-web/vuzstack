@@ -1,3 +1,4 @@
+import { EmailService } from '@app/email/email.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,6 +21,7 @@ export class LogicService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(DirectionEntity)
     private readonly directionRepository: Repository<DirectionEntity>,
+    private readonly emailService: EmailService,
   ) {}
 
   async calculate(): Promise<void> {
@@ -129,12 +131,14 @@ export class LogicService {
       clearUser.isProcessed = true;
 
       await this.userRepository.save(clearUser);
+
+      this.emailService.sendRegret(clearUser.email);
     }
 
     for (const [direction, abits] of abitMap) {
       const clearDirection = await this.directionRepository.findOne({
         where: { id: direction.id },
-        relations: ['abits'],
+        relations: ['abits', 'vuz'],
       });
 
       for (const abit of abits) {
@@ -150,6 +154,12 @@ export class LogicService {
 
         clearDirection.abits.push(clearAbit);
         await this.directionRepository.save(clearDirection);
+
+        this.emailService.sendCongratulations(
+          clearAbit.email,
+          clearDirection.vuz.name,
+          clearDirection.name,
+        );
       }
     }
   }
