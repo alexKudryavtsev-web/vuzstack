@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ArticleEntity } from '../article/article.entity';
 import { DirectionEntity } from './direction.entity';
 
 export enum VuzTypeEnum {
@@ -18,12 +25,12 @@ export class VuzEntity {
   @Column()
   city: string;
 
-  @Column()
-  article: string;
-
   @Column({ type: 'enum', enum: VuzTypeEnum, default: VuzTypeEnum.INSTITUTE })
   type: string;
 
   @OneToMany(() => DirectionEntity, (direction) => direction.vuz)
   directions: DirectionEntity[];
+
+  @OneToOne(() => ArticleEntity, (article) => article.vuz)
+  article: ArticleEntity;
 }

@@ -6,10 +6,16 @@ import { store } from '../store';
 import { logout } from '../store/reducers/userReducer';
 import { getIsAuth } from '../store/selectors';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 export default function Navbar(props) {
+  const location = useLocation();
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const isAuth = useSelector(getIsAuth);
+
+  if (location.pathname.includes('article')) {
+    return null;
+  }
 
   return (
     <>

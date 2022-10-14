@@ -3,8 +3,10 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ArticleEntity } from '../article/article.entity';
 import { UserEntity } from '../user/user.entity';
 import { VuzEntity } from './vuz.entity';
 
@@ -15,10 +17,6 @@ export class DirectionEntity {
 
   @Column({ nullable: false })
   name: string;
-
-  // Markdown text
-  @Column()
-  article: string;
 
   @Column({ nullable: false })
   budgetPlaces: number;
@@ -34,4 +32,7 @@ export class DirectionEntity {
 
   @OneToMany(() => UserEntity, (user) => user.result)
   abits: UserEntity[];
+
+  @OneToOne(() => ArticleEntity, (article) => article.direction)
+  article: ArticleEntity;
 }

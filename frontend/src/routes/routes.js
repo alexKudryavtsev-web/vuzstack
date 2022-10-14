@@ -8,14 +8,13 @@ import Error404Page from '../pages/Error404Page.jsx';
 import ProfilePage from '../pages/ProfilePage.jsx';
 import ActivateUser from '../pages/ActivateUser.jsx';
 
-import UserForm from '../components/userForm/UserForm.jsx'
+import UserForm from '../components/userForm/UserForm.jsx';
 import UploadMarks from '../components/marks/UploadMarks.jsx';
-import UploadDirections from '../components/directions/UploadDirections.jsx'
-import UploadPassport from '../components/passport/UploadPassport.jsx'
+import UploadDirections from '../components/directions/UploadDirections.jsx';
+import UploadPassport from '../components/passport/UploadPassport.jsx';
+import ArticlePage from '../pages/ArticlePage.jsx';
 
-const COMMON_ROUTES = [
-  { path: '*', element: <Error404Page /> },
-];
+const COMMON_ROUTES = [{ path: '*', element: <Error404Page /> }];
 
 const PUBLIC_ROUTES = [
   { path: '/', element: <LoginPage /> },
@@ -29,12 +28,18 @@ const PUBLIC_ROUTES = [
 
 const PRIVATE_ROUTES = [
   {
-    path: '/', element: <ProfilePage />, children: [
+    path: '/',
+    element: <ProfilePage />,
+    children: [
       { path: 'user-form', element: <UserForm /> },
       { path: 'passport', element: <UploadPassport /> },
       { path: 'marks', element: <UploadMarks /> },
       { path: 'directions', element: <UploadDirections /> },
-    ]
+    ],
+  },
+  {
+    path: 'article/:id',
+    element: <ArticlePage />,
   },
   ...COMMON_ROUTES,
 ];

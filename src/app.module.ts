@@ -17,6 +17,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from '@app/tasks/task.module';
 import { SettingsModule } from '@app/api/settings/settings.module';
 import { LogicModule } from '@app/api/logic/logic.module';
+import { ArticleModule } from '@app/api/article/article.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { LogicModule } from '@app/api/logic/logic.module';
     TaskModule,
     SettingsModule,
     LogicModule,
+    ArticleModule,
   ],
   controllers: [],
   providers: [],
