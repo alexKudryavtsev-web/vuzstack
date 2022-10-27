@@ -14,7 +14,10 @@ import UploadDirections from '../components/directions/UploadDirections.jsx';
 import UploadPassport from '../components/passport/UploadPassport.jsx';
 import ArticlePage from '../pages/ArticlePage.jsx';
 
-const COMMON_ROUTES = [{ path: '*', element: <Error404Page /> }];
+const COMMON_ROUTES = [
+  { path: '*', element: <Error404Page /> },
+  { path: 'article/:id', element: <ArticlePage /> },
+];
 
 const PUBLIC_ROUTES = [
   { path: '/', element: <LoginPage /> },
@@ -36,10 +39,6 @@ const PRIVATE_ROUTES = [
       { path: 'marks', element: <UploadMarks /> },
       { path: 'directions', element: <UploadDirections /> },
     ],
-  },
-  {
-    path: 'article/:id',
-    element: <ArticlePage />,
   },
   ...COMMON_ROUTES,
 ];

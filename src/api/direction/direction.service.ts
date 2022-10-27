@@ -1,15 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DirectionEntity } from './direction.entity';
-import { VuzEntity } from './vuz.entity';
-import { CreateVuzDto } from './dto/createVuz.dto';
-import { CreateDirectionDto } from './dto/createDirection.dto';
+import { DirectionEntity } from '@app/api/direction/direction.entity';
+import { VuzEntity } from '@app/api/direction/vuz.entity';
+import { CreateVuzDto } from '@app/api/direction/dto/createVuz.dto';
+import { CreateDirectionDto } from '@app/api/direction/dto/createDirection.dto';
 import { VuzListWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
-import { UserEntity } from '../user/user.entity';
-import { DirectionsResponseInterface } from './interfaces/directionResponse.interface';
-import { UpdatePriorityDto } from './dto/updatePriority.dto';
-import { ArticleEntity } from '../article/article.entity';
+import { UserEntity } from '@app/api/user/user.entity';
+import { DirectionsResponseInterface } from '@app/api/direction/interfaces/directionResponse.interface';
+import { UpdatePriorityDto } from '@app/api/direction/dto/updatePriority.dto';
+import {
+  ArticleEntity,
+  ArticleTypeEnum,
+} from '@app/api/article/article.entity';
 
 @Injectable()
 export class DirectionService {
@@ -28,6 +31,8 @@ export class DirectionService {
     const article = new ArticleEntity();
 
     article.content = createVuzDto.article;
+    article.type = ArticleTypeEnum.VUZ_DESCRIPTION;
+
     delete createVuzDto.article;
 
     await this.articleRepository.save(article);
@@ -47,6 +52,7 @@ export class DirectionService {
     const article = new ArticleEntity();
 
     article.content = createDirectionDto.article;
+    article.type = ArticleTypeEnum.DIRECTION_DESCRIPTION;
 
     await this.articleRepository.save(article);
 
