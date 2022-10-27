@@ -86,7 +86,9 @@ export class ProfileService {
       relations: [
         'marks',
         'directions',
+        'directions.article',
         'directions.vuz',
+        'directions.vuz.article',
         'profile',
         'result',
         'result.vuz',

@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import translateExamName, {
   translateExamToShortName,
 } from '../../utils/translateExamName';
@@ -7,9 +8,11 @@ import SelectButton from './SelectButton';
 function Direction({ direction }) {
   return (
     <div className="my-4 mx-1 rounded-lg relative">
-      <h2 className="text-1xl text-start font-bold text-gray-800">
-        {direction.name}
-      </h2>
+      <NavLink to={`/article/${direction.article.id}`}>
+        <h2 className="text-1xl text-start font-bold text-gray-800">
+          {direction.name}
+        </h2>
+      </NavLink>
       <div className="my-2">
         <div className="text-gray-700 text-start">
           {direction.requiredExams.map((exam) => (

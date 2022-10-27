@@ -10,6 +10,7 @@ import { DirectionService } from '../direction/direction.service';
 import { DirectionEntity } from '../direction/direction.entity';
 import { VuzEntity } from '../direction/vuz.entity';
 import { ProfileEntity } from '../profile/profile.entity';
+import { ArticleEntity } from '../article/article.entity';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ProfileEntity } from '../profile/profile.entity';
       DirectionEntity,
       VuzEntity,
       ProfileEntity,
+      ArticleEntity,
     ]),
   ],
   controllers: [SessionController],

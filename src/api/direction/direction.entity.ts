@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -33,6 +34,7 @@ export class DirectionEntity {
   @OneToMany(() => UserEntity, (user) => user.result)
   abits: UserEntity[];
 
-  @OneToOne(() => ArticleEntity, (article) => article.direction)
+  @OneToOne(() => ArticleEntity)
+  @JoinColumn()
   article: ArticleEntity;
 }

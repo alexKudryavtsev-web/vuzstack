@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { BsChevronRight } from 'react-icons/bs';
-import { translateExamToShortName } from '../../utils/translateExamName';
 import Direction from './Direction';
 
 export default function Vuz({ vuz }) {
-  const { name, directions } = vuz;
+  const { name, directions, article } = vuz;
   const [active, setActive] = useState(false);
   const [height, setHeight] = useState('0px');
   const [rotate, setRotate] = useState('transform duration-700 ease');
@@ -27,7 +27,9 @@ export default function Vuz({ vuz }) {
         className="py-3 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between"
         onClick={toggleAccordion}
       >
-        <p className="inline-block text-footnote light">{name}</p>
+        <NavLink to={`/article/${article.id}`}>
+          <p className="inline-block text-footnote light">{name}</p>
+        </NavLink>
         <BsChevronRight className={`${rotate} inline-block`} />
       </button>
       <div

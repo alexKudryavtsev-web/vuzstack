@@ -8,6 +8,7 @@ import { DirectionService } from '@app/api/direction/direction.service';
 import { DirectionEntity } from '@app/api/direction/direction.entity';
 import { VuzEntity } from '@app/api/direction/vuz.entity';
 import { ProfileEntity } from '@app/api/profile/profile.entity';
+import { ArticleEntity } from '../article/article.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProfileEntity } from '@app/api/profile/profile.entity';
       DirectionEntity,
       VuzEntity,
       ProfileEntity,
+      ArticleEntity,
     ]),
   ],
   controllers: [ProfileController],

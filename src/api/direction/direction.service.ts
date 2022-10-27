@@ -9,6 +9,7 @@ import { VuzListWithMetaResponseInterface } from './interfaces/directionsWithMet
 import { UserEntity } from '../user/user.entity';
 import { DirectionsResponseInterface } from './interfaces/directionResponse.interface';
 import { UpdatePriorityDto } from './dto/updatePriority.dto';
+import { ArticleEntity } from '../article/article.entity';
 
 @Injectable()
 export class DirectionService {
@@ -19,23 +20,44 @@ export class DirectionService {
     private readonly vuzRepository: Repository<VuzEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(ArticleEntity)
+    private readonly articleRepository: Repository<ArticleEntity>,
   ) {}
 
   async createVuz(createVuzDto: CreateVuzDto) {
+    const article = new ArticleEntity();
+
+    article.content = createVuzDto.article;
+    delete createVuzDto.article;
+
+    await this.articleRepository.save(article);
+
     const newVuz = new VuzEntity();
+
+    newVuz.article = article;
 
     Object.assign(newVuz, createVuzDto);
 
-    return await this.vuzRepository.save(newVuz);
+    await this.vuzRepository.save(newVuz);
+
+    return newVuz;
   }
 
   async createDirection(createDirectionDto: CreateDirectionDto) {
+    const article = new ArticleEntity();
+
+    article.content = createDirectionDto.article;
+
+    await this.articleRepository.save(article);
+
     const vuz = await this.vuzRepository.findOne({
       where: { id: createDirectionDto.vuzId },
       relations: ['directions'],
     });
     const newDirection = new DirectionEntity();
+    newDirection.article = article;
 
+    delete createDirectionDto.article;
     delete createDirectionDto.vuzId;
 
     Object.assign(newDirection, createDirectionDto);
@@ -53,7 +75,9 @@ export class DirectionService {
 
     const queryBuilder = this.vuzRepository
       .createQueryBuilder('vuz')
-      .leftJoinAndSelect('vuz.directions', 'directions');
+      .leftJoinAndSelect('vuz.directions', 'directions')
+      .leftJoinAndSelect('directions.article', 'directionArticle')
+      .leftJoinAndSelect('vuz.article', 'article');
 
     const total = await queryBuilder.getCount();
 

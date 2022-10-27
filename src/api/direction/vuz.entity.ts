@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -31,6 +32,7 @@ export class VuzEntity {
   @OneToMany(() => DirectionEntity, (direction) => direction.vuz)
   directions: DirectionEntity[];
 
-  @OneToOne(() => ArticleEntity, (article) => article.vuz)
+  @OneToOne(() => ArticleEntity)
+  @JoinColumn()
   article: ArticleEntity;
 }

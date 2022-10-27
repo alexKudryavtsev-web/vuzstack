@@ -1,6 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { DirectionEntity } from '../direction/direction.entity';
-import { VuzEntity } from '../direction/vuz.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum ArticleTypeEnum {
   PLATFORM_DESCRIPTION = 'PLATFORM_DESCRIPTION',
@@ -22,10 +20,4 @@ export class ArticleEntity {
     default: ArticleTypeEnum.PLATFORM_DESCRIPTION,
   })
   type: ArticleTypeEnum;
-
-  @OneToOne(() => VuzEntity, (vuz) => vuz.article)
-  vuz: VuzEntity;
-
-  @OneToOne(() => DirectionEntity, (direction) => direction.article)
-  direction: DirectionEntity;
 }

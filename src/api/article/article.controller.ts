@@ -8,7 +8,7 @@ export class ArticleController {
 
   @Get(':id')
   async readArticleById(
-    @Param() id: number,
+    @Param('id') id: number,
   ): Promise<ArticleResponseInterface> {
     return await this.articleService.readArticleById(id);
   }

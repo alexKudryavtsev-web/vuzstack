@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { store } from '../../store';
 import { deselectDirection } from '../../store/reducers/userReducer';
 
@@ -12,16 +13,20 @@ function DirectionItem({ direction, index }) {
         <div className="flex flex-wrap">
           <div className="flex-grow">
             <div className="w-full sm:flex justify-between items-center mb-3">
-              <h2 className="text-2xl mb-1 sm:mb-0">
-                {index + 1}. {direction.name}
-              </h2>
+              <NavLink to={`/article/${direction.article.id}`}>
+                <h2 className="text-2xl mb-1 sm:mb-0">
+                  {index + 1}. {direction.name}
+                </h2>
+              </NavLink>
             </div>
             <div className="flex items-center whitespace-normal">
               {direction.budgetPlaces} бюджетных мест
             </div>
             <div className="flex items-center whitespace-normal">
               <div className="max-w-md">
-                <p>{direction.vuz.name}</p>
+                <NavLink to={`/article/${direction.vuz.article.id}`}>
+                  <p>{direction.vuz.name}</p>
+                </NavLink>
               </div>
             </div>
           </div>
