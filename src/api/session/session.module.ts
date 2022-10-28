@@ -11,6 +11,7 @@ import { DirectionEntity } from '../direction/direction.entity';
 import { VuzEntity } from '../direction/vuz.entity';
 import { ProfileEntity } from '../profile/profile.entity';
 import { ArticleEntity } from '../article/article.entity';
+import { ParserService } from '@app/parser/parser.service';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ArticleEntity } from '../article/article.entity';
     ProfileService,
     CloudinaryService,
     DirectionService,
+    ParserService,
   ],
 })
 export class SessionModule {}

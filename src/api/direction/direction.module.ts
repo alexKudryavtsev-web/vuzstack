@@ -6,6 +6,7 @@ import { DirectionEntity } from '@app/api/direction/direction.entity';
 import { VuzEntity } from '@app/api/direction/vuz.entity';
 import { UserEntity } from '@app/api/user/user.entity';
 import { ArticleEntity } from '@app/api/article/article.entity';
+import { ParserModule } from '@app/parser/parser.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ArticleEntity } from '@app/api/article/article.entity';
       UserEntity,
       ArticleEntity,
     ]),
+    ParserModule,
   ],
   providers: [DirectionService],
   controllers: [DirectionController],

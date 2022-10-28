@@ -26,6 +26,9 @@ export class VuzEntity {
   @Column()
   city: string;
 
+  @Column()
+  logoUrl: string;
+
   @Column({ type: 'enum', enum: VuzTypeEnum, default: VuzTypeEnum.INSTITUTE })
   type: string;
 

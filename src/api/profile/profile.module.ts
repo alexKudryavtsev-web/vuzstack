@@ -9,6 +9,7 @@ import { DirectionEntity } from '@app/api/direction/direction.entity';
 import { VuzEntity } from '@app/api/direction/vuz.entity';
 import { ProfileEntity } from '@app/api/profile/profile.entity';
 import { ArticleEntity } from '../article/article.entity';
+import { ParserService } from '@app/parser/parser.service';
 
 @Module({
   imports: [
@@ -21,6 +22,11 @@ import { ArticleEntity } from '../article/article.entity';
     ]),
   ],
   controllers: [ProfileController],
-  providers: [CloudinaryService, ProfileService, DirectionService],
+  providers: [
+    CloudinaryService,
+    ProfileService,
+    DirectionService,
+    ParserService,
+  ],
 })
 export class ProfileModule {}

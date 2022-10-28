@@ -13,6 +13,7 @@ import {
   ArticleEntity,
   ArticleTypeEnum,
 } from '@app/api/article/article.entity';
+import { ParserService } from '@app/parser/parser.service';
 
 @Injectable()
 export class DirectionService {
@@ -25,6 +26,7 @@ export class DirectionService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(ArticleEntity)
     private readonly articleRepository: Repository<ArticleEntity>,
+    private readonly parserService: ParserService,
   ) {}
 
   async createVuz(createVuzDto: CreateVuzDto) {
@@ -40,6 +42,7 @@ export class DirectionService {
     const newVuz = new VuzEntity();
 
     newVuz.article = article;
+    newVuz.logoUrl = await this.parserService.getVuzImageURL(createVuzDto.name);
 
     Object.assign(newVuz, createVuzDto);
 

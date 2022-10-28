@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BsChevronRight } from 'react-icons/bs';
+import ReactAvatar from 'react-avatar';
 import Direction from './Direction';
 
 export default function Vuz({ vuz }) {
@@ -27,8 +28,13 @@ export default function Vuz({ vuz }) {
         className="py-3 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between"
         onClick={toggleAccordion}
       >
-        <NavLink to={`/article/${article.id}`}>
-          <p className="inline-block text-footnote light">{name}</p>
+        <NavLink
+          to={`/article/${article.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <ReactAvatar src={vuz.logoUrl} />
+          <p className="inline-block text-footnote light pl-2">{name}</p>
         </NavLink>
         <BsChevronRight className={`${rotate} inline-block`} />
       </button>
