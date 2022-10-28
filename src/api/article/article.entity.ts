@@ -11,7 +11,7 @@ export class ArticleEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'longtext' })
   content: string;
 
   @Column({
