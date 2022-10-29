@@ -11,6 +11,7 @@ import { sign, verify } from 'jsonwebtoken';
 import { UpdatePasswordDto } from './dto/updatePassword.dto';
 import { ProfileEntity } from '../profile/profile.entity';
 import { EmailService } from '@app/email/email.service';
+import { OctopusService } from '@app/email/octopus.service';
 
 const HASH_ROUNDS = 10;
 
@@ -24,6 +25,7 @@ export class UserService {
     @InjectRepository(ProfileEntity)
     private readonly profileRepository: Repository<ProfileEntity>,
     private readonly emailService: EmailService,
+    private readonly octopusService: OctopusService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -52,6 +54,8 @@ export class UserService {
     user.profile = profile;
 
     this.emailService.sendActivationMail(user.email, user.activationLink);
+
+    await this.octopusService.addContact(createUserDto.email);
 
     return await this.userRepository.save(user);
   }
