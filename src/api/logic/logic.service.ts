@@ -157,7 +157,7 @@ export class LogicService {
 
         this.emailService.sendCongratulations(
           clearAbit.email,
-          clearDirection.vuz.name,
+          clearDirection.vuz.fullName,
           clearDirection.name,
         );
       }

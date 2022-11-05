@@ -18,7 +18,8 @@ import { TaskModule } from '@app/tasks/task.module';
 import { SettingsModule } from '@app/api/settings/settings.module';
 import { LogicModule } from '@app/api/logic/logic.module';
 import { ArticleModule } from '@app/api/article/article.module';
-import { ParserModule } from './parser/parser.module';
+import { ParserModule } from '@app/parser/parser.module';
+import { AdminModule } from '@app/api/admin/admin.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { ParserModule } from './parser/parser.module';
     LogicModule,
     ArticleModule,
     ParserModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [],

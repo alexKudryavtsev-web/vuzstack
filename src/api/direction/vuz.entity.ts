@@ -21,16 +21,25 @@ export class VuzEntity {
   id: number;
 
   @Column()
-  name: string;
+  shortName: string;
+
+  @Column()
+  fullName: string;
 
   @Column()
   city: string;
 
   @Column()
-  logoUrl: string;
+  withHostel: boolean;
 
-  @Column({ type: 'enum', enum: VuzTypeEnum, default: VuzTypeEnum.INSTITUTE })
-  type: string;
+  @Column()
+  numberOfStudents: number;
+
+  @Column()
+  yearOfFoundation: number;
+
+  @Column()
+  logoUrl: string;
 
   @OneToMany(() => DirectionEntity, (direction) => direction.vuz)
   directions: DirectionEntity[];
