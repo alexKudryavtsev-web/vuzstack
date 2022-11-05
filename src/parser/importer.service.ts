@@ -33,7 +33,7 @@ export class ImporterService {
         numberOfStudents: vuz.details.numberOfStudents,
         withHostel: vuz.details.withHostel,
         yearOfFoundation: vuz.details.yearOfFoundation,
-        logoUrl: 'null',
+        logoUrl: vuz.details.logoUrl,
       });
 
       await this.vuzRepository.save(newVuzEntity);

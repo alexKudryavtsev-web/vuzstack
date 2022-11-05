@@ -1,3 +1,4 @@
+import { VuzEntity } from '@app/api/direction/vuz.entity';
 import { Injectable } from '@nestjs/common';
 import { launch } from 'puppeteer';
 
@@ -100,6 +101,21 @@ export class ParserService {
       }
 
       result.push(...newVuzList);
+    }
+
+    for (const vuz of result) {
+      await page.goto(
+        `https://yandex.ru/images/search?from=tabbar&text=${vuz.shortName} логотип`,
+      );
+
+      const link = await page.evaluate(() => {
+        return document
+          .querySelector('div > a > img')
+          ?.getAttribute('src')
+          .replace('/', '');
+      });
+
+      vuz.details.logoUrl = `https:/${link}`;
     }
 
     await browser.close();
