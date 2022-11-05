@@ -42,7 +42,7 @@ export class DirectionService {
     const newVuz = new VuzEntity();
 
     newVuz.article = article;
-    newVuz.logoUrl = await this.parserService.getVuzImageURL(createVuzDto.name);
+    // newVuz.logoUrl = await this.parserService.getVuzImageURL(createVuzDto.name);
 
     Object.assign(newVuz, createVuzDto);
 

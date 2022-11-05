@@ -7,7 +7,7 @@ interface VuzItem {
   fullName: string;
   detailsURL?: string;
   details: VuzDetails;
-  directions: any;
+  directions: Direction[];
 }
 
 interface VuzDetails {
@@ -15,24 +15,33 @@ interface VuzDetails {
   withHostel: boolean;
   numberOfStudents: number;
   isState: boolean;
+  logoUrl?: string;
+}
+
+interface Direction {
+  code: string;
+  name: string;
+  department: string;
+  profile: string;
+  requiredExams: string[];
+  optionalExams: string[];
+  budgetPlaces: number;
+  type: string;
 }
 
 @Injectable()
 export class ParserService {
-  async getVuzImageURL(vuzName: string): Promise<string> {
-    const browser = await launch();
-    const page = await browser.newPage();
-    const query = `${vuzName} логотип`;
-
+  async getVuzImageURL(vuzName: string, page: any): Promise<string> {
     await page.goto(
-      `https://yandex.ru/images/search?from=tabbar&text=${query}`,
+      `https://yandex.ru/images/search?from=tabbar&text=${vuzName} логотип`,
     );
 
-    const link = await page.evaluate((sel) => {
-      return document.querySelector(sel).getAttribute('src').replace('/', '');
-    }, 'div > a > img');
-
-    await browser.close();
+    const link = await page.evaluate(() => {
+      return document
+        .querySelector('div > a > img')
+        ?.getAttribute('src')
+        .replace('/', '');
+    });
 
     return `https:/${link}`;
   }
@@ -53,11 +62,41 @@ export class ParserService {
       const newVuzList: VuzItem[] = await page.evaluate(this._evaluatePage);
 
       for (const vuz of newVuzList) {
-        console.log(vuz.fullName);
         await page.goto(vuz.detailsURL);
 
         vuz.details = await page.evaluate(this._evaluateVuzDetails);
-        vuz.directions = await page.evaluate(this._evaluateVuzDirection);
+
+        let directions: Direction[] = await page.evaluate(
+          this._evaluateVuzDirection,
+        );
+
+        directions = directions.map((dir) => ({ ...dir, type: 'очное' }));
+
+        try {
+          await page.goto(`${vuz.detailsURL}/очно-заочное-обучение`);
+          let newDirections = await page.evaluate(this._evaluateVuzDirection);
+
+          newDirections = newDirections.map((dir) => ({
+            ...dir,
+            type: 'очно-заочное',
+          }));
+
+          directions.push(...newDirections);
+        } catch (error) {}
+
+        try {
+          await page.goto(`${vuz.detailsURL}/заочное-обучение`);
+          let newDirections = await page.evaluate(this._evaluateVuzDirection);
+
+          newDirections = newDirections.map((dir) => ({
+            ...dir,
+            type: 'заочное',
+          }));
+
+          directions.push(...newDirections);
+        } catch (error) {}
+
+        vuz.directions = directions;
       }
 
       result.push(...newVuzList);
@@ -144,6 +183,79 @@ export class ParserService {
   }
 
   _evaluateVuzDirection() {
-    return [];
+    const result = [];
+    const outerElement = document.querySelector(
+      '#specialities > div:nth-child(4)',
+    );
+
+    const directionNodes = outerElement.querySelectorAll(
+      'div > div.speciality-row-wrap > ul',
+    );
+
+    for (const outer of directionNodes) {
+      const titleInfoNode = outer.querySelector(
+        'li.speciality-caption.speciality-divisions > div',
+      );
+
+      const otherInfoNode = outer.querySelector('li.speciality-properties');
+
+      const budgetPlaces = Number(
+        otherInfoNode
+          .querySelector('div.label-value')
+          .innerHTML.split(' ')
+          .find((el) => !isNaN(Number(el))),
+      );
+
+      let department = '';
+      let profile = '';
+      const requiredExams = [];
+      const optionalExams = [];
+
+      for (let i = 0; i < titleInfoNode.children.length; i++) {
+        if (titleInfoNode.children.item(i).innerHTML.includes('отделение')) {
+          department = titleInfoNode.children.item(i + 1).innerHTML.trim();
+        }
+        if (titleInfoNode.children.item(i).innerHTML.includes('профиль')) {
+          profile = titleInfoNode.children.item(i + 1).innerHTML.trim();
+        }
+        if (titleInfoNode.children.item(i).innerHTML.includes('профили')) {
+          profile = titleInfoNode.children.item(i + 1).innerHTML.trim();
+        }
+      }
+
+      const exams = titleInfoNode.getElementsByClassName('subject-item');
+
+      for (const exam of exams) {
+        if (exam.innerHTML.includes('span')) {
+          const arr = String(exam.innerHTML).split(
+            '<span class="inner-a0 color-t7 italic font-size-5">или</span>',
+          );
+
+          optionalExams.push(arr[0].trim(), arr.at(-1).trim());
+        } else {
+          requiredExams.push(exam.innerHTML);
+        }
+      }
+
+      const code = titleInfoNode
+        .querySelector('span:nth-child(1) > a')
+        .innerHTML.trim();
+
+      const name = titleInfoNode
+        .querySelector('span:nth-child(3)')
+        .innerHTML.trim();
+
+      result.push({
+        code,
+        name,
+        department,
+        profile,
+        requiredExams,
+        optionalExams,
+        budgetPlaces,
+      });
+    }
+
+    return result;
   }
 }

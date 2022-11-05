@@ -36,6 +36,9 @@ export class ImporterService {
       });
 
       await this.vuzRepository.save(newEntity);
+
+      for (const direction of vuz.directions) {
+      }
     }
 
     console.log('FINISH');
