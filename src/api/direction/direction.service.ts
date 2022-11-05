@@ -31,14 +31,17 @@ export class DirectionService {
     const total = await queryBuilder.getCount();
 
     if (text) {
-      queryBuilder.andWhere("concat_ws(' ', vuz.city, vuz.name) LIKE :text", {
-        text: `%${text}%`,
-      });
+      queryBuilder.andWhere(
+        "concat_ws(' ', vuz.city, vuz.fullName, vuz.shortName) LIKE :text",
+        {
+          text: `%${text}%`,
+        },
+      );
     }
 
     const filtred = await queryBuilder.getCount();
 
-    queryBuilder.orderBy('vuz.name', 'DESC');
+    // queryBuilder.orderBy('vuz.shortName', 'DESC');
 
     const vuzList = await queryBuilder.getMany();
 

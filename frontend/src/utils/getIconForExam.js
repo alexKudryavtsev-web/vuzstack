@@ -1,4 +1,4 @@
-import { GiMaterialsScience, GiPencil } from 'react-icons/gi';
+import { GiEarthAfricaEurope, GiMaterialsScience, GiPencil } from 'react-icons/gi';
 import { TbMathSymbols } from 'react-icons/tb';
 import { BiTestTube, BiTimeFive } from 'react-icons/bi';
 import { IoIosPeople } from 'react-icons/io';
@@ -25,6 +25,8 @@ function getIconForExam(exam) {
       return <FaCat size={42} />;
     case 'FOREIGN_LANGUAGE':
       return <FaFlagUsa size={42} />;
+    case 'GEOGRAPHY':
+      return <GiEarthAfricaEurope size={42} />;
     default:
       return null;
   }

@@ -13,7 +13,7 @@ function DirectionItem({ direction, index }) {
         <div className="flex flex-wrap">
           <div className="flex-grow">
             <div className="w-full sm:flex justify-between items-center mb-3">
-              <NavLink to={`/article/${direction.article.id}`}>
+              <NavLink to={`/article/${direction.article?.id}`}>
                 <h2 className="text-2xl mb-1 sm:mb-0">
                   {index + 1}. {direction.name}
                 </h2>
@@ -24,8 +24,8 @@ function DirectionItem({ direction, index }) {
             </div>
             <div className="flex items-center whitespace-normal">
               <div className="max-w-md">
-                <NavLink to={`/article/${direction.vuz.article.id}`}>
-                  <p>{direction.vuz.name}</p>
+                <NavLink to={`/article/${direction.vuz.article?.id}`}>
+                  <p>{direction.vuz.shortName}</p>
                 </NavLink>
               </div>
             </div>

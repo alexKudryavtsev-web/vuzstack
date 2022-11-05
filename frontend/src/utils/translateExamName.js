@@ -18,6 +18,8 @@ function translateExamName(exam) {
       return 'Биология';
     case 'FOREIGN_LANGUAGE':
       return 'Иностранный язык';
+    case 'GEOGRAPHY':
+      return 'География';
     default:
       return null;
   }
@@ -43,10 +45,12 @@ function translateExamToShortName(exam) {
       return 'био.';
     case 'FOREIGN_LANGUAGE':
       return 'иностранный';
+    case 'GEOGRAPHY':
+      return 'гео.';
     default:
       return null;
   }
 }
 
-export default translateExamName
-export { translateExamToShortName }
+export default translateExamName;
+export { translateExamToShortName };

@@ -8,7 +8,7 @@ import SelectButton from './SelectButton';
 function Direction({ direction }) {
   return (
     <div className="my-4 mx-1 rounded-lg relative">
-      <NavLink to={`/article/${direction.article.id}`}>
+      <NavLink to={`/article/${direction.article?.id}`}>
         <h2 className="text-1xl text-start font-bold text-gray-800">
           {direction.name}
         </h2>
@@ -34,8 +34,11 @@ function Direction({ direction }) {
             </div>
           ))}
         </div>
-        <div className="text-gray-700 text-start mt-1 text-sm font-bold">
+        <div className="text-start mt-1 text-sm font-bold">
           {direction.budgetPlaces} бюджетных мест
+        </div>
+        <div className="text-gray-500 text-start mt-1 text-sm font-bold">
+          Код: {direction.code}
         </div>
       </div>
       <SelectButton direction={direction} />
