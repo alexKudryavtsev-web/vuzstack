@@ -22,6 +22,18 @@ export class DirectionEntity {
   @Column({ nullable: false })
   budgetPlaces: number;
 
+  @Column()
+  code: string;
+
+  @Column()
+  department: string;
+
+  @Column()
+  profile: string;
+
+  @Column()
+  type: string;
+
   @Column({ type: 'simple-array' })
   requiredExams: string[];
 

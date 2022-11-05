@@ -11,6 +11,7 @@ export enum ExamEnum {
   COMPUTER_SCIENCE = 'COMPUTER_SCIENCE',
   BIOLOGY = 'BIOLOGY',
   FOREIGN_LANGUAGE = 'FOREIGN_LANGUAGE',
+  GEOGRAPHY = 'GEOGRAPHY',
 }
 
 @Entity({ name: 'marks' })

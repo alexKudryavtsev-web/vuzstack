@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ParserService } from '@app/parser/parser.service';
+import { ExamEnum } from '@app/api/mark/mark.entity';
 
 @Injectable()
 export class ImporterService {
@@ -23,9 +24,9 @@ export class ImporterService {
         continue;
       }
 
-      const newEntity = new VuzEntity();
+      const newVuzEntity = new VuzEntity();
 
-      Object.assign(newEntity, {
+      Object.assign(newVuzEntity, {
         shortName: vuz.shortName,
         fullName: vuz.fullName,
         city: vuz.city,
@@ -35,12 +36,61 @@ export class ImporterService {
         logoUrl: 'null',
       });
 
-      await this.vuzRepository.save(newEntity);
+      await this.vuzRepository.save(newVuzEntity);
 
       for (const direction of vuz.directions) {
+        const newDirection = new DirectionEntity();
+        const requiredExams = direction.requiredExams
+          .map(this._convertSubjectName)
+          .filter((exam) => exam === 'ДВИ');
+
+        const optionalExams = direction.optionalExams
+          .map(this._convertSubjectName)
+          .filter((exam) => exam === 'ДВИ');
+
+        Object.assign(newDirection, {
+          code: direction.code,
+          name: direction.name,
+          department: direction.department,
+          profile: direction.profile,
+          budgetPlaces: direction.budgetPlaces,
+          type: direction.type,
+          requiredExams,
+          optionalExams,
+        });
+
+        newDirection.optionalExams;
+        newDirection.vuz = newVuzEntity;
+
+        await this.directionRepository.save(newDirection);
       }
     }
+  }
 
-    console.log('FINISH');
+  _convertSubjectName(subject: string): string {
+    switch (subject) {
+      case 'информатика и ИКТ':
+        return ExamEnum.COMPUTER_SCIENCE;
+      case 'биология':
+        return ExamEnum.BIOLOGY;
+      case 'химия':
+        return ExamEnum.CHEMISTRY;
+      case 'иностранный язык':
+        return ExamEnum.FOREIGN_LANGUAGE;
+      case 'история':
+        return ExamEnum.HISTORY;
+      case 'математика':
+        return ExamEnum.MATH;
+      case 'физика':
+        return ExamEnum.PHYSIC;
+      case 'русский язык':
+        return ExamEnum.RUSSIAN_LANGUAGE;
+      case 'обществознание':
+        return ExamEnum.SOCIAL_SCIENCE;
+      case 'география':
+        return ExamEnum.GEOGRAPHY;
+      default:
+        return 'ДВИ';
+    }
   }
 }
