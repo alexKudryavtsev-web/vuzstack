@@ -3,17 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DirectionEntity } from '@app/api/direction/direction.entity';
 import { VuzEntity } from '@app/api/direction/vuz.entity';
-import { CreateVuzDto } from '@app/api/direction/dto/createVuz.dto';
-import { CreateDirectionDto } from '@app/api/direction/dto/createDirection.dto';
 import { VuzListWithMetaResponseInterface } from './interfaces/directionsWithMetaResponse.interface';
 import { UserEntity } from '@app/api/user/user.entity';
 import { DirectionsResponseInterface } from '@app/api/direction/interfaces/directionResponse.interface';
 import { UpdatePriorityDto } from '@app/api/direction/dto/updatePriority.dto';
-import {
-  ArticleEntity,
-  ArticleTypeEnum,
-} from '@app/api/article/article.entity';
-import { ParserService } from '@app/parser/parser.service';
 
 @Injectable()
 export class DirectionService {
@@ -24,60 +17,7 @@ export class DirectionService {
     private readonly vuzRepository: Repository<VuzEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(ArticleEntity)
-    private readonly articleRepository: Repository<ArticleEntity>,
-    private readonly parserService: ParserService,
   ) {}
-
-  async createVuz(createVuzDto: CreateVuzDto) {
-    const article = new ArticleEntity();
-
-    article.content = createVuzDto.article;
-    article.type = ArticleTypeEnum.VUZ_DESCRIPTION;
-
-    delete createVuzDto.article;
-
-    await this.articleRepository.save(article);
-
-    const newVuz = new VuzEntity();
-
-    newVuz.article = article;
-    // newVuz.logoUrl = await this.parserService.getVuzImageURL(createVuzDto.name);
-
-    Object.assign(newVuz, createVuzDto);
-
-    await this.vuzRepository.save(newVuz);
-
-    return newVuz;
-  }
-
-  async createDirection(createDirectionDto: CreateDirectionDto) {
-    const article = new ArticleEntity();
-
-    article.content = createDirectionDto.article;
-    article.type = ArticleTypeEnum.DIRECTION_DESCRIPTION;
-
-    await this.articleRepository.save(article);
-
-    const vuz = await this.vuzRepository.findOne({
-      where: { id: createDirectionDto.vuzId },
-      relations: ['directions'],
-    });
-    const newDirection = new DirectionEntity();
-    newDirection.article = article;
-
-    delete createDirectionDto.article;
-    delete createDirectionDto.vuzId;
-
-    Object.assign(newDirection, createDirectionDto);
-
-    await this.directionRepository.save(newDirection);
-
-    vuz.directions.push(newDirection);
-    await this.vuzRepository.save(vuz);
-
-    return newDirection;
-  }
 
   async readDirections(query: any): Promise<VuzListWithMetaResponseInterface> {
     const text = query.text;

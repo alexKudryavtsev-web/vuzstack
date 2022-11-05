@@ -12,8 +12,6 @@ import {
 import { User } from '../user/decorators/user.decorator';
 import { AuthGuard } from '../user/guards/auth.guard';
 import { DirectionService } from './direction.service';
-import { CreateDirectionDto } from './dto/createDirection.dto';
-import { CreateVuzDto } from './dto/createVuz.dto';
 import { SelectDirectionDto } from './dto/selectDirection.dto';
 import { UpdatePriorityDto } from './dto/updatePriority.dto';
 import { DirectionsResponseInterface } from './interfaces/directionResponse.interface';
@@ -22,16 +20,6 @@ import { VuzListWithMetaResponseInterface } from './interfaces/directionsWithMet
 @Controller()
 export class DirectionController {
   constructor(private readonly directionService: DirectionService) {}
-
-  @Post('admin/vuz')
-  async createVuz(@Body() createVuzDto: CreateVuzDto) {
-    return await this.directionService.createVuz(createVuzDto);
-  }
-
-  @Post('admin/direction')
-  async createDirection(@Body() createDirectionDto: CreateDirectionDto) {
-    return await this.directionService.createDirection(createDirectionDto);
-  }
 
   @Get('direction')
   async readDirection(

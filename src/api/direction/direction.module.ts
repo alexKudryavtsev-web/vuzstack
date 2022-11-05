@@ -5,19 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DirectionEntity } from '@app/api/direction/direction.entity';
 import { VuzEntity } from '@app/api/direction/vuz.entity';
 import { UserEntity } from '@app/api/user/user.entity';
-import { ArticleEntity } from '@app/api/article/article.entity';
-import { ParserModule } from '@app/parser/parser.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      DirectionEntity,
-      VuzEntity,
-      UserEntity,
-      ArticleEntity,
-    ]),
-    ParserModule,
-  ],
+  imports: [TypeOrmModule.forFeature([DirectionEntity, VuzEntity, UserEntity])],
   providers: [DirectionService],
   controllers: [DirectionController],
   exports: [DirectionService],

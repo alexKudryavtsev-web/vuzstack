@@ -1,4 +1,4 @@
-import { LogicService } from '@app/api/logic/logic.service';
+import { LogicService } from '@app/logic/logic.service';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 

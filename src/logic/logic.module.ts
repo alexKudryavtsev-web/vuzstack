@@ -1,9 +1,8 @@
 import { EmailModule } from '@app/email/email.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DirectionEntity } from '../direction/direction.entity';
-import { UserEntity } from '../user/user.entity';
-import { LogicController } from './logic.controller';
+import { DirectionEntity } from '../api/direction/direction.entity';
+import { UserEntity } from '../api/user/user.entity';
 import { LogicService } from './logic.service';
 
 @Module({
@@ -11,7 +10,6 @@ import { LogicService } from './logic.service';
     TypeOrmModule.forFeature([UserEntity, DirectionEntity]),
     EmailModule,
   ],
-  controllers: [LogicController],
   providers: [LogicService],
   exports: [LogicService],
 })

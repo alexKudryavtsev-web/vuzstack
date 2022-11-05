@@ -2,8 +2,8 @@ import { EmailService } from '@app/email/email.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DirectionEntity } from '../direction/direction.entity';
-import { UserEntity } from '../user/user.entity';
+import { DirectionEntity } from '../api/direction/direction.entity';
+import { UserEntity } from '../api/user/user.entity';
 
 /*
 Берем все направления и формирует map
