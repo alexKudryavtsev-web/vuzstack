@@ -20,7 +20,7 @@ export class ImporterService {
     const data = await this.parserService.parseVuzAndDirections();
 
     for (const vuz of data) {
-      if (!vuz.details.isState) {
+      if (!vuz.details.isState || !vuz.details || !vuz.directions.length) {
         continue;
       }
 
@@ -39,14 +39,18 @@ export class ImporterService {
       await this.vuzRepository.save(newVuzEntity);
 
       for (const direction of vuz.directions) {
+        if (!direction.requiredExams.length || !direction.budgetPlaces) {
+          continue;
+        }
+
         const newDirection = new DirectionEntity();
         const requiredExams = direction.requiredExams
           .map(this._convertSubjectName)
-          .filter((exam) => exam === 'ДВИ');
+          .filter((exam) => exam !== 'ДВИ');
 
         const optionalExams = direction.optionalExams
           .map(this._convertSubjectName)
-          .filter((exam) => exam === 'ДВИ');
+          .filter((exam) => exam !== 'ДВИ');
 
         Object.assign(newDirection, {
           code: direction.code,

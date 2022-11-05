@@ -1,4 +1,3 @@
-import { VuzEntity } from '@app/api/direction/vuz.entity';
 import { Injectable } from '@nestjs/common';
 import { launch } from 'puppeteer';
 
@@ -53,7 +52,7 @@ export class ParserService {
 
     const result = [];
 
-    for (let i = 1; i <= 1; i++) {
+    for (let i = 1; i <= 40; i++) {
       if (i === 1) {
         await page.goto('https://vuzoteka.ru/вузы');
       } else {
@@ -65,13 +64,23 @@ export class ParserService {
       for (const vuz of newVuzList) {
         await page.goto(vuz.detailsURL);
 
-        vuz.details = await page.evaluate(this._evaluateVuzDetails);
+        try {
+          vuz.details = await page.evaluate(this._evaluateVuzDetails);
+        } catch (error) {}
 
-        let directions: Direction[] = await page.evaluate(
-          this._evaluateVuzDirection,
-        );
+        const directions = [];
 
-        directions = directions.map((dir) => ({ ...dir, type: 'очное' }));
+        try {
+          await page.goto(vuz.detailsURL);
+
+          let newDirections = await page.evaluate(this._evaluateVuzDirection);
+          newDirections = newDirections.map((dir) => ({
+            ...dir,
+            type: 'очное',
+          }));
+
+          directions.push(...newDirections);
+        } catch (error) {}
 
         try {
           await page.goto(`${vuz.detailsURL}/очно-заочное-обучение`);

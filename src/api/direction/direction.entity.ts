@@ -25,10 +25,10 @@ export class DirectionEntity {
   @Column()
   code: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   department: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   profile: string;
 
   @Column()
