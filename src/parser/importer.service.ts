@@ -5,6 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ParserService } from '@app/parser/parser.service';
 import { ExamEnum } from '@app/api/mark/mark.entity';
+import { VuzDetailsInterface } from '@app/parser/interface/vuzDetails.interface';
+import {
+  ArticleEntity,
+  ArticleTypeEnum,
+} from '@app/api/article/article.entity';
 
 @Injectable()
 export class ImporterService {
@@ -13,16 +18,36 @@ export class ImporterService {
     private readonly vuzRepository: Repository<VuzEntity>,
     @InjectRepository(DirectionEntity)
     private readonly directionRepository: Repository<DirectionEntity>,
+    @InjectRepository(ArticleEntity)
+    private readonly articleRepository: Repository<ArticleEntity>,
     private readonly parserService: ParserService,
   ) {}
 
-  async createImport(): Promise<void> {
-    const data = await this.parserService.parseVuzAndDirections();
+  async createImport(deep = 10): Promise<void> {
+    const data = await this.parserService.parseVuzAndDirections(deep);
 
     for (const vuz of data) {
-      if (!vuz.details.isState || !vuz.details || !vuz.directions.length) {
+      vuz.directions = vuz.directions.map((direction) => ({
+        ...direction,
+        optionalExams: direction.optionalExams.map(this._convertSubjectName),
+        requiredExams: direction.requiredExams.map(this._convertSubjectName),
+      }));
+
+      vuz.directions = vuz.directions.filter(
+        (direction) =>
+          direction.budgetPlaces !== 0 &&
+          !direction.requiredExams.includes('ДВИ') &&
+          direction.requiredExams.length &&
+          direction.optionalExams.length,
+      );
+      if (!vuz.details || !vuz.details.isState || !vuz.directions.length) {
         continue;
       }
+
+      const article = new ArticleEntity();
+      article.content = this._generateArticle(vuz.details);
+      article.type = ArticleTypeEnum.VUZ_DESCRIPTION;
+      await this.articleRepository.save(article);
 
       const newVuzEntity = new VuzEntity();
 
@@ -36,21 +61,12 @@ export class ImporterService {
         logoUrl: vuz.details.logoUrl,
       });
 
+      newVuzEntity.article = article;
+
       await this.vuzRepository.save(newVuzEntity);
 
       for (const direction of vuz.directions) {
-        if (!direction.requiredExams.length || !direction.budgetPlaces) {
-          continue;
-        }
-
         const newDirection = new DirectionEntity();
-        const requiredExams = direction.requiredExams
-          .map(this._convertSubjectName)
-          .filter((exam) => exam !== 'ДВИ');
-
-        const optionalExams = direction.optionalExams
-          .map(this._convertSubjectName)
-          .filter((exam) => exam !== 'ДВИ');
 
         Object.assign(newDirection, {
           code: direction.code,
@@ -59,8 +75,8 @@ export class ImporterService {
           profile: direction.profile,
           budgetPlaces: direction.budgetPlaces,
           type: direction.type,
-          requiredExams,
-          optionalExams,
+          requiredExams: direction.requiredExams,
+          optionalExams: direction.optionalExams,
         });
 
         newDirection.optionalExams;
@@ -69,6 +85,15 @@ export class ImporterService {
         await this.directionRepository.save(newDirection);
       }
     }
+  }
+
+  _generateArticle(details: VuzDetailsInterface): string {
+    return `
+## ${details.fullName}
+${details.shortDescription}
+- Адрес: ${details.address}
+- Ректор: ${details.rector}
+- Сайт: [${details.websiteName}](${details.websiteUrl})`;
   }
 
   _convertSubjectName(subject: string): string {

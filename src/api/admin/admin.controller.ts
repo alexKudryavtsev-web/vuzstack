@@ -1,6 +1,7 @@
 import { ImporterService } from '@app/parser/importer.service';
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { LogicService } from '@app/logic/logic.service';
+import { ImportDto } from '@app/api/admin/dto/import.dto';
 
 @Controller('admin')
 export class AdminController {
@@ -10,8 +11,8 @@ export class AdminController {
   ) {}
 
   @Post('import')
-  async createImport(): Promise<void> {
-    await this.importerService.createImport();
+  async createImport(@Body() importDto: ImportDto): Promise<void> {
+    await this.importerService.createImport(importDto.deep);
   }
 
   @Post('logic')

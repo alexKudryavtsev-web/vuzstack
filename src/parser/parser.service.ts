@@ -1,68 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { launch } from 'puppeteer';
-
-interface VuzItem {
-  city: string;
-  shortName: string;
-  fullName: string;
-  detailsURL?: string;
-  details: VuzDetails;
-  directions: Direction[];
-}
-
-interface VuzDetails {
-  yearOfFoundation: number;
-  withHostel: boolean;
-  numberOfStudents: number;
-  isState: boolean;
-  logoUrl?: string;
-}
-
-interface Direction {
-  code: string;
-  name: string;
-  department: string;
-  profile: string;
-  requiredExams: string[];
-  optionalExams: string[];
-  budgetPlaces: number;
-  type: string;
-}
+import { Vuz } from './interface/vuz.interface';
 
 @Injectable()
 export class ParserService {
-  async getVuzImageURL(vuzName: string, page: any): Promise<string> {
-    await page.goto(
-      `https://yandex.ru/images/search?from=tabbar&text=${vuzName} логотип`,
-    );
-
-    const link = await page.evaluate(() => {
-      return document
-        .querySelector('div > a > img')
-        ?.getAttribute('src')
-        .replace('/', '');
-    });
-
-    return `https:/${link}`;
-  }
-
-  async parseVuzAndDirections(): Promise<VuzItem[]> {
+  async parseVuzAndDirections(deep: number): Promise<Vuz[]> {
     const browser = await launch();
     const page = await browser.newPage();
 
     const result = [];
 
-    for (let i = 1; i <= 40; i++) {
+    for (let i = 1; i <= deep; i++) {
       if (i === 1) {
         await page.goto('https://vuzoteka.ru/вузы');
       } else {
         await page.goto(`https://vuzoteka.ru/вузы?page=${i}`);
       }
 
-      const newVuzList: VuzItem[] = await page.evaluate(this._evaluatePage);
+      const newVuzList: Vuz[] = await page.evaluate(this._evaluatePage);
 
       for (const vuz of newVuzList) {
-        await page.goto(vuz.detailsURL);
+        await page.goto(vuz.detailsUrl);
 
         try {
           vuz.details = await page.evaluate(this._evaluateVuzDetails);
@@ -71,7 +29,7 @@ export class ParserService {
         const directions = [];
 
         try {
-          await page.goto(vuz.detailsURL);
+          await page.goto(vuz.detailsUrl);
 
           let newDirections = await page.evaluate(this._evaluateVuzDirection);
           newDirections = newDirections.map((dir) => ({
@@ -83,7 +41,7 @@ export class ParserService {
         } catch (error) {}
 
         try {
-          await page.goto(`${vuz.detailsURL}/очно-заочное-обучение`);
+          await page.goto(`${vuz.detailsUrl}/очно-заочное-обучение`);
           let newDirections = await page.evaluate(this._evaluateVuzDirection);
 
           newDirections = newDirections.map((dir) => ({
@@ -95,7 +53,7 @@ export class ParserService {
         } catch (error) {}
 
         try {
-          await page.goto(`${vuz.detailsURL}/заочное-обучение`);
+          await page.goto(`${vuz.detailsUrl}/заочное-обучение`);
           let newDirections = await page.evaluate(this._evaluateVuzDirection);
 
           newDirections = newDirections.map((dir) => ({
@@ -112,21 +70,6 @@ export class ParserService {
       result.push(...newVuzList);
     }
 
-    for (const vuz of result) {
-      await page.goto(
-        `https://yandex.ru/images/search?from=tabbar&text=${vuz.shortName} логотип`,
-      );
-
-      const link = await page.evaluate(() => {
-        return document
-          .querySelector('div > a > img')
-          ?.getAttribute('src')
-          .replace('/', '');
-      });
-
-      vuz.details.logoUrl = `https:/${link}`;
-    }
-
     await browser.close();
 
     return result;
@@ -134,35 +77,28 @@ export class ParserService {
 
   _evaluatePage() {
     const res = [];
-    const nodes = document.querySelectorAll(
-      '#content > div.institute-rows > div > div:nth-child(1)',
+    const links = document.querySelectorAll(
+      'div.institute-search-caption > div.institute-search > a',
     );
 
-    for (const node of nodes.values()) {
-      if (!node.id.includes('rank-')) {
-        continue;
-      }
+    for (const link of links) {
+      const node = link.closest('.institute-row');
 
-      const id = Number(node.id.replace('rank-', ''));
+      const city = node.querySelector(
+        `div.labels-wrap.item-features-search.border-r5 > div:nth-child(2) > div.institute-search-value > a`,
+      ).innerHTML;
 
-      const cityNode: any = document.querySelector(
-        `#rank-${id} > div.labels-wrap.item-features-search.border-r5 > div:nth-child(2) > div.institute-search-value > a`,
-      );
-      const link: any = document.querySelector(
-        `#rank-${id} > div.institute-search-caption > div.institute-search > a`,
-      );
-
-      const [shortName, fullName] = link?.innerText.split(' – ');
+      const [shortName, fullName] = link.innerHTML.split(' – ');
 
       if (res.find((vuz) => vuz.fullName == fullName)) {
         continue;
       }
 
       res.push({
-        city: cityNode?.innerText,
+        city,
         shortName,
         fullName: fullName || shortName,
-        detailsURL: `https:${link?.getAttribute('href')}`,
+        detailsUrl: `https:${link.getAttribute('href')}`,
       });
     }
 
@@ -198,12 +134,47 @@ export class ParserService {
         .innerHTML.trim()
         .replace(' ', ''),
     );
+    const logoUrl =
+      'https:' +
+      document
+        .querySelector(
+          '#control-panel > div.institute-caption > div.institute-caption-both > div.institute-logo > img',
+        )
+        .getAttribute('src');
+
+    const shortDescription = document
+      .querySelector('#control-panel > div.institute-caption > div.about-short')
+      .innerHTML.replace(/<[^>]*>/g, '')
+      .trim();
+
+    const address = document.querySelector(
+      '#institute-info > div:nth-child(3) > div:nth-child(3) > span:nth-child(1)',
+    ).innerHTML;
+
+    const rector = document.querySelector(
+      '#institute-info > div:nth-child(2) > div:nth-child(3)',
+    ).innerHTML;
+
+    const websiteNode = document.querySelector(
+      '#institute-info > div:nth-child(1) > div:nth-child(3) > a',
+    );
+
+    const fullName = document.querySelector(
+      '#control-panel > div.institute-caption > div.institute-caption-both > div.institute-title-wrapper > h1',
+    ).innerHTML;
 
     return {
       isState,
       withHostel,
       numberOfStudents,
       yearOfFoundation,
+      logoUrl,
+      shortDescription,
+      address,
+      rector,
+      websiteName: websiteNode.innerHTML,
+      websiteUrl: websiteNode.getAttribute('href'),
+      fullName,
     };
   }
 
