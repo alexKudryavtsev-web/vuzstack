@@ -13,22 +13,20 @@ export default function HeaderStats() {
           <div>
             {/* Card stats */}
             <div className="flex flex-wrap">
-              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+              <div className="w-full lg:w-6/12 xl:w-1/2 px-4">
                 <CardStats
-                  statSubtitle="TRAFFIC"
-                  statTitle="350,897"
-                  statArrow="up"
-                  statPercent="3.48"
+                  statSubtitle="Профиль заполнен"
+                  statTitle="Профиль заполнен"
                   statPercentColor="text-emerald-500"
-                  statDescripiron="Since last month"
+                  statDescripiron="паспорт, контактная инф., ЕГЭ указаны"
                   statIconName="far fa-chart-bar"
                   statIconColor="bg-red-500"
                 />
               </div>
-              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+              <div className="w-full lg:w-6/12 xl:w-1/2 px-4">
                 <CardStats
-                  statSubtitle="NEW USERS"
-                  statTitle="2,356"
+                  statSubtitle="Места поступления выбрано"
+                  statTitle="минимальные 2 места не выбраны"
                   statArrow="down"
                   statPercent="3.48"
                   statPercentColor="text-red-500"
@@ -37,7 +35,7 @@ export default function HeaderStats() {
                   statIconColor="bg-orange-500"
                 />
               </div>
-              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+              {/* <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="SALES"
                   statTitle="924"
@@ -60,7 +58,7 @@ export default function HeaderStats() {
                   statIconName="fas fa-percent"
                   statIconColor="bg-lightBlue-500"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

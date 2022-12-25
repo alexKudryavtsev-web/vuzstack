@@ -18,7 +18,7 @@ export default function CardStats({
           <div className="flex flex-wrap">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
               <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                {statSubtitle}
+                {statDescripiron}
               </h5>
               <span className="font-semibold text-xl text-blueGray-700">
                 {statTitle}
@@ -35,21 +35,6 @@ export default function CardStats({
               </div>
             </div>
           </div>
-          <p className="text-sm text-blueGray-400 mt-4">
-            <span className={statPercentColor + " mr-2"}>
-              <i
-                className={
-                  statArrow === "up"
-                    ? "fas fa-arrow-up"
-                    : statArrow === "down"
-                    ? "fas fa-arrow-down"
-                    : ""
-                }
-              ></i>{" "}
-              {statPercent}%
-            </span>
-            <span className="whitespace-nowrap">{statDescripiron}</span>
-          </p>
         </div>
       </div>
     </>
