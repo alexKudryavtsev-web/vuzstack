@@ -40,7 +40,7 @@ import { AdminModule } from '@app/api/admin/admin.module';
       serveRoot: '/static/',
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client', 'build'),
+      rootPath: join(__dirname, '..', 'frontend', 'build'),
       exclude: ['/api*'],
     }),
     ScheduleModule.forRoot(),
